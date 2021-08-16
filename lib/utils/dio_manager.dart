@@ -95,31 +95,33 @@ class ErrorInterceptor extends Interceptor {
       getx.Get.toNamed("/login");
       //getx.Get.offAll(() => LoginPage());
     }
-    switch (error.type) {
-      case DioErrorType.connectTimeout:
-        ToastUtils.error("连接超时");
-        print("连接超时");
-        break;
-      case DioErrorType.sendTimeout:
-        ToastUtils.error("请求超时");
-        print("请求超时");
-        break;
-      case DioErrorType.receiveTimeout:
-        ToastUtils.error("响应超时");
-        print("响应超时");
-        break;
-      case DioErrorType.response:
-        handleLaravelErrors(error);
-        print("出现异常");
-        break;
-      case DioErrorType.cancel:
-        ToastUtils.error("请求取消");
-        print("请求取消");
-        break;
-      default:
-        ToastUtils.error("未知错误");
-        print("未知错误");
-        break;
+    if(getx.Get.find<ConstantController>().appIsRunning){
+      switch (error.type) {
+        case DioErrorType.connectTimeout:
+          ToastUtils.error("连接超时");
+          print("连接超时");
+          break;
+        case DioErrorType.sendTimeout:
+          ToastUtils.error("请求超时");
+          print("请求超时");
+          break;
+        case DioErrorType.receiveTimeout:
+          ToastUtils.error("响应超时");
+          print("响应超时");
+          break;
+        case DioErrorType.response:
+          handleLaravelErrors(error);
+          print("出现异常");
+          break;
+        case DioErrorType.cancel:
+          ToastUtils.error("请求取消");
+          print("请求取消");
+          break;
+        default:
+          ToastUtils.error("未知错误");
+          print("未知错误");
+          break;
+      }
     }
     return super.onError(error, handler);
   }

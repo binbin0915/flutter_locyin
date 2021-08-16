@@ -1,3 +1,4 @@
+import 'package:flutter_locyin/page/Dynamic/Dynamic.dart';
 import 'package:flutter_locyin/page/Welcome/welcome.dart';
 import 'package:flutter_locyin/page/User/login_code.dart';
 import 'package:flutter_locyin/page/advantage.dart';
@@ -16,7 +17,7 @@ class RouteMap {
     GetPage(name: '/', page: () => AdvantagePage()),
     GetPage(name: '/welcome', page: () =>WelcomePage()),
     GetPage(name: '/index', page: (){
-      return Get.find<UserController>().user==null?LoginCodePage(): MainHomePage();
+      return Get.find<UserController>().user==null?LoginCodePage(): DynamicPage();
     }),
     GetPage(name: '/menu/settings', page: () => SettingsPage()),
     GetPage(name: '/menu/settings/theme', page: () => ThemePage()),

@@ -21,11 +21,11 @@ class _MainHomePageState extends State<MainHomePage> {
         BottomNavigationBarItem(label: S.of(context).navigationMap, icon: Icon(Icons.map)),
         BottomNavigationBarItem(label: S.of(context).navigationMessage, icon: Icon(Icons.notifications)),
         BottomNavigationBarItem(label: S.of(context).navigationMine, icon: Icon(Icons.person)),*/
-    BottomNavigationBarItem(label: 'navigationHome'.tr, icon: Icon(Icons.home)),
-    BottomNavigationBarItem(label: 'navigationFind'.tr, icon: Icon(Icons.find_in_page)),
-    BottomNavigationBarItem(label: 'navigationMap'.tr, icon: Icon(Icons.map)),
-    BottomNavigationBarItem(label: 'navigationMessage'.tr, icon: Icon(Icons.notifications)),
-    BottomNavigationBarItem(label: 'navigationMine'.tr, icon: Icon(Icons.person)),
+        BottomNavigationBarItem(label: 'navigationHome'.tr, icon: Icon(Icons.home)),
+        BottomNavigationBarItem(label: 'navigationFind'.tr, icon: Icon(Icons.find_in_page)),
+        BottomNavigationBarItem(label: 'navigationMap'.tr, icon: Icon(Icons.map)),
+        BottomNavigationBarItem(label: 'navigationMessage'.tr, icon: Icon(Icons.notifications)),
+        BottomNavigationBarItem(label: 'navigationMine'.tr, icon: Icon(Icons.person)),
       ];
 
   List<Widget> getTabWidget(BuildContext context) =>

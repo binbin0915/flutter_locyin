@@ -33,6 +33,10 @@ class ConstantController extends GetxController{
 
   bool get hasAgreedPrivacy => _hasAgreedPrivacy;
 
+  bool _appIsRunning = false;
+
+  bool get appIsRunning => _appIsRunning;
+
   void init(){
     initToken();
     initPrivacy();
@@ -78,6 +82,10 @@ class ConstantController extends GetxController{
     _hasAgreedPrivacy = true;
     //隐私的持久化存储
     SPUtils.savePrivacy();
+  }
+
+  void setAppRunningStatus(){
+    _appIsRunning = true;
   }
 
 }

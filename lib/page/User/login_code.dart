@@ -262,7 +262,6 @@ class _LoginPage2State extends State<LoginCodePage> {
         });
       }, (DioError error) {
         Navigator.pop(context);
-        handleLaravelErrors(error);
       }, _phoneController.text);
   }
   void _showDialog(){

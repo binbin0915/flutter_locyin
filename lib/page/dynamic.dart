@@ -48,9 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     });
   }
-  void _testRegisterPage() {
-    Get.toNamed('/login');
-  }
+  void _testLoginRegisterPage() => Get.toNamed('/login');
+
 
   void _logOut(){
     Get.find<UserController>().clearUser();

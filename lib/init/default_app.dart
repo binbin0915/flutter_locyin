@@ -32,7 +32,7 @@ class DefaultApp {
     Get.find<LocaleController>().init();
     Get.find<DarkThemeController>().init();
     runApp(ToastUtils.init(MyApp()));
-
+    Get.find<ConstantController>().setAppRunningStatus();
   }
 }
 
