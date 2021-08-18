@@ -13,17 +13,21 @@ class ConstantController extends GetxController{
 
   String? _token;
 
-  String? get  token => _token;
+  //String _baseUrl = kDebugMode?"http://192.168.10.10/api/v1/":"https://locyin.com/api/v1/";
+  //接口基础 Url
+  String _baseUrl = "https://api.locyin.com/api/v1/";
 
-  String _baseUrl = kDebugMode?"http://192.168.10.10/api/v1/":"https://locyin.com/api/v1/";
+  //广告页点击跳转网址
+  String _advantageUrl = "https://flutter.dev";
+
+  //广告页图片
+  String _advantageImageUrl = "https://locyin.oss-cn-beijing.aliyuncs.com/apps/luoxun_flutter/images/splash.png";
+
+  String? get  token => _token;
 
   String get  baseUrl => _baseUrl;
 
-  String _advantageUrl = "https://flutter.dev";
-
   String get  advantageUrl => _advantageUrl;
-
-  String _advantageImageUrl = "https://locyin.oss-cn-beijing.aliyuncs.com/apps/luoxun_flutter/images/splash.png";
 
   String get  advantageImageUrl => _advantageImageUrl;
 
@@ -31,10 +35,12 @@ class ConstantController extends GetxController{
 
   int get counter => _counter;
 
+  //是否已经同意使用协议
   bool _hasAgreedPrivacy = false;
 
   bool get hasAgreedPrivacy => _hasAgreedPrivacy;
 
+  //App是否已经初始化完成
   bool _appIsRunning = false;
 
   bool get appIsRunning => _appIsRunning;
