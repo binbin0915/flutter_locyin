@@ -77,6 +77,6 @@ Flutter 新项目主要包含以下几个目录：
 
 ## 配套文档
 《Flutter 项目工程化》前四章将会一步步完成这个工程结构，依次对新增目录、文件和相应的插件的使用做详细说明。
-- [看云](https://www.kancloud.cn/book/tiaohuaren/luoxun/preview/%E5%BA%8F%E8%A8%80.md)
-- [CSDN专栏](https://blog.csdn.net/geeksoarsky/category_11189931.html)
+- [看云](https://www.kancloud.cn/tiaohuaren/luoxun)
+- [CSDN专栏](https://blog.csdn.net/geeksoarsky/category_11219095.html)
 
