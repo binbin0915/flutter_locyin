@@ -69,4 +69,18 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 点赞游记
+  void thumbDynamic(Function callback, Function errorCallback,int _id) async {
+    FormData formData = new FormData.fromMap({
+      "id": _id,
+    });
+    /*Map params  ={
+      "id": _id,
+    };*/
+    BaseNetWork.instance.dio.post(Apis.THUMB_DYNAMIC,data: formData).then((response) {
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }

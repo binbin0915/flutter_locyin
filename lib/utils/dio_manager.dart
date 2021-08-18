@@ -92,7 +92,7 @@ class ErrorInterceptor extends Interceptor {
     if (error.response != null && error.response!.statusCode == 401) {
       getx.Get.find<ConstantController>().clearToken();
       getx.Get.find<UserController>().clearUser();
-      getx.Get.toNamed("/login");
+      getx.Get.offAllNamed("/login");
       //getx.Get.offAll(() => LoginPage());
     }
     if(getx.Get.find<ConstantController>().appIsRunning){

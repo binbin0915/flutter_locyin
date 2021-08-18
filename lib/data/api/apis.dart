@@ -17,4 +17,10 @@ class Apis {
 
   /// 游记列表
   static const String DYNAMIC ="dynamics";
+
+  /// 点赞动态
+  static const String THUMB_DYNAMIC = "dynamics/thumb";
+
+  /// 收藏动态
+  static const String COLLECT_DYNAMIC = "dynamics/collect";
 }

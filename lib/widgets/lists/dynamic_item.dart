@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/utils/toast.dart';
+import 'package:flutter_locyin/widgets/like_button.dart';
 import 'package:share/share.dart';
 import 'package:get/get.dart' as getx;
 
@@ -144,15 +145,7 @@ class _DynamicListItemState extends State<DynamicListItem> {
                         Row(
                           children: [
                             //Icon(Icons.favorite,color: thumbed? Colors.cyan : Colors.grey,),
-                            IconButton(
-                              icon: Icon(Icons.favorite),
-                              //iconSize: 16,
-                              //color: _getColor(),
-                              onPressed: (){
-                                //_thumb();
-                              },
-                            ),
-                            Text("${widget.like}"),
+                            LikeButtonWidget(id: widget.id, like: widget.like, thumbed: widget.thumbed),
                             SizedBox(
                               width: 10,
                             ),
