@@ -6,7 +6,6 @@ import 'package:flutter_locyin/page/menu/about.dart';
 import 'package:flutter_locyin/page/menu/language.dart';
 import 'package:flutter_locyin/page/menu/settings.dart';
 import 'package:flutter_locyin/page/menu/theme.dart';
-import 'package:flutter_locyin/page/index.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:get/get.dart';
 import 'package:flutter_locyin/widgets/web_view_page.dart';

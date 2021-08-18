@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_locyin/data/api/apis.dart';
+import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/dio_manager.dart';
 
@@ -53,6 +54,17 @@ class ApiService {
     await BaseNetWork.instance.dio.get(Apis.USER_INFO).then((response) {
       print(response);
       callback(UserEntity().fromJson(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取广场列表数据
+  Future<void> getDynamicList(Function callback, Function errorCallback , int page)async {
+    BaseNetWork.instance.dio.get(Apis.DYNAMIC+ "?page="+page.toString()).then((response) {
+      callback(
+          DynamicListEntity().fromJson(response.data)
+      );
     }).catchError((e) {
       errorCallback(e);
     });

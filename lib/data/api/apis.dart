@@ -15,4 +15,6 @@ class Apis {
   /// 上传头像
   static const String UPLOAD_AVATAR =  "avatars";
 
+  /// 游记列表
+  static const String DYNAMIC ="dynamics";
 }

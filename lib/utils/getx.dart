@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/sputils.dart';
 import 'package:get/get.dart';
@@ -202,6 +203,40 @@ class DarkThemeController extends GetxController{
       print("主题设置为：白天模式");
     }
 
+  }
+}
+// 游记列表状态控制器
+class DynamicController extends GetxController{
+
+  //游记列表
+  DynamicListEntity? _dynamicList;
+  DynamicListEntity? get dynamicList => _dynamicList;
+
+  //用于判断是否正在异步请求数据，避免多次请求
+  bool _running  = false;
+  bool get running => _running;
+
+  Future getDynamicList (int page) async{
+
+    _running = true;
+    apiService.getDynamicList((DynamicListEntity model) {
+        if(_dynamicList == null || page==1){
+          _dynamicList = model;
+        }
+        else{
+          if(_dynamicList!.meta.currentPage == model.meta.currentPage){
+            return;
+          }
+          _dynamicList!.data.addAll(model.data);
+          _dynamicList!.meta = model.meta;
+          _dynamicList!.links = model.links;
+        }
+        print("更新视图");
+        _running = false;
+        update();
+    }, (DioError error) {
+      print(error.response);
+    },page);
   }
 }
 
