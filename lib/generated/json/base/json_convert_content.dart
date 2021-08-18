@@ -7,6 +7,8 @@ import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/generated/json/user_entity_helper.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
 import 'package:flutter_locyin/generated/json/dynamic_list_entity_helper.dart';
+import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
+import 'package:flutter_locyin/generated/json/dynamic_detail_entity_helper.dart';
 
 class JsonConvert<T> {
 	T fromJson(Map<String, dynamic> json) {
@@ -36,7 +38,15 @@ class JsonConvert<T> {
 			case DynamicListMeta:
 				return dynamicListMetaFromJson(data as DynamicListMeta, json) as T;
 			case DynamicListMetaLinks:
-				return dynamicListMetaLinksFromJson(data as DynamicListMetaLinks, json) as T;    }
+				return dynamicListMetaLinksFromJson(data as DynamicListMetaLinks, json) as T;
+			case DynamicDetailEntity:
+				return dynamicDetailEntityFromJson(data as DynamicDetailEntity, json) as T;
+			case DynamicDetailData:
+				return dynamicDetailDataFromJson(data as DynamicDetailData, json) as T;
+			case DynamicDetailDataUser:
+				return dynamicDetailDataUserFromJson(data as DynamicDetailDataUser, json) as T;
+			case DynamicDetailDataImages:
+				return dynamicDetailDataImagesFromJson(data as DynamicDetailDataImages, json) as T;    }
 		return data as T;
 	}
 
@@ -60,6 +70,14 @@ class JsonConvert<T> {
 				return dynamicListMetaToJson(data as DynamicListMeta);
 			case DynamicListMetaLinks:
 				return dynamicListMetaLinksToJson(data as DynamicListMetaLinks);
+			case DynamicDetailEntity:
+				return dynamicDetailEntityToJson(data as DynamicDetailEntity);
+			case DynamicDetailData:
+				return dynamicDetailDataToJson(data as DynamicDetailData);
+			case DynamicDetailDataUser:
+				return dynamicDetailDataUserToJson(data as DynamicDetailDataUser);
+			case DynamicDetailDataImages:
+				return dynamicDetailDataImagesToJson(data as DynamicDetailDataImages);
 			}
 			return data as T;
 		}
@@ -93,6 +111,18 @@ class JsonConvert<T> {
 		if(type == (DynamicListMetaLinks).toString()){
 			return DynamicListMetaLinks().fromJson(json);
 		}
+		if(type == (DynamicDetailEntity).toString()){
+			return DynamicDetailEntity().fromJson(json);
+		}
+		if(type == (DynamicDetailData).toString()){
+			return DynamicDetailData().fromJson(json);
+		}
+		if(type == (DynamicDetailDataUser).toString()){
+			return DynamicDetailDataUser().fromJson(json);
+		}
+		if(type == (DynamicDetailDataImages).toString()){
+			return DynamicDetailDataImages().fromJson(json);
+		}
 
 		return null;
 	}
@@ -125,6 +155,18 @@ class JsonConvert<T> {
 		}
 		if(<DynamicListMetaLinks>[] is M){
 			return data.map<DynamicListMetaLinks>((e) => DynamicListMetaLinks().fromJson(e)).toList() as M;
+		}
+		if(<DynamicDetailEntity>[] is M){
+			return data.map<DynamicDetailEntity>((e) => DynamicDetailEntity().fromJson(e)).toList() as M;
+		}
+		if(<DynamicDetailData>[] is M){
+			return data.map<DynamicDetailData>((e) => DynamicDetailData().fromJson(e)).toList() as M;
+		}
+		if(<DynamicDetailDataUser>[] is M){
+			return data.map<DynamicDetailDataUser>((e) => DynamicDetailDataUser().fromJson(e)).toList() as M;
+		}
+		if(<DynamicDetailDataImages>[] is M){
+			return data.map<DynamicDetailDataImages>((e) => DynamicDetailDataImages().fromJson(e)).toList() as M;
 		}
 
 		throw Exception("not found");

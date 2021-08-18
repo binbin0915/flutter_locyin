@@ -99,7 +99,7 @@ class _DynamicPageState extends State<DynamicPage> {
                     //=====列表=====//
                     Container(
                       child: GetBuilder<DynamicController>(
-                          init: DynamicController(),
+                          init: DynamicController(),id: "list",
                           builder: (controller) {
                             return SliverList(
                               delegate: SliverChildBuilderDelegate(

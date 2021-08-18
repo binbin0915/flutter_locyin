@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_locyin/data/api/apis.dart';
+import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/dio_manager.dart';
@@ -78,7 +79,18 @@ class ApiService {
       "id": _id,
     };*/
     BaseNetWork.instance.dio.post(Apis.THUMB_DYNAMIC,data: formData).then((response) {
-      callback(response);
+      callback();
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+  /// 获取游记详情
+  void getDynamicDetail(Function callback, Function errorCallback,int _id) async {
+    FormData formData = new FormData.fromMap({
+      "id": _id,
+    });
+    BaseNetWork.instance.dio.post(Apis.DYNAMIC, data: formData).then((response) {
+      callback(DynamicDetailEntity().fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);
     });

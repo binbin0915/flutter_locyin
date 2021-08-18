@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/sputils.dart';
@@ -212,6 +213,11 @@ class DynamicController extends GetxController{
   DynamicListEntity? _dynamicList;
   DynamicListEntity? get dynamicList => _dynamicList;
 
+
+  //游记详情
+  DynamicDetailEntity? _dynamicDetail;
+  DynamicDetailEntity? get dynamicDetail => _dynamicDetail;
+
   //用于判断是否正在异步请求数据，避免多次请求
   bool _running  = false;
   bool get running => _running;
@@ -220,23 +226,46 @@ class DynamicController extends GetxController{
 
     _running = true;
     apiService.getDynamicList((DynamicListEntity model) {
-        if(_dynamicList == null || page==1){
-          _dynamicList = model;
+      if(_dynamicList == null || page==1){
+        _dynamicList = model;
+      }
+      else{
+        if(_dynamicList!.meta.currentPage == model.meta.currentPage){
+          return;
         }
-        else{
-          if(_dynamicList!.meta.currentPage == model.meta.currentPage){
-            return;
-          }
-          _dynamicList!.data.addAll(model.data);
-          _dynamicList!.meta = model.meta;
-          _dynamicList!.links = model.links;
-        }
-        print("更新视图");
-        _running = false;
-        update();
+        _dynamicList!.data.addAll(model.data);
+        _dynamicList!.meta = model.meta;
+        _dynamicList!.links = model.links;
+      }
+      print("更新视图");
+      _running = false;
+      update(['list']);
     }, (DioError error) {
+      _running = false;
       print(error.response);
     },page);
   }
-}
 
+  Future getDynamicDetail(int id) async {
+    _dynamicDetail = null;
+    //update(['detail']);
+    _running = true;
+    apiService.getDynamicDetail((DynamicDetailEntity data) {
+      _dynamicDetail = data;
+      _running = false;
+      update(['detail']);
+    }, (DioError error) {
+      _running = false;
+      print(error);
+    }, id);
+  }
+  Future thumb(int id) async {
+    //print(_dynamicList!.data.firstWhere( (element) => element.id == id).thumbed);
+    _dynamicList!.data.firstWhere( (element) => element.id == id).thumbed = (_dynamicList!.data.firstWhere( (element) => element.id == id).thumbed-1).abs();
+    apiService.thumbDynamic((){
+      update(['thumb']);
+    }, (DioError error) {
+      print(error);
+    },id);
+  }
+}

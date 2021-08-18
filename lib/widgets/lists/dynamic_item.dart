@@ -106,7 +106,8 @@ class _DynamicListItemState extends State<DynamicListItem> {
                   children: [
                     InkWell(
                       onTap: () {
-                        ToastUtils.toast("跳转到游记详情页");
+                        getx.Get.toNamed(
+                            "/index/dynamic/detail?id=${Uri.encodeComponent(widget.id.toString())}");
                       },
                       child: Card(
                         shape: RoundedRectangleBorder(
