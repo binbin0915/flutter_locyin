@@ -5,10 +5,13 @@ Flutter 目前没有官方推荐的项目结构，为了易于维护，易于扩
 ![run_perform](https://img-blog.csdnimg.cn/20210718131658420.gif#pic_center)
 ![login_perform](https://img-blog.csdnimg.cn/20210718131711834.gif#pic_center)
 ![GetX](https://img-blog.csdnimg.cn/20210718131905654.gif#pic_center)
-
+![Dynamic](https://img-blog.csdnimg.cn/ecbd19efa7b84b92b0bf689c5d60582b.gif#pic_center)
 ## 服务器端
 - [码云](https://gitee.com/geekadpt/laravel_locyin)
 - [GitHub](https://github.com/geekadpt/laravel_locyin)
+
+应读者需求，我已经把 Laravel 服务器端部署到了云服务器上，接口基础地址：
+`https://api.locyin.com/api/v1/`,其他App的配置信息可在[lib/utils/getx.dart](https://gitee.com/geekadpt/flutter_locyin/blob/master/lib/utils/getx.dart)文件内修改。
 
 ## 特性
 * 全面支持空安全
