@@ -151,16 +151,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                         SizedBox(
                           height: 16,
                         ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadiusDirectional.circular(10)),
-                          clipBehavior: Clip.antiAlias,
-                          child: CachedNetworkImage(
-                            imageUrl: /*"https://locyin.oss-cn-beijing.aliyuncs.com/apps/luoxun_flutter/images/dynamic/dynamic_2.jpg"*/
-                            controller.dynamicDetail!.data.images.isEmpty?"https://locyin.oss-cn-beijing.aliyuncs.com/apps/luoxun_flutter/images/loading.gif":controller.dynamicDetail!.data.images[0].path.toString(),
-                            width: double.maxFinite,
-                          ),
-                        ),
+                        imagesWidgets(),
                         SizedBox(
                           height: 16,
                         ),
@@ -239,5 +230,26 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
           }
     }),
       );
+  }
+  Widget imagesWidgets(){
+    List<Widget> images = [];
+    Widget content;
+    for(var item in getx.Get.find<DynamicController>().dynamicDetail!.data.images) {
+      images.add(
+          Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusDirectional.circular(10)),
+              clipBehavior: Clip.antiAlias,
+              child: CachedNetworkImage(
+                imageUrl: item.path.toString(),
+                width: double.maxFinite,
+              ),
+          ),
+      );
+    }
+    content = new Column(
+        children: images
+    );
+    return content;
   }
 }
