@@ -19,32 +19,37 @@ class DynamicDetailPage extends StatefulWidget {
 class _DynamicDetailPageState extends State<DynamicDetailPage> {
   //从路由参数获取文章 id
   int _id = int.parse(getx.Get.parameters['id'].toString());
-  final ScrollController _scroll_controller =
-      ScrollController(keepScrollOffset: false);
+  final ScrollController _scroll_controller = ScrollController(keepScrollOffset: false);
 
   @override
   void initState() {
     // TODO: implement initState
     // 获取数据
     getx.Get.find<DynamicController>().getDynamicDetail(_id);
+    _scroll_controller.addListener(loadMore);
     super.initState();
   }
+
   @override
   void dispose() {
     getx.Get.find<DynamicController>().clearDynamicDetailAndComments();
+    _scroll_controller.removeListener(loadMore);
     super.dispose(); // This will free the memory space allocated to the page
   }
+  void loadMore() {
+    final bool toShow = (_scroll_controller.offset ?? 0) > MediaQuery.of(context).size.height / 2;
+    if(toShow && !getx.Get.find<DynamicController>().comment_running && getx.Get.find<DynamicController>().commentList!.meta.currentPage<getx.Get.find<DynamicController>().commentList!.meta.lastPage)
+      getx.Get.find<DynamicController>().getDynamicCommentList(_id,getx.Get.find<DynamicController>().commentList!.meta.currentPage+1);
+    }
   String followButtonText = "关注";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          _getDetailWidget(),
-          _getCommentListView()
-        ],
+          child: CustomScrollView(
+            controller: _scroll_controller,
+            slivers: [_getDetailWidget(), _getCommentListView()],
       ),
     ));
   }
@@ -218,7 +223,16 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                                 IconButton(
                                     icon: Icon(Icons.mode_comment_outlined),
                                     onPressed: () {
-                                      CommentUtils.popCommentTextField(_id,getx.Get.find<UserController>().user!.data.id,getx.Get.find<UserController>().user!.data.nickname);
+                                      CommentUtils.popCommentTextField(
+                                          _id,
+                                          getx.Get.find<UserController>()
+                                              .user!
+                                              .data
+                                              .id,
+                                          getx.Get.find<UserController>()
+                                              .user!
+                                              .data
+                                              .nickname);
                                     }),
                                 Text(/*"100"*/
                                     controller.dynamicDetail!.data.commentCount
@@ -291,9 +305,9 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 DynamicCommentEntity? _comment_list = controller.commentList;
-                if ( _comment_list == null) {
+                if (_comment_list == null) {
                   if (!controller.comment_running) {
-                    controller.getDynamicCommentList(_id,1);
+                    controller.getDynamicCommentList(_id, 1);
                   }
                   return SkeletonWidget();
                 } else {
@@ -306,7 +320,8 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                     time: _comment_list.data[index].updatedAt,
                     receiver_nickname:
                         _comment_list.data[index].receiverNickname,
-                    replier_id: _comment_list.data[index].replierId, floor: index+1,
+                    replier_id: _comment_list.data[index].replierId,
+                    floor: index + 1,
                   );
                   //return getDynamicListView(index);
                 }
