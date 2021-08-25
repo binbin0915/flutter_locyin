@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_locyin/data/api/apis.dart';
+import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
@@ -102,6 +103,20 @@ class ApiService {
     });
     BaseNetWork.instance.dio.post(Apis.DYNAMIC, data: formData).then((response) {
       callback(DynamicDetailEntity().fromJson(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+  /// 获取游记评论列表数据
+  Future<void> getDynamicCommentList(Function callback, Function errorCallback , int id,int page)async {
+    Map<String,dynamic> formData = {
+      "dynamic_id": id,
+      "page":page,
+    };
+    BaseNetWork.instance.dio.get(Apis.DYNAMIC_COMMENT,queryParameters: formData).then((response) {
+      callback(
+          DynamicCommentEntity().fromJson(response.data)
+      );
     }).catchError((e) {
       errorCallback(e);
     });

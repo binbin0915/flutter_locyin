@@ -58,7 +58,7 @@ class _DynamicPageState extends State<DynamicPage> {
                 onRefresh: () async {
                   await Future.delayed(Duration(seconds: 2), () {
                     print("正在刷新数据...");
-                    if (!Get.find<DynamicController>().running) {
+                    if (!Get.find<DynamicController>().dynamic_running) {
                       Get.find<DynamicController>().getDynamicList(1);
                     }
                     _controller.resetLoadState();
@@ -71,7 +71,7 @@ class _DynamicPageState extends State<DynamicPage> {
                     /*setState(() {
                           _count += 10;
                         });*/
-                    if (!Get.find<DynamicController>().running) {
+                    if (!Get.find<DynamicController>().dynamic_running) {
                       Get.find<DynamicController>().getDynamicList(
                           Get.find<DynamicController>()
                                   .dynamicList!
@@ -128,9 +128,8 @@ class _DynamicPageState extends State<DynamicPage> {
     DynamicListEntity? _dynamic_list =
         Get.find<DynamicController>().dynamicList;
     if (_dynamic_list == null) {
-      print(
-          "正在请求列表数据...................................................................");
-      if (!Get.find<DynamicController>().running) {
+      print("正在请求列表数据...................................................................");
+      if (!Get.find<DynamicController>().dynamic_running) {
         Get.find<DynamicController>().getDynamicList(1);
       }
       return SkeletonWidget();

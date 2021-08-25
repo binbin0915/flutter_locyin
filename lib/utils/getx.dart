@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
@@ -219,18 +220,25 @@ class DynamicController extends GetxController{
   DynamicListEntity? _dynamicList;
   DynamicListEntity? get dynamicList => _dynamicList;
 
+  //游记列表
+  DynamicCommentEntity? _commentList;
+  DynamicCommentEntity? get commentList => _commentList;
 
   //游记详情
   DynamicDetailEntity? _dynamicDetail;
   DynamicDetailEntity? get dynamicDetail => _dynamicDetail;
 
   //用于判断是否正在异步请求数据，避免多次请求
-  bool _running  = false;
-  bool get running => _running;
+  bool _dynamic_running  = false;
+  bool get dynamic_running => _dynamic_running;
+
+  //用于判断是否正在异步请求数据，避免多次请求
+  bool _comment_running  = false;
+  bool get comment_running => _comment_running;
 
   Future getDynamicList (int page) async{
 
-    _running = true;
+    _dynamic_running = true;
     apiService.getDynamicList((DynamicListEntity model) {
       if(_dynamicList == null || page==1){
         _dynamicList = model;
@@ -244,10 +252,10 @@ class DynamicController extends GetxController{
         _dynamicList!.links = model.links;
       }
       print("更新视图");
-      _running = false;
+      _dynamic_running = false;
       update(['list']);
     }, (DioError error) {
-      _running = false;
+      _dynamic_running = false;
       print(error.response);
     },page);
   }
@@ -255,13 +263,13 @@ class DynamicController extends GetxController{
   Future getDynamicDetail(int id) async {
     _dynamicDetail = null;
     //update(['detail']);
-    _running = true;
+    _dynamic_running = true;
     apiService.getDynamicDetail((DynamicDetailEntity data) {
       _dynamicDetail = data;
-      _running = false;
+      _dynamic_running = false;
       update(['detail']);
     }, (DioError error) {
-      _running = false;
+      _dynamic_running = false;
       print(error);
     }, id);
   }
@@ -282,5 +290,28 @@ class DynamicController extends GetxController{
     }, (DioError error) {
       print(error);
     },id);
+  }
+  Future getDynamicCommentList (int id,int page) async{
+
+    _comment_running = true;
+    apiService.getDynamicCommentList((DynamicCommentEntity model) {
+      if(_commentList == null || page==1){
+        _commentList = model;
+      }
+      else{
+        if(_commentList!.meta.currentPage == model.meta.currentPage){
+          return;
+        }
+        _commentList!.data.addAll(model.data);
+        _commentList!.meta = model.meta;
+        _commentList!.links = model.links;
+      }
+      print("更新 Comment 视图");
+      _comment_running = false;
+      update(['comment']);
+    }, (DioError error) {
+      _comment_running = false;
+      print(error.response);
+    },id,page);
   }
 }

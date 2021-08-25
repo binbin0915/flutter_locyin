@@ -23,4 +23,7 @@ class Apis {
 
   /// 收藏动态
   static const String COLLECT_DYNAMIC = "dynamics/collect";
+
+  /// 游记列表
+  static const String DYNAMIC_COMMENT ="dcomments";
 }

@@ -7,6 +7,8 @@ import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/generated/json/user_entity_helper.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
 import 'package:flutter_locyin/generated/json/dynamic_list_entity_helper.dart';
+import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
+import 'package:flutter_locyin/generated/json/dynamic_comment_entity_helper.dart';
 import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/generated/json/dynamic_detail_entity_helper.dart';
 
@@ -39,6 +41,16 @@ class JsonConvert<T> {
 				return dynamicListMetaFromJson(data as DynamicListMeta, json) as T;
 			case DynamicListMetaLinks:
 				return dynamicListMetaLinksFromJson(data as DynamicListMetaLinks, json) as T;
+			case DynamicCommentEntity:
+				return dynamicCommentEntityFromJson(data as DynamicCommentEntity, json) as T;
+			case DynamicCommentData:
+				return dynamicCommentDataFromJson(data as DynamicCommentData, json) as T;
+			case DynamicCommentLinks:
+				return dynamicCommentLinksFromJson(data as DynamicCommentLinks, json) as T;
+			case DynamicCommentMeta:
+				return dynamicCommentMetaFromJson(data as DynamicCommentMeta, json) as T;
+			case DynamicCommentMetaLinks:
+				return dynamicCommentMetaLinksFromJson(data as DynamicCommentMetaLinks, json) as T;
 			case DynamicDetailEntity:
 				return dynamicDetailEntityFromJson(data as DynamicDetailEntity, json) as T;
 			case DynamicDetailData:
@@ -70,6 +82,16 @@ class JsonConvert<T> {
 				return dynamicListMetaToJson(data as DynamicListMeta);
 			case DynamicListMetaLinks:
 				return dynamicListMetaLinksToJson(data as DynamicListMetaLinks);
+			case DynamicCommentEntity:
+				return dynamicCommentEntityToJson(data as DynamicCommentEntity);
+			case DynamicCommentData:
+				return dynamicCommentDataToJson(data as DynamicCommentData);
+			case DynamicCommentLinks:
+				return dynamicCommentLinksToJson(data as DynamicCommentLinks);
+			case DynamicCommentMeta:
+				return dynamicCommentMetaToJson(data as DynamicCommentMeta);
+			case DynamicCommentMetaLinks:
+				return dynamicCommentMetaLinksToJson(data as DynamicCommentMetaLinks);
 			case DynamicDetailEntity:
 				return dynamicDetailEntityToJson(data as DynamicDetailEntity);
 			case DynamicDetailData:
@@ -110,6 +132,21 @@ class JsonConvert<T> {
 		}
 		if(type == (DynamicListMetaLinks).toString()){
 			return DynamicListMetaLinks().fromJson(json);
+		}
+		if(type == (DynamicCommentEntity).toString()){
+			return DynamicCommentEntity().fromJson(json);
+		}
+		if(type == (DynamicCommentData).toString()){
+			return DynamicCommentData().fromJson(json);
+		}
+		if(type == (DynamicCommentLinks).toString()){
+			return DynamicCommentLinks().fromJson(json);
+		}
+		if(type == (DynamicCommentMeta).toString()){
+			return DynamicCommentMeta().fromJson(json);
+		}
+		if(type == (DynamicCommentMetaLinks).toString()){
+			return DynamicCommentMetaLinks().fromJson(json);
 		}
 		if(type == (DynamicDetailEntity).toString()){
 			return DynamicDetailEntity().fromJson(json);
@@ -155,6 +192,21 @@ class JsonConvert<T> {
 		}
 		if(<DynamicListMetaLinks>[] is M){
 			return data.map<DynamicListMetaLinks>((e) => DynamicListMetaLinks().fromJson(e)).toList() as M;
+		}
+		if(<DynamicCommentEntity>[] is M){
+			return data.map<DynamicCommentEntity>((e) => DynamicCommentEntity().fromJson(e)).toList() as M;
+		}
+		if(<DynamicCommentData>[] is M){
+			return data.map<DynamicCommentData>((e) => DynamicCommentData().fromJson(e)).toList() as M;
+		}
+		if(<DynamicCommentLinks>[] is M){
+			return data.map<DynamicCommentLinks>((e) => DynamicCommentLinks().fromJson(e)).toList() as M;
+		}
+		if(<DynamicCommentMeta>[] is M){
+			return data.map<DynamicCommentMeta>((e) => DynamicCommentMeta().fromJson(e)).toList() as M;
+		}
+		if(<DynamicCommentMetaLinks>[] is M){
+			return data.map<DynamicCommentMetaLinks>((e) => DynamicCommentMetaLinks().fromJson(e)).toList() as M;
 		}
 		if(<DynamicDetailEntity>[] is M){
 			return data.map<DynamicDetailEntity>((e) => DynamicDetailEntity().fromJson(e)).toList() as M;
