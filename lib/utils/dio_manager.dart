@@ -89,7 +89,7 @@ class ErrorInterceptor extends Interceptor {
   @override
   Future onError(DioError error , ErrorInterceptorHandler handler) async {
     print('ERROR[${error.response?.statusCode}] => PATH: ${error.requestOptions.path}');
-    if (error.response != null && error.response!.statusCode == 401) {
+    if (error.response != null && error.response!.statusCode == 401 && getx.Get.find<ConstantController>().token!=null ) {
       getx.Get.find<ConstantController>().clearToken();
       getx.Get.find<UserController>().clearUser();
       getx.Get.offAllNamed("/login");

@@ -1,9 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/handle_laravel_errors.dart';
-
-import 'package:flutter_locyin/utils/sputils.dart';
 import 'package:flutter_locyin/widgets/bg_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_locyin/widgets/privacy.dart';
@@ -14,8 +11,6 @@ import 'package:flutter_locyin/widgets/loading_dialog.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_verification_box/verification_box.dart';
-
-import '../index.dart';
 
 
 class LoginCodePage extends StatefulWidget {
@@ -282,7 +277,7 @@ class _LoginPage2State extends State<LoginCodePage> {
         getx.Get.find<ConstantController>().setToken('Bearer ' + response.data['access_token']);
         await getx.Get.find<UserController>().getUserInfo();
         Navigator.pop(context);
-        getx.Get.offAndToNamed("/welcome");
+        getx.Get.offAllNamed("/welcome");
     }, (DioError error) {
         Navigator.of(context).pop();
         handleLaravelErrors(error);

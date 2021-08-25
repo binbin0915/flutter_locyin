@@ -155,7 +155,7 @@ class _DynamicListItemState extends State<DynamicListItem> {
                               //iconSize: 16,
                               color: Colors.grey,
                               onPressed: (){
-                                ToastUtils.toast("跳转到游记详情页");
+                                //ToastUtils.toast("跳转到游记详情页");
                                 getx.Get.toNamed(
                                     "/index/dynamic/detail?id=${Uri.encodeComponent(widget.id.toString())}");
                               },

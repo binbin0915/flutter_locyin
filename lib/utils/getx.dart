@@ -13,9 +13,9 @@ class ConstantController extends GetxController{
 
   String? _token;
 
-  //String _baseUrl = kDebugMode?"http://192.168.10.10/api/v1/":"https://locyin.com/api/v1/";
+  String _baseUrl = kDebugMode?"http://192.168.10.10/api/v1/":"https://locyin.com/api/v1/";
   //接口基础 Url
-  String _baseUrl = "https://api.locyin.com/api/v1/";
+  //String _baseUrl = "https://api.locyin.com/api/v1/";
 
   //广告页点击跳转网址
   String _advantageUrl = "https://flutter.dev";
