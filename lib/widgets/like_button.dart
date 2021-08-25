@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:get/get.dart';
 class LikeButtonWidget extends StatefulWidget {
@@ -18,14 +16,10 @@ class LikeButtonWidget extends StatefulWidget {
 }
 
 class _LikeButtonWidgetState extends State<LikeButtonWidget> {
-  //记录是否已经点赞
-  late bool _thumbed;
 
   @override
   void initState() {
     // TODO: implement initState
-    _thumbed = widget.thumbed;
-
   }
   @override
   Widget build(BuildContext context) {

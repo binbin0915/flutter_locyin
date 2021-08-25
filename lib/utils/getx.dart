@@ -274,4 +274,13 @@ class DynamicController extends GetxController{
       print(error);
     },id);
   }
+  Future collect(int id) async {
+    //print(_dynamicList!.data.firstWhere( (element) => element.id == id).thumbed);
+    _dynamicList!.data.firstWhere( (element) => element.id == id).collected = (_dynamicList!.data.firstWhere( (element) => element.id == id).collected-1).abs();
+    apiService.thumbDynamic((){
+      update(['collect']);
+    }, (DioError error) {
+      print(error);
+    },id);
+  }
 }

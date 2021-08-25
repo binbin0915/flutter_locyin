@@ -84,6 +84,17 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 点赞游记
+  void collectDynamic(Function callback, Function errorCallback,int _id) async {
+    FormData formData = new FormData.fromMap({
+      "id": _id,
+    });
+    BaseNetWork.instance.dio.post(Apis.COLLECT_DYNAMIC,data: formData).then((response) {
+      callback();
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
   /// 获取游记详情
   void getDynamicDetail(Function callback, Function errorCallback,int _id) async {
     FormData formData = new FormData.fromMap({
