@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_locyin/utils/toast.dart';
+import 'package:flutter_locyin/utils/pop_comment_inputfield.dart';
 
 /// 评论列表详情
 class CommentListItem extends StatelessWidget {
@@ -33,6 +33,8 @@ class CommentListItem extends StatelessWidget {
   //评论时间
   final String time;
 
+
+
   const CommentListItem(
       {Key? key,
       required this.dynamic_id,
@@ -46,8 +48,11 @@ class CommentListItem extends StatelessWidget {
       required this.floor})
       : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(
@@ -109,7 +114,7 @@ class CommentListItem extends StatelessWidget {
                       ),
                       SizedBox(height: 8,),
                       InkWell(
-                        onTap: (){ToastUtils.toast("reply: "+replier_nickname);},
+                        onTap: (){CommentUtils.popCommentTextField(dynamic_id,replier_id,replier_nickname);},
                         child: Text(
                           content,
                           //maxLines: 4,
@@ -131,4 +136,5 @@ class CommentListItem extends StatelessWidget {
       ),
     );
   }
+
 }

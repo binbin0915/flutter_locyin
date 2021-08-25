@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/utils/getx.dart';
+import 'package:flutter_locyin/utils/pop_comment_inputfield.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/collect_button.dart';
 import 'package:flutter_locyin/widgets/like_button.dart';
@@ -28,7 +29,11 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
     getx.Get.find<DynamicController>().getDynamicDetail(_id);
     super.initState();
   }
-
+  @override
+  void dispose() {
+    getx.Get.find<DynamicController>().clearDynamicDetailAndComments();
+    super.dispose(); // This will free the memory space allocated to the page
+  }
   String followButtonText = "关注";
 
   @override
@@ -46,14 +51,14 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
 
   Widget _getDetailWidget() {
     return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: getx.GetBuilder<DynamicController>(
-            init: DynamicController(),
-            id: "detail",
-            builder: (controller) {
-              if (controller.dynamicDetail != null) {
-                return Column(
+      child: getx.GetBuilder<DynamicController>(
+          init: DynamicController(),
+          id: "detail",
+          builder: (controller) {
+            if (controller.dynamicDetail != null) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
                   children: [
                     Container(
                       decoration: BoxDecoration(
@@ -213,7 +218,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                                 IconButton(
                                     icon: Icon(Icons.mode_comment_outlined),
                                     onPressed: () {
-                                      ToastUtils.toast("跳转到评论页");
+                                      CommentUtils.popCommentTextField(_id,getx.Get.find<UserController>().user!.data.id,getx.Get.find<UserController>().user!.data.nickname);
                                     }),
                                 Text(/*"100"*/
                                     controller.dynamicDetail!.data.commentCount
@@ -247,12 +252,12 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                       ),
                     ),
                   ],
-                );
-              } else {
-                return SkeletonWidget();
-              }
-            }),
-      ),
+                ),
+              );
+            } else {
+              return SkeletonWidget();
+            }
+          }),
     );
   }
 

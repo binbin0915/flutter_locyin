@@ -26,4 +26,7 @@ class Apis {
 
   /// 游记列表
   static const String DYNAMIC_COMMENT ="dcomments";
+
+  /// 评论模型
+  static const String COMMENT =  "comments";
 }

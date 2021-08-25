@@ -314,4 +314,8 @@ class DynamicController extends GetxController{
       print(error.response);
     },id,page);
   }
+  void clearDynamicDetailAndComments(){
+    _dynamicDetail = null;
+    _commentList = null;
+  }
 }

@@ -121,4 +121,22 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 发布评论
+  Future<void> publishComment(Function callback, Function errorCallback,String _content ,int _dynamic_id,int _receiver_id,String _receiver_nickname) async {
+    FormData formData = new FormData.fromMap({
+      "content": _content,
+      "dynamic_id": _dynamic_id,
+      "receiver_id": _receiver_id,
+      "receiver_nickname": _receiver_nickname,
+    });
+    Map params  ={
+      "content": _content,
+      "dynamic_id": _dynamic_id,
+    };
+    BaseNetWork.instance.dio.post(Apis.COMMENT, data: formData).then((response) async {
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }
