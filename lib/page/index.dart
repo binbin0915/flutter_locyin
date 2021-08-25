@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locyin/page/Dynamic/Dynamic.dart';
 import 'package:flutter_locyin/page/find.dart';
 import 'package:flutter_locyin/page/map.dart';
 import 'package:flutter_locyin/page/message.dart';
 import 'package:flutter_locyin/page/mine.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:get/get.dart';
-import 'dynamic.dart';
 
 class MainHomePage extends StatefulWidget {
   @override
@@ -29,7 +29,7 @@ class _MainHomePageState extends State<MainHomePage> {
       ];
 
   List<Widget> getTabWidget(BuildContext context) =>
-      [MyHomePage(), FindPage(), MapPage(), MessagePage(), MinePage()];
+      [DynamicPage(), FindPage(), MapPage(), MessagePage(), MinePage()];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
