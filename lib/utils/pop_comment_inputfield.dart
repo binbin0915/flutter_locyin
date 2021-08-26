@@ -5,8 +5,7 @@ import 'package:flutter_locyin/utils/toast.dart';
 import 'package:get/get.dart' as getx;
 
 class CommentUtils {
-  static Future<void> popCommentTextField(
-      int dynamic_id, int replier_id, String replier_nickname) async {
+  static Future<void> popCommentTextField(int dynamic_id, int receiver_id, String receiver_nickname) async {
     final TextEditingController controller = TextEditingController();
     getx.Get.bottomSheet(Container(
         color:  getx.Get.theme.backgroundColor,
@@ -24,12 +23,12 @@ class CommentUtils {
               //点击发送调用
               print('onEditingComplete');
               _publishComment(
-                  controller.text, dynamic_id, replier_id, replier_nickname);
+                  controller.text, dynamic_id, receiver_id, receiver_nickname);
             },
             decoration: InputDecoration(
                 fillColor: getx.Get.theme.cardColor,
                 filled: true,//重点，必须设置为true，fillColor才有效
-                hintText: '回复 $replier_nickname :',
+                hintText: '回复 $receiver_nickname :',
                 isDense: true,
                 contentPadding:
                     EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
@@ -44,8 +43,8 @@ class CommentUtils {
                   height: 32,
                   child: ElevatedButton(
                     onPressed: () {
-                      _publishComment(controller.text, dynamic_id, replier_id,
-                          replier_nickname);
+                      _publishComment(controller.text, dynamic_id, receiver_id,
+                          receiver_nickname);
                     },
                     child: Text("发送"),
                   ),
@@ -55,16 +54,15 @@ class CommentUtils {
           ),
         )));
   }
-
   static void _publishComment(
-      String content, int dynamic_id, int replier_id, String replier_nickname) {
+      String content, int dynamic_id, int receiver_id, String receiver_nickname) {
     apiService.publishComment((Response response) async {
       ToastUtils.success("已发送,系统审核通过后可见.");
     }, (DioError error) {
       print(error);
       //ToastUtils.error("发送失败");
       //handler_laravel_errors(error);
-    }, content, dynamic_id, replier_id, replier_nickname);
+    }, content, dynamic_id, receiver_id, receiver_nickname);
     getx.Get.back();
   }
 }

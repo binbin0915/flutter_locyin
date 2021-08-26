@@ -11,6 +11,8 @@ class DynamicCommentData with JsonConvert<DynamicCommentData> {
 	late int id;
 	@JSONField(name: "replier_id")
 	late int replierId;
+	@JSONField(name: "poster_id")
+	late int posterId;
 	@JSONField(name: "replier_nickname")
 	late String replierNickname;
 	@JSONField(name: "replier_avatar")

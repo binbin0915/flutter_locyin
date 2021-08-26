@@ -220,7 +220,7 @@ class DynamicController extends GetxController{
   DynamicListEntity? _dynamicList;
   DynamicListEntity? get dynamicList => _dynamicList;
 
-  //游记列表
+  //游记评论列表
   DynamicCommentEntity? _commentList;
   DynamicCommentEntity? get commentList => _commentList;
 
@@ -306,7 +306,7 @@ class DynamicController extends GetxController{
         _commentList!.meta = model.meta;
         _commentList!.links = model.links;
       }
-      print("更新 Comment 视图");
+      print("更新评论视图");
       _comment_running = false;
       update(['comment']);
     }, (DioError error) {

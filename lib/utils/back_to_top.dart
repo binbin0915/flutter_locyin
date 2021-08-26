@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 class BackToTop extends StatefulWidget {
   final ScrollController controller;
-  ///传入距离底部的距离
-  final double? bottom;
 
-  BackToTop(this.controller, {this.bottom});
+
+  BackToTop(this.controller,);
 
   @override
   _BackToTopState createState() => _BackToTopState();
@@ -38,7 +37,7 @@ class _BackToTopState extends State<BackToTop> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        bottom: MediaQuery.of(context).padding.bottom + (widget.bottom ?? 40),
+        bottom: MediaQuery.of(context).padding.bottom + 40,
         right: 20,
         child: Offstage(
           offstage: !shown,

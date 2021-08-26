@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 class CollectButtonWidget extends StatefulWidget {
   //所属游记
   final int id;
-  //点赞数
+  //收藏数
   final int count;
-  //判断是否已经点赞
+  //判断是否已经收藏
   final bool collected;
   const CollectButtonWidget({Key? key, required this.id, required this.count, required this.collected}) : super(key: key);
 

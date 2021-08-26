@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/pop_comment_inputfield.dart';
-
+import 'package:flutter_locyin/utils/toast.dart';
+import 'package:get/get.dart';
 /// 评论列表详情
 class CommentListItem extends StatelessWidget {
   //floor
   final int floor;
 
-  //评论ID
+  //所属游记ID
   final int dynamic_id;
 
   //评论人ID
   final int replier_id;
 
+  //楼主ID
+  final int poster_id;
+
   //评论人头像
   final String replier_avatar;
 
   //接收人ID
-  //final int receiver_id;
+  final int receiver_id;
 
   //接收人昵称
   final String receiver_nickname;
@@ -45,7 +50,7 @@ class CommentListItem extends StatelessWidget {
       required this.count,
       required this.time,
       required this.replier_nickname,
-      required this.floor})
+      required this.floor, required this.receiver_id, required this.poster_id})
       : super(key: key);
 
 
@@ -86,6 +91,8 @@ class CommentListItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
                         children: [
@@ -112,13 +119,27 @@ class CommentListItem extends StatelessWidget {
                       ),
                       SizedBox(height: 8,),
                       InkWell(
-                        onTap: (){CommentUtils.popCommentTextField(dynamic_id,replier_id,replier_nickname);},
-                        child: Text(
-                          content,
-                          //maxLines: 4,
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
+                        onTap: (){
+                          //ToastUtils.toast("回复$replier_nickname");
+                          CommentUtils.popCommentTextField(dynamic_id,replier_id,replier_nickname);
+                        },
+                        child: Text.rich(
+                          poster_id!= receiver_id? TextSpan(
+                              children: [
+                                TextSpan(text:"回复",style: TextStyle(
+                                  fontSize: 16,
+                                ),),
+                                TextSpan(text:receiver_nickname,style: TextStyle(
+                                    fontSize: 16,
+                                    color: Get.theme.accentColor
+                                ),),
+                                TextSpan(text:" : $content",style: TextStyle(
+                                  fontSize: 16,
+                                ),)
+                              ]
+                          ):TextSpan(text:"$content",style: TextStyle(
+                            fontSize: 16,
+                          ),),
                           //overflow: TextOverflow.ellipsis,
                         ),
                       )

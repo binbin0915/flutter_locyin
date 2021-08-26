@@ -32,6 +32,11 @@ dynamicCommentDataFromJson(DynamicCommentData data, Map<String, dynamic> json) {
 				? int.tryParse(json['replier_id'])
 				: json['replier_id'].toInt();
 	}
+	if (json['poster_id'] != null) {
+		data.posterId = json['poster_id'] is String
+				? int.tryParse(json['poster_id'])
+				: json['poster_id'].toInt();
+	}
 	if (json['replier_nickname'] != null) {
 		data.replierNickname = json['replier_nickname'].toString();
 	}
@@ -67,6 +72,7 @@ Map<String, dynamic> dynamicCommentDataToJson(DynamicCommentData entity) {
 	final Map<String, dynamic> data = new Map<String, dynamic>();
 	data['id'] = entity.id;
 	data['replier_id'] = entity.replierId;
+	data['poster_id'] = entity.posterId;
 	data['replier_nickname'] = entity.replierNickname;
 	data['replier_avatar'] = entity.replierAvatar;
 	data['receiver_id'] = entity.receiverId;

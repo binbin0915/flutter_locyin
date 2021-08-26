@@ -23,9 +23,8 @@ class _DynamicPageState extends State<DynamicPage> {
   //主要用于打开抽屉
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  //记录滚动列表条数(item数量)
-  int _count = 5;
   final ScrollController _scroll_controller = ScrollController(keepScrollOffset: false);
+
   @override
   void initState() {
     super.initState();
@@ -82,7 +81,6 @@ class _DynamicPageState extends State<DynamicPage> {
                                     .currentPage +
                                 1);
                       }
-                      print("count: $_count");
                       //如果计数器大于 30 则显示没有更多了
                       _controller.finishLoad(
                           noMore: Get.find<DynamicController>()

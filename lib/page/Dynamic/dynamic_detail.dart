@@ -18,13 +18,20 @@ class DynamicDetailPage extends StatefulWidget {
 class _DynamicDetailPageState extends State<DynamicDetailPage> {
   //从路由参数获取文章 id
   int _id = int.parse(getx.Get.parameters['id'].toString());
+  String followButtonText = "关注";
   final ScrollController _scroll_controller = ScrollController(keepScrollOffset: false);
 
   @override
   void initState() {
     // TODO: implement initState
-    // 获取数据
-    getx.Get.find<DynamicController>().getDynamicDetail(_id);
+    // 获取动态详情数据
+    if (!getx.Get.find<DynamicController>().dynamic_running) {
+      getx.Get.find<DynamicController>().getDynamicDetail(_id);
+    }
+    // 获取动态详情下方评论数据
+    if (!getx.Get.find<DynamicController>().comment_running) {
+      getx.Get.find<DynamicController>().getDynamicCommentList(_id, 1);
+    }
     _scroll_controller.addListener(loadMore);
     super.initState();
   }
@@ -36,11 +43,17 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
     super.dispose(); // This will free the memory space allocated to the page
   }
   void loadMore() {
-    final bool toShow = (_scroll_controller.offset) > MediaQuery.of(context).size.height / 2;
-    if(toShow && !getx.Get.find<DynamicController>().comment_running && getx.Get.find<DynamicController>().commentList!.meta.currentPage<getx.Get.find<DynamicController>().commentList!.meta.lastPage)
-      getx.Get.find<DynamicController>().getDynamicCommentList(_id,getx.Get.find<DynamicController>().commentList!.meta.currentPage+1);
+
+    final bool toLoad = (_scroll_controller.offset) > _scroll_controller.position.maxScrollExtent-_scroll_controller.position.viewportDimension/2;
+    print("当前滚动位置：${_scroll_controller.offset}");
+    print("最大滚动位置：${_scroll_controller.position.maxScrollExtent}");
+    print("设备视口像素：${_scroll_controller.position.viewportDimension}");
+    print(toLoad);
+    final int _currentPage = getx.Get.find<DynamicController>().commentList!.meta.currentPage;
+    if(toLoad && !getx.Get.find<DynamicController>().comment_running && _currentPage < getx.Get.find<DynamicController>().commentList!.meta.lastPage)
+      getx.Get.find<DynamicController>().getDynamicCommentList(_id, _currentPage + 1);
     }
-  String followButtonText = "关注";
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +65,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
       ),
     ));
   }
-
+  //详情视图
   Widget _getDetailWidget() {
     return SliverToBoxAdapter(
       child: getx.GetBuilder<DynamicController>(
@@ -221,14 +234,10 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                                     onPressed: () {
                                       CommentUtils.popCommentTextField(
                                           _id,
-                                          getx.Get.find<UserController>()
-                                              .user!
-                                              .data
-                                              .id,
-                                          getx.Get.find<UserController>()
-                                              .user!
-                                              .data
-                                              .nickname);
+                                          controller.dynamicDetail!.data
+                                              .user.id,
+                                          controller.dynamicDetail!.data
+                                              .user.nickname);
                                     }),
                                 Text(/*"100"*/
                                     controller.dynamicDetail!.data.commentCount
@@ -269,7 +278,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
           }),
     );
   }
-
+  //循环渲染图片
   Widget imagesWidgets() {
     List<Widget> images = [];
     Widget content;
@@ -290,7 +299,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
     content = new Column(children: images);
     return content;
   }
-
+  //评论视图
   Widget _getCommentListView() {
     return getx.GetBuilder<DynamicController>(
         init: DynamicController(),
@@ -301,22 +310,20 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
               (context, index) {
                 DynamicCommentEntity? _comment_list = controller.commentList;
                 if (_comment_list == null) {
-                  if (!controller.comment_running) {
-                    controller.getDynamicCommentList(_id, 1);
-                  }
                   return SkeletonWidget();
                 } else {
                   return CommentListItem(
-                    dynamic_id: _comment_list.data[index].id,
+                    dynamic_id: _id,
                     replier_avatar: _comment_list.data[index].replierAvatar,
                     replier_nickname: _comment_list.data[index].replierNickname,
                     content: _comment_list.data[index].content,
                     count: _comment_list.data[index].thumbCount,
                     time: _comment_list.data[index].updatedAt,
-                    receiver_nickname:
-                        _comment_list.data[index].receiverNickname,
+                    receiver_nickname: _comment_list.data[index].receiverNickname,
                     replier_id: _comment_list.data[index].replierId,
                     floor: index + 1,
+                    receiver_id: _comment_list.data[index].receiverId,
+                    poster_id: _comment_list.data[index].posterId,
                   );
                   //return getDynamicListView(index);
                 }

@@ -13,7 +13,7 @@ ApiService get apiService => _apiService;
 class ApiService {
 
   /// 手机号登录发送短信验证码
-  void sendCodes(Function callback, Function errorCallback,
+  Future<void> sendCodes(Function callback, Function errorCallback,
       String _phone) async {
     FormData formData = new FormData.fromMap({
       "phone": _phone,
@@ -30,7 +30,7 @@ class ApiService {
   }
 
   /// 手机号登录
-  void loginBycodes(Function callback, Function errorCallback,
+  Future<void> loginBycodes(Function callback, Function errorCallback,
       String _verification_key, String _verification_code) async {
     FormData formData = new FormData.fromMap({
       "verification_key": _verification_key,
@@ -44,7 +44,7 @@ class ApiService {
     });
   }
   /// 退出登录
-  void logout(Function callback, Function errorCallback) async {
+  Future<void> logout(Function callback, Function errorCallback) async {
     BaseNetWork.instance.dio.get(Apis.USER_LOGOUT).then((response) {
       callback(response.data);
     }).catchError((e) {
@@ -72,7 +72,7 @@ class ApiService {
     });
   }
   /// 点赞游记
-  void thumbDynamic(Function callback, Function errorCallback,int _id) async {
+  Future<void> thumbDynamic(Function callback, Function errorCallback,int _id) async {
     FormData formData = new FormData.fromMap({
       "id": _id,
     });
@@ -85,8 +85,8 @@ class ApiService {
       errorCallback(e);
     });
   }
-  /// 点赞游记
-  void collectDynamic(Function callback, Function errorCallback,int _id) async {
+  /// 收藏游记
+  Future<void> collectDynamic(Function callback, Function errorCallback,int _id) async {
     FormData formData = new FormData.fromMap({
       "id": _id,
     });
@@ -97,7 +97,7 @@ class ApiService {
     });
   }
   /// 获取游记详情
-  void getDynamicDetail(Function callback, Function errorCallback,int _id) async {
+  Future<void> getDynamicDetail(Function callback, Function errorCallback,int _id) async {
     FormData formData = new FormData.fromMap({
       "id": _id,
     });
