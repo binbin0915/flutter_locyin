@@ -9,10 +9,10 @@ class CommentUtils {
       int dynamic_id, int replier_id, String replier_nickname) async {
     final TextEditingController controller = TextEditingController();
     getx.Get.bottomSheet(Container(
-        color: Color(0xFFF4F4F4),
+        color:  getx.Get.theme.backgroundColor,
         padding: EdgeInsets.only(left: 16, top: 8, bottom: 8, right: 16),
         child: Container(
-          decoration: BoxDecoration(color: Colors.white),
+          decoration: BoxDecoration(color: getx.Get.theme.cardColor),
           child: TextField(
             controller: controller,
             autofocus: true,
@@ -27,6 +27,8 @@ class CommentUtils {
                   controller.text, dynamic_id, replier_id, replier_nickname);
             },
             decoration: InputDecoration(
+                fillColor: getx.Get.theme.cardColor,
+                filled: true,//重点，必须设置为true，fillColor才有效
                 hintText: '回复 $replier_nickname :',
                 isDense: true,
                 contentPadding:
