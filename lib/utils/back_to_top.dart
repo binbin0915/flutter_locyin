@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 class BackToTop extends StatefulWidget {
   final ScrollController controller;
   ///传入距离底部的距离
@@ -27,8 +27,7 @@ class _BackToTopState extends State<BackToTop> {
   }
 
   void isScroll() {
-    final bool toShow = (widget.controller.offset ?? 0) >
-        MediaQuery.of(context).size.height / 2;
+    final bool toShow = (widget.controller.offset) > MediaQuery.of(context).size.height / 2;
     if (toShow ^ shown) {
       setState(() {
         shown = toShow;
@@ -54,11 +53,11 @@ class _BackToTopState extends State<BackToTop> {
                 width: 44,
                 alignment: Alignment(0, 0),
                 decoration: new BoxDecoration(
-                    color: Colors.white,
+                    color: Get.theme.accentColor,
                     borderRadius: BorderRadius.all(Radius.circular(16)),
                     boxShadow: [
                       BoxShadow(
-                          color: Color(0xFF000000).withOpacity(0.1),
+                          color: Get.theme.accentColor,
                           blurRadius: 4,
                           spreadRadius: 0),
                     ]),
@@ -69,14 +68,14 @@ class _BackToTopState extends State<BackToTop> {
                       child: Icon(
                         Icons.vertical_align_top,
                         size: 20,
-                        color: Colors.black38,
+                        color:Get.theme.cardColor,
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 0),
                       child: Text(
                         'Top',
-                        style: TextStyle(fontSize: 10, color: Color(0xFFA1A6AA)),
+                        style: TextStyle(fontSize: 10, color: Get.theme.cardColor),
                       ),
                     )
                   ],

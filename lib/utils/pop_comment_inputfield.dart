@@ -27,7 +27,7 @@ class CommentUtils {
                   controller.text, dynamic_id, replier_id, replier_nickname);
             },
             decoration: InputDecoration(
-                hintText: '请输入评论的内容',
+                hintText: '回复 $replier_nickname :',
                 isDense: true,
                 contentPadding:
                     EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),

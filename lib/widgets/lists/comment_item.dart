@@ -71,7 +71,6 @@ class CommentListItem extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                        color: Colors.white,
                         shape: BoxShape.circle,
                         image: DecorationImage(
                             image: NetworkImage(replier_avatar),
@@ -103,12 +102,11 @@ class CommentListItem extends StatelessWidget {
                                   time,
 //                              maxLines: 1,
 //                              overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: Colors.grey[600]),
                                 )
                               ],
                             ),
                           ),
-                          Icon(Icons.favorite_outline_outlined, color: Colors.grey),
+                          Icon(Icons.favorite_outline_outlined,),
                           Text(count.toString()),
                         ],
                       ),
@@ -120,7 +118,6 @@ class CommentListItem extends StatelessWidget {
                           //maxLines: 4,
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.black87,
                           ),
                           //overflow: TextOverflow.ellipsis,
                         ),

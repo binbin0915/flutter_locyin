@@ -62,14 +62,14 @@ class _DynamicListItemState extends State<DynamicListItem> {
               Container(
                 //padding: const EdgeInsets.symmetric(horizontal: 16),
                 height: 45,
-                color: Colors.white,
+                color: getx.Get.theme.cardColor,
                 child: Row(
                   children: <Widget>[
                     Container(
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: getx.Get.theme.cardColor,
                           shape: BoxShape.circle,
                           image: DecorationImage(image:NetworkImage(widget.avatar),fit: BoxFit.fitWidth)
                       ),
@@ -85,18 +85,18 @@ class _DynamicListItemState extends State<DynamicListItem> {
                         children: <Widget>[
                           Text(
                             widget.nickname,
-                            style: TextStyle(fontSize: 15,color: Colors.cyan),
+                            style: TextStyle(fontSize: 15,),
                           ),
                           Text(
                             widget.time,
 //                              maxLines: 1,
 //                              overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.grey[600]),
+
                           )
                         ],
                       ),
                     ),
-                    Icon(Icons.more_vert,color: Colors.grey,)
+                    Icon(Icons.more_vert,)
                   ],
                 ),
               ),
@@ -129,7 +129,7 @@ class _DynamicListItemState extends State<DynamicListItem> {
                       widget.content,
                       maxLines: 4,
                       style:
-                      TextStyle(fontSize: 15, color: Colors.black87),
+                      TextStyle(fontSize: 15),
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(
@@ -152,8 +152,6 @@ class _DynamicListItemState extends State<DynamicListItem> {
                             ),
                             IconButton(
                               icon: Icon(Icons.mode_comment_outlined),
-                              //iconSize: 16,
-                              color: Colors.grey,
                               onPressed: (){
                                 //ToastUtils.toast("跳转到游记详情页");
                                 getx.Get.toNamed(

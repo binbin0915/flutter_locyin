@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/page/menu/about.dart';
 import 'package:flutter_locyin/page/menu/settings.dart';
@@ -26,7 +27,7 @@ class MenuDrawer extends StatelessWidget {
                               child: SizedBox(
                                 height: 80,
                                 width: 80,
-                                child: Image.network("https://locyin.oss-cn-beijing.aliyuncs.com/apps/luoxun_flutter/images/avatar/logo_512x512.png",fit: BoxFit.fill,),
+                                child: CachedNetworkImage(fit: BoxFit.fill, imageUrl: "https://locyin.oss-cn-beijing.aliyuncs.com/apps/luoxun_flutter/images/avatar/logo_512x512.png",),
                               )
                           ),
                         ),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/pop_comment_inputfield.dart';
-import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/collect_button.dart';
 import 'package:flutter_locyin/widgets/like_button.dart';
 import 'package:flutter_locyin/widgets/lists/comment_item.dart';
@@ -37,7 +36,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
     super.dispose(); // This will free the memory space allocated to the page
   }
   void loadMore() {
-    final bool toShow = (_scroll_controller.offset ?? 0) > MediaQuery.of(context).size.height / 2;
+    final bool toShow = (_scroll_controller.offset) > MediaQuery.of(context).size.height / 2;
     if(toShow && !getx.Get.find<DynamicController>().comment_running && getx.Get.find<DynamicController>().commentList!.meta.currentPage<getx.Get.find<DynamicController>().commentList!.meta.lastPage)
       getx.Get.find<DynamicController>().getDynamicCommentList(_id,getx.Get.find<DynamicController>().commentList!.meta.currentPage+1);
     }
@@ -68,7 +67,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                     Container(
                       decoration: BoxDecoration(
                           border: Border(
-                              bottom: BorderSide(color: Colors.black12))),
+                              bottom: BorderSide(color: getx.Get.theme.cardColor))),
                       padding:
                           EdgeInsets.symmetric(vertical: 12, horizontal: 4),
                       child: Row(
@@ -101,7 +100,6 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                                color: Colors.white,
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                     image: NetworkImage(controller
@@ -119,13 +117,12 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                                 Text(
                                   controller.dynamicDetail!.data.user.nickname,
                                   style: TextStyle(
-                                      fontSize: 15, color: Colors.cyan),
+                                      fontSize: 15,),
                                 ),
                                 Text(
                                   controller.dynamicDetail!.data.createdAt,
 //                              maxLines: 1,
 //                              overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: Colors.grey[600]),
                                 )
                               ],
                             ),
@@ -134,10 +131,10 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                             width: 64,
                             height: 32,
                             child: FlatButton(
-                              color: Colors.cyan,
-                              highlightColor: Colors.blue[700],
+                              color: getx.Get.theme.accentColor,
+                              highlightColor: getx.Get.theme.highlightColor,
                               colorBrightness: Brightness.dark,
-                              splashColor: Colors.grey,
+                              splashColor: getx.Get.theme.splashColor,
                               child: Text(followButtonText),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0)),
@@ -166,7 +163,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                             controller.dynamicDetail!.data.content,
                             //maxLines: 4,
                             style:
-                                TextStyle(fontSize: 15, color: Colors.black87),
+                                TextStyle(fontSize: 15),
                             //overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -181,12 +178,11 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                           children: [
                             Icon(
                               Icons.location_on_outlined,
-                              color: Colors.grey,
+                              color: getx.Get.theme.accentColor,
                             ),
                             Text(
                               /*"乌镇南浔水乡"*/
                               controller.dynamicDetail!.data.location,
-                              style: TextStyle(color: Colors.cyan),
                             ),
                           ],
                         ),
@@ -258,7 +254,6 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                       padding: EdgeInsets.all(8),
                       width: MediaQuery.of(context).size.width,
                       decoration: new BoxDecoration(
-                        color: Colors.grey[200],
                       ),
                       child: Text(
                         '热门评论',

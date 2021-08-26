@@ -25,9 +25,9 @@ class _CollectButtonWidgetState extends State<CollectButtonWidget> {
               init: DynamicController(),id: "collect",
               builder: (controller) {
                 return IconButton(
-                  icon: Icon(Icons.star),
+                  icon: controller.dynamicList!.data.firstWhere( (element) => element.id == widget.id).collected == 1 ?Icon(Icons.star):Icon(Icons.star_outline_outlined),
                   //根据是否收藏修改颜色
-                  color: controller.dynamicList!.data.firstWhere( (element) => element.id == widget.id).collected == 1 ?Colors.cyan:Colors.grey,
+                  color: controller.dynamicList!.data.firstWhere( (element) => element.id == widget.id).collected == 1 ?Colors.cyan:null,
                   onPressed: (){
                     controller.collect(widget.id);
                   },
