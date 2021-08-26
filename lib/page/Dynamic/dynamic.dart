@@ -147,7 +147,7 @@ class _DynamicPageState extends State<DynamicPage> {
           id: _dynamic_list.data[index].id,
           avatar: _dynamic_list.data[index].user.avatar,
           nickname: _dynamic_list.data[index].user.nickname,
-          imageUrl: _dynamic_list.data[index].images[0].path,
+          imageUrl: _dynamic_list.data[index].images.length>0?_dynamic_list.data[index].images[0].path:null,
           content: _dynamic_list.data[index].content,
           like: _dynamic_list.data[index].thumbCount,
           comment: _dynamic_list.data[index].commentCount,

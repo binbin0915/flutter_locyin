@@ -16,7 +16,7 @@ class DynamicListItem extends StatefulWidget {
   final String nickname;
 
   //动态图片内容
-  final String imageUrl;
+  final String? imageUrl;
 
   //动态文字内容
   final String content;
@@ -104,7 +104,7 @@ class _DynamicListItemState extends State<DynamicListItem> {
                 padding: const EdgeInsets.only(left: 40),
                 child: Column(
                   children: [
-                    InkWell(
+                    widget.imageUrl!=null?InkWell(
                       onTap: () {
                         getx.Get.toNamed(
                             "/index/dynamic/detail?id=${Uri.encodeComponent(widget.id.toString())}");
@@ -114,23 +114,29 @@ class _DynamicListItemState extends State<DynamicListItem> {
                             borderRadius: BorderRadiusDirectional.circular(10)),
                         clipBehavior: Clip.antiAlias,
                         child: CachedNetworkImage(
-                          imageUrl:widget.imageUrl,
+                          imageUrl:widget.imageUrl.toString(),
                           width: double.maxFinite,
                           placeholder:(context,url)=> Image.asset('assets/images/loading.gif',fit: BoxFit.cover),
                           fit: BoxFit.cover,
                           errorWidget: (context, url, error) => new Icon(Icons.error),
                         ),
                       ),
-                    ),
+                    ):Container(),
                     SizedBox(
                       height: 8,
                     ),
-                    Text(
-                      widget.content,
-                      maxLines: 4,
-                      style:
-                      TextStyle(fontSize: 15),
-                      overflow: TextOverflow.ellipsis,
+                    InkWell(
+                      onTap: () {
+                        getx.Get.toNamed(
+                            "/index/dynamic/detail?id=${Uri.encodeComponent(widget.id.toString())}");
+                      },
+                      child: Text(
+                        widget.content,
+                        maxLines: 4,
+                        style:
+                        TextStyle(fontSize: 15),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     SizedBox(
                       height: 16,
@@ -141,7 +147,7 @@ class _DynamicListItemState extends State<DynamicListItem> {
                         IconButton(
                             icon: Icon(Icons.share),
                             onPressed: () {
-                              Share.share(widget.imageUrl);
+                              Share.share("https://lotvin.com");
                             }),
                         Row(
                           children: [
