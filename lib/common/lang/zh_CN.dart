@@ -1,4 +1,4 @@
-const Map<String, String> zh_Hans = {
+const Map<String, String> zh_CN = {
   "appName": "骆寻",
   "pushLabel": "你点击了这些次按钮：",
 

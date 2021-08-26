@@ -92,8 +92,9 @@ class ErrorInterceptor extends Interceptor {
     if (error.response != null && error.response!.statusCode == 401 && getx.Get.find<ConstantController>().token!=null ) {
       getx.Get.find<ConstantController>().clearToken();
       getx.Get.find<UserController>().clearUser();
-      getx.Get.offAllNamed("/login");
-      //getx.Get.offAll(() => LoginPage());
+      if(getx.Get.find<ConstantController>().appIsRunning){
+        getx.Get.offAllNamed("/login");
+      }
     }
     if(getx.Get.find<ConstantController>().appIsRunning){
       switch (error.type) {
@@ -111,6 +112,7 @@ class ErrorInterceptor extends Interceptor {
           break;
         case DioErrorType.response:
           handleLaravelErrors(error);
+          print(error);
           print("出现异常");
           break;
         case DioErrorType.cancel:

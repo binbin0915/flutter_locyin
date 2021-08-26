@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:flutter_locyin/common/lang/zh_Hans.dart';
+import 'package:flutter_locyin/common/lang/zh_CN.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:get/get.dart';
 import 'en_US.dart';
@@ -13,6 +13,6 @@ class Messages extends Translations {
 
   Map<String, Map<String, String>> get keys => {
     'en_US': en_US,
-    'zh_Hans': zh_Hans,
+    'zh_CN': zh_CN,
   };
 }

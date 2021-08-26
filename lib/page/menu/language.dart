@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:get/get.dart';
@@ -45,7 +43,7 @@ class _LanguagePageState extends State<LanguagePage> {
         body: ListView(
           children: <Widget>[
             _buildLanguageItem('languageEnglish'.tr, "en_US"),
-            _buildLanguageItem('languageChinese'.tr, "zh_Hans"),
+            _buildLanguageItem('languageChinese'.tr, "zh_CN"),
             _buildLanguageItem('languageAuto'.tr, "null"),
           ],
         ));
