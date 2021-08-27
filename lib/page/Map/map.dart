@@ -78,6 +78,9 @@ class MapPageState extends State<MapPage> {
   //需要先设置一个空的map赋值给AMapWidget的markers，否则后续无法添加marker
   final Map<String, Marker> _markers = <String, Marker>{};
 
+  Widget? _poiInfo;
+
+  AMapPoi? _poi;
   void _checkPermissions() async {
     Map<Permission, PermissionStatus> statuses =
     await needPermissionList.request();
@@ -307,6 +310,14 @@ class MapPageState extends State<MapPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
+                  ),
+                  Positioned(
+                    top: 40,
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Container(
+                      child: _poiInfo,
+                    ),
                   )
                 ],
               ),
@@ -466,12 +477,22 @@ class MapPageState extends State<MapPage> {
     }
     print('_onMapLongPress===> ${latLng.toJson()}');
   }
-
+  Widget showPoiInfo(AMapPoi poi) {
+    return Container(
+      alignment: Alignment.center,
+      color: Color(0x8200CCFF),
+      child: Text(
+        '您选择了 ${poi.name}',
+        style: TextStyle(fontWeight: FontWeight.w600),
+      ),
+    );
+  }
   void _onMapPoiTouched(AMapPoi poi) {
-    if (null == poi) {
-      return;
-    }
-    print('_onMapPoiTouched===> ${poi.toJson()}');
+    print(poi);
+    _poi = poi;
+    setState(() {
+      _poiInfo = showPoiInfo(poi);
+    });
   }
   //添加一个marker
   void _addMarker() {
@@ -488,4 +509,5 @@ class MapPageState extends State<MapPage> {
       _markers[marker.id] = marker;
     });
   }
+
 }
