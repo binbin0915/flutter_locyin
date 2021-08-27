@@ -25,11 +25,20 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 30
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        main {
+            // 插件单独运行时必须使用下面的类库，和导航插件同时使用时要注释掉
+            jniLibs.srcDirs = ['libs']
+        }
     }
 
     defaultConfig {
@@ -40,12 +49,42 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+        debug {
+            //keystore中key的别名
+            keyAlias 'androiddebugkey'
+            //keystore中key的密码
+            keyPassword 'android'
+            //keystore的文件路径，可以是绝对路径也可以是相对路径
+            storeFile file('../debug.keystore')
+            //keystore的密码l
+            storePassword 'android'
+        }
+    }
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
+
+            //关闭混淆, 否则在运行release包后可能出现运行崩溃， TODO后续进行混淆配置
+            minifyEnabled false //删除无用代码
+            shrinkResources false //删除无用资源
+        }
+        debug {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+
+            //关闭混淆, 否则在运行release包后可能出现运行崩溃， TODO后续进行混淆配置
+            minifyEnabled false //删除无用代码
+            shrinkResources false //删除无用资源
         }
     }
 }
@@ -55,5 +94,8 @@ flutter {
 }
 
 dependencies {
+    //demo中引入高德地图SDK
+    implementation('com.amap.api:3dmap:7.7.0')
+    implementation('com.amap.api:location:5.2.0')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

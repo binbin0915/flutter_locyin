@@ -48,6 +48,9 @@ dependencies:
   image_gallery_saver: ^1.6.9
   share: ^2.0.4
   permission_handler: ^8.1.4+2
+  amap_flutter_location: 2.0.0
+  amap_flutter_map: 2.0.2
+  amap_flutter_base: 2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
