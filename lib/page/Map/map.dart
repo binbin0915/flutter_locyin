@@ -73,6 +73,11 @@ class MapPageState extends State<MapPage> {
 
   bool initMineLocation = false;
 
+  bool drawMineLocationMarker = false;
+
+  //需要先设置一个空的map赋值给AMapWidget的markers，否则后续无法添加marker
+  final Map<String, Marker> _markers = <String, Marker>{};
+
   void _checkPermissions() async {
     Map<Permission, PermissionStatus> statuses =
     await needPermissionList.request();
@@ -117,6 +122,8 @@ class MapPageState extends State<MapPage> {
       onTap: _onMapTap,
       onLongPress: _onMapLongPress,
       onPoiTouched: _onMapPoiTouched,
+      //创建地图时，给marker属性赋值一个空的set，否则后续无法添加marker
+      markers: Set<Marker>.of(_markers.values),
 
     );
     List<Widget> _optionsWidget = [
@@ -331,7 +338,6 @@ class MapPageState extends State<MapPage> {
 
   void _onMapCreated(AMapController controller) {
     setState(() {
-
       _mapController = controller;
     });
   }
@@ -344,6 +350,11 @@ class MapPageState extends State<MapPage> {
     setState(() {
       _currentZoom = '当前缩放级别：${cameraPosition.zoom}';
     });
+    if(!drawMineLocationMarker){
+      _addMarker();
+      drawMineLocationMarker = true;
+    }
+
   }
 
   void _changeCameraPosition() {
@@ -406,7 +417,7 @@ class MapPageState extends State<MapPage> {
           //中心点
             target: LatLng(latitude, longitude),
             //缩放级别
-            zoom: 13,
+            zoom: 18,
             //俯仰角0°~45°（垂直与地图时为0）
             tilt: 30,
             //偏航角 0~360° (正北方为0)
@@ -461,5 +472,20 @@ class MapPageState extends State<MapPage> {
       return;
     }
     print('_onMapPoiTouched===> ${poi.toJson()}');
+  }
+  //添加一个marker
+  void _addMarker() {
+    final _markerPosition =
+    LatLng(double.parse(getx.Get.find<UserController>().location!['latitude'].toString()), double.parse(getx.Get.find<UserController>().location!['longitude'].toString()));
+    final Marker marker = Marker(
+      position: _markerPosition,
+      //使用默认hue的方式设置Marker的图标
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+    );
+    //调用setState触发AMapWidget的更新，从而完成marker的添加
+    setState(() {
+      //将新的marker添加到map里
+      _markers[marker.id] = marker;
+    });
   }
 }
