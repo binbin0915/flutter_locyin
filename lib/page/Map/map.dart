@@ -1,11 +1,13 @@
 import 'package:amap_flutter_base/amap_flutter_base.dart';
 import 'package:amap_flutter_map/amap_flutter_map.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/widgets/amap_gridview.dart';
 import 'package:flutter_locyin/widgets/locator.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import 'const_config.dart';
+import 'package:get/get.dart' as getx;
+
 class MapPage extends StatefulWidget {
   MapPage({Key? key}) : super(key: key);
 
@@ -14,13 +16,63 @@ class MapPage extends StatefulWidget {
 }
 
 class MapPageState extends State<MapPage> {
+
+  //默认显示在北京天安门
+  static final CameraPosition _kInitialPosition = const CameraPosition(
+    target: LatLng(39.909187, 116.397451),
+    zoom: 10.0,
+  );
+
+  ///地图类型
+  MapType _mapType = MapType.normal;
+
+  ///显示路况开关
+  bool _trafficEnabled = true;
+
+  /// 地图poi是否允许点击
+  bool _touchPoiEnabled = true;
+
+  ///是否显示3D建筑物
+  bool _buildingsEnabled = true;
+
+  ///是否显示底图文字标注
+  bool _labelsEnabled = true;
+
+  ///是否显示指南针
+  bool _compassEnabled = true;
+
+  ///是否显示比例尺
+  bool _scaleEnabled = true;
+
+  ///是否支持缩放手势
+  bool _zoomGesturesEnabled = true;
+
+  ///是否支持滑动手势
+  bool _scrollGesturesEnabled = true;
+
+  ///是否支持旋转手势
+  bool _rotateGesturesEnabled = true;
+
+  ///是否支持倾斜手势
+  bool _tiltGesturesEnabled = true;
+
+  ///自定义定位小蓝点
+  MyLocationStyleOptions _myLocationStyleOptions = MyLocationStyleOptions(false);
+
+  CustomStyleOptions _customStyleOptions = CustomStyleOptions(false);
+
   late AMapController _mapController;
+
   String? _currentZoom;
+
   final List<Permission> needPermissionList = [
     Permission.location,
     Permission.storage,
     Permission.phone,
   ];
+
+  bool initMineLocation = false;
+
   void _checkPermissions() async {
     Map<Permission, PermissionStatus> statuses =
     await needPermissionList.request();
@@ -46,6 +98,26 @@ class MapPageState extends State<MapPage> {
       onMapCreated: _onMapCreated,
       onCameraMove: _onCameraMove,
       onCameraMoveEnd: _onCameraMoveEnd,
+
+      initialCameraPosition: _kInitialPosition,
+      mapType: _mapType,
+      trafficEnabled: _trafficEnabled,
+      buildingsEnabled: _buildingsEnabled,
+      compassEnabled: _compassEnabled,
+      labelsEnabled: _labelsEnabled,
+      scaleEnabled: _scaleEnabled,
+      touchPoiEnabled: _touchPoiEnabled,
+      rotateGesturesEnabled: _rotateGesturesEnabled,
+      scrollGesturesEnabled: _scrollGesturesEnabled,
+      tiltGesturesEnabled: _tiltGesturesEnabled,
+      zoomGesturesEnabled: _zoomGesturesEnabled,
+      customStyleOptions: _customStyleOptions,
+      myLocationStyleOptions: _myLocationStyleOptions,
+      onLocationChanged: _onLocationChanged,
+      onTap: _onMapTap,
+      onLongPress: _onMapLongPress,
+      onPoiTouched: _onMapPoiTouched,
+
     );
     List<Widget> _optionsWidget = [
       _createMyFloatButton('改变显示区域', _changeLatLngBounds),
@@ -78,21 +150,49 @@ class MapPageState extends State<MapPage> {
             ConstrainedBox(
               constraints: BoxConstraints(
                   minWidth: MediaQuery.of(context).size.width,
-                  minHeight: MediaQuery.of(context).size.height * 0.7),
+                  minHeight: MediaQuery.of(context).size.height-64
+              ),
               child: Stack(
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
+                    height: MediaQuery.of(context).size.height-64,
                     width: MediaQuery.of(context).size.width,
                     child: amap,
                   ),
                   Positioned(
-                    right: 5,
-                    bottom: 5,
+                    right: -20,
+                    bottom: 72,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        InkResponse(
+                        ClipPath.shape(
+                          shape: StadiumBorder(),
+                          child: InkResponse(
+                            child: Row(
+                              children: [
+                                Container(
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  width: 80,
+                                  height: 40,
+                                  color: Colors.blue,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                  height: 40,
+                                )
+                              ],
+                            ),
+                            onTap: _zoomIn,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                        ),
+                        /*InkResponse(
                           child: Container(
                             child: Icon(
                               Icons.add,
@@ -103,8 +203,31 @@ class MapPageState extends State<MapPage> {
                             color: Colors.blue,
                           ),
                           onTap: _zoomIn,
+                        ),*/
+                        ClipPath.shape(
+                          shape: StadiumBorder(),
+                          child: InkResponse(
+                            child: Row(
+                              children: [
+                                Container(
+                                  child: Icon(
+                                    Icons.remove,
+                                    color: Colors.white,
+                                  ),
+                                  width: 80,
+                                  height: 40,
+                                  color: Colors.blue,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                  height: 40,
+                                )
+                              ],
+                            ),
+                            onTap: _zoomOut,
+                          ),
                         ),
-                        InkResponse(
+                       /* InkResponse(
                           child: Container(
                             child: Icon(
                               Icons.remove,
@@ -115,21 +238,73 @@ class MapPageState extends State<MapPage> {
                             height: 40,
                           ),
                           onTap: _zoomOut,
-                        ),
+                        ),*/
                       ],
                     ),
                   ),
+                  getx.GetBuilder<UserController>(
+                    init: UserController(),
+                    id: "location",
+                    builder: (controller) {
+                      if(controller.location!=null && !initMineLocation){
+                        _mineLocation(double.parse(controller.location!["latitude"].toString()),
+                            double.parse(controller.location!["longitude"].toString()));
+                        initMineLocation  = true;
+                      }
+                      return Positioned(
+                          left: -20,
+                          bottom: 72,
+                          child: LocatorWidget(onPressed: (Map<String,
+                              Object>? _locationResult) {
+                            _mineLocation(double.parse(_locationResult!["latitude"].toString()),
+                                double.parse(_locationResult["longitude"].toString()));
+                          },)
+                      );
+                  }),
                   Positioned(
-                      left: 5,
-                      bottom: 5,
-                      child: LocatorWidget(onPressed: (Map<String, Object>? _locationResult){
-                        _mineLocation(double.parse(_locationResult!["latitude"].toString()),double.parse(_locationResult["longitude"].toString()));
-                      },)
+                      left: -20,
+                      bottom: 132,
+                      child: ClipPath.shape(
+                        shape: StadiumBorder(),
+                        child: InkResponse(
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
+                                height: 40,
+                              ),
+                              Container(
+                                child: Icon(
+                                  Icons.settings,
+                                  color: Colors.white,
+                                ),
+                                width: 80,
+                                height: 40,
+                                color: Colors.blue,
+                              ),
+                            ],
+                          ),
+                          onTap: () {   },
+                        ),
+                      )
                   ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.grey,
+                    padding: EdgeInsets.all(5),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      _currentZoom.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  )
                 ],
               ),
             ),
-            Expanded(
+            /*Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -149,7 +324,7 @@ class MapPageState extends State<MapPage> {
                   ],
                 ),
               ),
-            ),
+            ),*/
           ],
         ));
   }
@@ -190,7 +365,6 @@ class MapPageState extends State<MapPage> {
 
   //改变显示级别
   void _changeCameraZoom() {
-    print("哈哈哈哈");
     _mapController.moveCamera(
       CameraUpdate.zoomTo(18),
       animated: true,
@@ -241,8 +415,8 @@ class MapPageState extends State<MapPage> {
       animated: true,
     );
   }
-  
-  
+
+
   //按照像素移动
   void _scrollBy() {
     _mapController.moveCamera(
@@ -261,5 +435,31 @@ class MapPageState extends State<MapPage> {
       child: Text(label),
       color: Colors.blue,
     );
+  }
+  void _onLocationChanged(AMapLocation location) {
+    if (null == location) {
+      return;
+    }
+    print('_onLocationChanged ${location.toJson()}');
+  }
+  void _onMapTap(LatLng latLng) {
+    if (null == latLng) {
+      return;
+    }
+    print('_onMapTap===> ${latLng.toJson()}');
+  }
+
+  void _onMapLongPress(LatLng latLng) {
+    if (null == latLng) {
+      return;
+    }
+    print('_onMapLongPress===> ${latLng.toJson()}');
+  }
+
+  void _onMapPoiTouched(AMapPoi poi) {
+    if (null == poi) {
+      return;
+    }
+    print('_onMapPoiTouched===> ${poi.toJson()}');
   }
 }

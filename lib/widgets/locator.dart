@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:amap_flutter_location/amap_flutter_location.dart';
 import 'package:amap_flutter_location/amap_location_option.dart';
+import 'package:flutter_locyin/utils/getx.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:get/get.dart';
 
 class LocatorWidget extends StatefulWidget {
   final Function onPressed;
@@ -55,6 +56,9 @@ class _LocatorWidgetState extends State<LocatorWidget> {
         print("获取到定位信息：");
         print(result);
         _locationResult = result;
+        if(_locationResult!=null){
+          Get.find<UserController>().updateLocation(_locationResult);
+        }
       });
     });
     _startLocation();
@@ -138,7 +142,7 @@ class _LocatorWidgetState extends State<LocatorWidget> {
         print("key:$key,value:$value");
       });
     }*/
-    return Container(
+    /*return Container(
       child:Material(
           shape: CircleBorder(
               side: BorderSide(
@@ -150,6 +154,29 @@ class _LocatorWidgetState extends State<LocatorWidget> {
             onPressed: () {  widget.onPressed(_locationResult); },
           ),
       )
+    );*/
+    return ClipPath.shape(
+      shape: StadiumBorder(),
+      child: InkResponse(
+        child: Row(
+          children: [
+            SizedBox(
+              width: 20,
+              height: 40,
+            ),
+            Container(
+              child: Icon(
+                Icons.location_on_outlined,
+                color: Colors.white,
+              ),
+              width: 80,
+              height: 40,
+              color: Colors.blue,
+            ),
+          ],
+        ),
+        onTap: () {  widget.onPressed(_locationResult); },
+      ),
     );
   }
 

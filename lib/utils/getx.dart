@@ -105,6 +105,10 @@ class UserController extends GetxController{
 
   UserEntity? get  user => _user;
 
+  Map<String, Object>? _location;
+
+  Map<String, Object>? get location => _location;
+
   Future<void> init() async{
     print("正在初始化用户状态...");
     String? token = Get.find<ConstantController>().token;
@@ -133,6 +137,12 @@ class UserController extends GetxController{
   }
   void clearUser(){
     _user = null;
+  }
+  void updateLocation(Map<String, Object>? loc){
+    _location= loc;
+    print(loc);
+    print("更新位置视图");
+    update(['location']);
   }
 }
 //语言
