@@ -8,32 +8,30 @@ class DynamicAppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Container(
-        height: 48,
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () {
-                scaffoldKey.currentState!.openDrawer();
-              },
-              child: Icon(Icons.menu_outlined),
-            ),
-            Text(
-              "首页",
-              style: TextStyle(
-                  fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-            InkWell(
-              onTap: () {
-                ToastUtils.toast("跳转到检索页");
-                //_scaffoldKey.currentState.openDrawer();
-              },
-              child: Icon(Icons.search),
-            ),
-          ],
-        ),
+      height: 48,
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            onTap: () {
+              scaffoldKey.currentState!.openDrawer();
+            },
+            child: Icon(Icons.menu_outlined),
+          ),
+          Text(
+            "首页",
+            style: TextStyle(
+                fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+          InkWell(
+            onTap: () {
+              ToastUtils.toast("跳转到检索页");
+              //_scaffoldKey.currentState.openDrawer();
+            },
+            child: Icon(Icons.search),
+          ),
+        ],
       ),
     );
   }

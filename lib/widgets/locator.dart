@@ -1,34 +1,19 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:amap_flutter_location/amap_flutter_location.dart';
 import 'package:amap_flutter_location/amap_location_option.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 
-class LocatorWidget extends StatefulWidget {
-  final Function onPressed;
-
-  const LocatorWidget({Key? key, required this.onPressed}) : super(key: key);
-
-  @override
-  _LocatorWidgetState createState() => new _LocatorWidgetState();
-}
-
-class _LocatorWidgetState extends State<LocatorWidget> {
+class Locator {
   Map<String, Object>? _locationResult;
-
-  late StreamSubscription<Map<String, Object>> _locationListener;
 
   AMapFlutterLocation _locationPlugin = new AMapFlutterLocation();
 
-  @override
-  void initState() {
-    super.initState();
-
+  Locator(){
     /// 动态申请定位权限
-    requestPermission();
+    _requestPermission();
 
     ///设置Android和iOS的apiKey<br>
     ///
@@ -49,30 +34,17 @@ class _LocatorWidgetState extends State<LocatorWidget> {
     }
 
     ///注册定位结果监听
-    _locationListener = _locationPlugin
+   _locationPlugin
         .onLocationChanged()
         .listen((Map<String, Object> result) {
-      setState(() {
         print("获取到定位信息：");
         print(result);
         _locationResult = result;
         if(_locationResult!=null){
           Get.find<UserController>().updateLocation(_locationResult);
         }
-      });
     });
-    _startLocation();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    ///移除定位监听
-    _locationListener.cancel();
-
-    ///销毁定位
-    _locationPlugin.destroy();
+    startLocation();
   }
 
   ///设置定位参数
@@ -123,77 +95,15 @@ class _LocatorWidgetState extends State<LocatorWidget> {
   }
 
   ///开始定位
-  void _startLocation() {
+  void startLocation() {
     _setLocationOption();
     _locationPlugin.startLocation();
   }
 
   ///停止定位
-  void _stopLocation() {
-    if (null != _locationPlugin) {
-      _locationPlugin.stopLocation();
-    }
+  void stopLocation() {
+    _locationPlugin.stopLocation();
   }
-  @override
-  Widget build(BuildContext context) {
-
-    /*if (_locationResult != null) {
-      _locationResult!.forEach((key, value) {
-        print("key:$key,value:$value");
-      });
-    }*/
-    /*return Container(
-      child:Material(
-          shape: CircleBorder(
-              side: BorderSide(
-                  color: Colors.green,
-                  width: 2,
-                  style: BorderStyle.solid)),
-          child: IconButton(
-            icon: Icon(Icons.location_on_outlined),
-            onPressed: () {  widget.onPressed(_locationResult); },
-          ),
-      )
-    );*/
-    return ClipPath.shape(
-      shape: StadiumBorder(),
-      child:
-      ClipPath.shape(
-        shape: StadiumBorder(),
-        child: ElevatedButton(
-          child: SizedBox(
-            width: 60,
-            height: 40,
-            child: Icon(
-              Icons.location_on_outlined,
-            ),
-          ),
-          onPressed: widget.onPressed(_locationResult),
-        ),
-      )
-      /*InkResponse(
-        child: Row(
-          children: [
-            SizedBox(
-              width: 20,
-              height: 40,
-            ),
-            Container(
-              child: Icon(
-                Icons.location_on_outlined,
-                color: Colors.white,
-              ),
-              width: 80,
-              height: 40,
-              color: Colors.blue,
-            ),
-          ],
-        ),
-        onTap: () {  widget.onPressed(_locationResult); },
-      ),*/
-    );
-  }
-
   ///获取iOS native的accuracyAuthorization类型
   void requestAccuracyAuthorization() async {
     AMapAccuracyAuthorization currentAccuracyAuthorization =
@@ -210,9 +120,9 @@ class _LocatorWidgetState extends State<LocatorWidget> {
   }
 
   /// 动态申请定位权限
-  void requestPermission() async {
+  void _requestPermission() async {
     // 申请权限
-    bool hasLocationPermission = await requestLocationPermission();
+    bool hasLocationPermission = await _requestLocationPermission();
     if (hasLocationPermission) {
       print("定位权限申请通过");
     } else {
@@ -222,7 +132,7 @@ class _LocatorWidgetState extends State<LocatorWidget> {
 
   /// 申请定位权限
   /// 授予定位权限返回true， 否则返回false
-  Future<bool> requestLocationPermission() async {
+  Future<bool> _requestLocationPermission() async {
     //获取当前的权限
     var status = await Permission.location.status;
     if (status == PermissionStatus.granted) {

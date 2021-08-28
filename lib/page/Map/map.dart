@@ -17,7 +17,6 @@ class MapPage extends StatefulWidget {
 }
 
 class MapPageState extends State<MapPage> {
-
   //默认显示在北京天安门
   static final CameraPosition _kInitialPosition = const CameraPosition(
     target: LatLng(39.909187, 116.397451),
@@ -58,7 +57,8 @@ class MapPageState extends State<MapPage> {
   bool _tiltGesturesEnabled = true;
 
   ///自定义定位小蓝点
-  MyLocationStyleOptions _myLocationStyleOptions = MyLocationStyleOptions(false);
+  MyLocationStyleOptions _myLocationStyleOptions =
+      MyLocationStyleOptions(false);
 
   CustomStyleOptions _customStyleOptions = CustomStyleOptions(false);
 
@@ -72,9 +72,9 @@ class MapPageState extends State<MapPage> {
     Permission.phone,
   ];
 
-  bool initMineLocation = false;
+  bool _initMineLocation = false;
 
-  bool drawMineLocationMarker = false;
+  bool _drawMineLocationMarker = false;
 
   //需要先设置一个空的map赋值给AMapWidget的markers，否则后续无法添加marker
   final Map<String, Marker> _markers = <String, Marker>{};
@@ -82,17 +82,20 @@ class MapPageState extends State<MapPage> {
   Widget? _poiInfo;
 
   AMapPoi? _poi;
+
   void _checkPermissions() async {
     Map<Permission, PermissionStatus> statuses =
-    await needPermissionList.request();
+        await needPermissionList.request();
     statuses.forEach((key, value) {
       print('$key premissionStatus is $value');
     });
   }
+
   @override
   void initState() {
     super.initState();
     _checkPermissions();
+    Locator();
   }
 
   @override
@@ -100,6 +103,7 @@ class MapPageState extends State<MapPage> {
     super.reassemble();
     _checkPermissions();
   }
+
   @override
   Widget build(BuildContext context) {
     final AMapWidget amap = AMapWidget(
@@ -128,7 +132,6 @@ class MapPageState extends State<MapPage> {
       onPoiTouched: _onMapPoiTouched,
       //创建地图时，给marker属性赋值一个空的set，否则后续无法添加marker
       markers: Set<Marker>.of(_markers.values),
-
     );
     List<Widget> _optionsWidget = [
       _createMyFloatButton('改变显示区域', _changeLatLngBounds),
@@ -161,12 +164,11 @@ class MapPageState extends State<MapPage> {
             ConstrainedBox(
               constraints: BoxConstraints(
                   minWidth: MediaQuery.of(context).size.width,
-                  minHeight: MediaQuery.of(context).size.height-64
-              ),
+                  minHeight: MediaQuery.of(context).size.height - 64),
               child: Stack(
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height-64,
+                    height: MediaQuery.of(context).size.height - 64,
                     width: MediaQuery.of(context).size.width,
                     child: amap,
                   ),
@@ -185,8 +187,7 @@ class MapPageState extends State<MapPage> {
                           ),
                           onPressed: _zoomIn,
                         ),
-                      )
-                  ),
+                      )),
                   Positioned(
                       right: -10,
                       bottom: 72,
@@ -205,24 +206,46 @@ class MapPageState extends State<MapPage> {
                       )
                   ),
                   getx.GetBuilder<UserController>(
-                    init: UserController(),
-                    id: "location",
-                    builder: (controller) {
-                      if(controller.location!=null && !initMineLocation){
-                        _mineLocation(double.parse(controller.location!["latitude"].toString()),
-                            double.parse(controller.location!["longitude"].toString()));
-                        initMineLocation  = true;
-                      }
-                      return Positioned(
-                          left: -10,
-                          bottom: 72,
-                          child: LocatorWidget(onPressed: (Map<String,
-                              Object>? _locationResult) {
-                            _mineLocation(double.parse(_locationResult!["latitude"].toString()),
-                                double.parse(_locationResult["longitude"].toString()));
-                          },)
-                      );
-                  }),
+                      init: UserController(),
+                      id: "location",
+                      builder: (controller) {
+                        if (controller.location != null &&
+                            (_initMineLocation == false)) {
+                          _mineLocation(
+                              double.parse(
+                                  controller.location!["latitude"].toString()),
+                              double.parse(controller.location!["longitude"]
+                                  .toString()));
+                          _initMineLocation = true;
+                        }
+                        return Container();
+                      }),
+                  Positioned(
+                      left: -10,
+                      bottom: 72,
+                      child: ClipPath.shape(
+                        shape: StadiumBorder(),
+                        child: ElevatedButton(
+                          child: SizedBox(
+                            width: 60,
+                            height: 40,
+                            child: Icon(
+                              Icons.location_on_outlined,
+                            ),
+                          ),
+                          onPressed: (){if (getx.Get.find<UserController>().location != null) {
+                            _mineLocation(
+                                double.parse(
+                                    getx.Get.find<UserController>().location!["latitude"].toString()),
+                                double.parse(getx.Get.find<UserController>().location!["longitude"]
+                                    .toString()));
+                          }else{
+                            ToastUtils.error("没有获取到定位信息");
+                          }
+                          },
+                        ),
+                      )
+                  ),
                   Positioned(
                       left: -10,
                       bottom: 132,
@@ -236,49 +259,47 @@ class MapPageState extends State<MapPage> {
                               Icons.settings,
                             ),
                           ),
-                          onPressed: () {   },
+                          onPressed: () {},
                         ),
-                      )
-                  ),
+                      )),
                   Positioned(
-                      left: MediaQuery.of(context).size.width/2 -45,
-                      bottom: 24,
-                      child: ClipPath(
-                        //路径裁切组件
-                        clipper: CurveClipper(), //路径
-                        child: ElevatedButton(
-                          onPressed: _goDynamicPostPage,
-                          child: SizedBox(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 30,
+                    left: MediaQuery.of(context).size.width / 2 - 45,
+                    bottom: 24,
+                    child: ClipPath(
+                      //路径裁切组件
+                      clipper: CurveClipper(), //路径
+                      child: ElevatedButton(
+                        onPressed: _goDynamicPostPage,
+                        child: SizedBox(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Expanded(
+                                child: Icon(
+                                  Icons.send,
                                 ),
-                                Expanded(
-                                  child: Icon(
-                                    Icons.send,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "发布游记",
+                                  style: TextStyle(
+                                    fontSize: 14,
                                   ),
                                 ),
-                                Expanded(
-                                  child: Text(
-                                      "发布游记",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            width: 60,
-                            height: 100,
+                              ),
+                            ],
                           ),
+                          width: 60,
+                          height: 100,
                         ),
                       ),
+                    ),
                   ),
-
                   Positioned(
                     bottom: 0,
-                      child: Container(
+                    child: Container(
                       width: MediaQuery.of(context).size.width,
                       color: Colors.grey,
                       padding: EdgeInsets.all(5),
@@ -304,9 +325,7 @@ class MapPageState extends State<MapPage> {
   }
 
   void _onMapCreated(AMapController controller) {
-    setState(() {
-      _mapController = controller;
-    });
+    _mapController = controller;
   }
 
   //移动视野
@@ -317,11 +336,10 @@ class MapPageState extends State<MapPage> {
     setState(() {
       _currentZoom = '当前缩放级别：${cameraPosition.zoom}';
     });
-    if(!drawMineLocationMarker){
+    if (!_drawMineLocationMarker) {
       _addMarker();
-      drawMineLocationMarker = true;
+      _drawMineLocationMarker = true;
     }
-
   }
 
   void _changeCameraPosition() {
@@ -376,12 +394,13 @@ class MapPageState extends State<MapPage> {
       animated: true,
     );
   }
+
   //我的位置
-  void _mineLocation(double latitude,double longitude){
+  void _mineLocation(double latitude, double longitude) {
     _mapController.moveCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          //中心点
+            //中心点
             target: LatLng(latitude, longitude),
             //缩放级别
             zoom: 18,
@@ -394,7 +413,6 @@ class MapPageState extends State<MapPage> {
     );
   }
 
-
   //按照像素移动
   void _scrollBy() {
     _mapController.moveCamera(
@@ -404,7 +422,7 @@ class MapPageState extends State<MapPage> {
     );
   }
 
-  FlatButton _createMyFloatButton(String label,Function()? onPressed) {
+  FlatButton _createMyFloatButton(String label, Function()? onPressed) {
     return FlatButton(
       onPressed: onPressed,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -414,12 +432,14 @@ class MapPageState extends State<MapPage> {
       color: Colors.blue,
     );
   }
+
   void _onLocationChanged(AMapLocation location) {
     if (null == location) {
       return;
     }
     print('_onLocationChanged ${location.toJson()}');
   }
+
   void _onMapTap(LatLng latLng) {
     if (null == latLng) {
       return;
@@ -433,6 +453,7 @@ class MapPageState extends State<MapPage> {
     }
     print('_onMapLongPress===> ${latLng.toJson()}');
   }
+
   Widget showPoiInfo(AMapPoi poi) {
     return Container(
       alignment: Alignment.center,
@@ -443,6 +464,7 @@ class MapPageState extends State<MapPage> {
       ),
     );
   }
+
   void _onMapPoiTouched(AMapPoi poi) {
     print(poi);
     _poi = poi;
@@ -450,10 +472,14 @@ class MapPageState extends State<MapPage> {
       _poiInfo = showPoiInfo(poi);
     });
   }
+
   //添加一个marker
   void _addMarker() {
-    final _markerPosition =
-    LatLng(double.parse(getx.Get.find<UserController>().location!['latitude'].toString()), double.parse(getx.Get.find<UserController>().location!['longitude'].toString()));
+    final _markerPosition = LatLng(
+        double.parse(
+            getx.Get.find<UserController>().location!['latitude'].toString()),
+        double.parse(
+            getx.Get.find<UserController>().location!['longitude'].toString()));
     final Marker marker = Marker(
       position: _markerPosition,
       //使用默认hue的方式设置Marker的图标
@@ -465,36 +491,32 @@ class MapPageState extends State<MapPage> {
       _markers[marker.id] = marker;
     });
   }
-  void _goDynamicPostPage(){
-    if(_poi == null){
+
+  void _goDynamicPostPage() {
+    if (_poi == null) {
       ToastUtils.success('请选择一个地点！');
-    }else{
-      getx.Get.toNamed(
-          "/index/dynamic/post"
-              "?position=${Uri.encodeComponent(_poi!.name.toString())}"
-              "&latitude=${Uri.encodeComponent(_poi!.latLng!.latitude.toString())}"
-              "&longitude=${Uri.encodeComponent(_poi!.latLng!.longitude.toString())}"
-      );
+    } else {
+      getx.Get.toNamed("/index/dynamic/post"
+          "?position=${Uri.encodeComponent(_poi!.name.toString())}"
+          "&latitude=${Uri.encodeComponent(_poi!.latLng!.latitude.toString())}"
+          "&longitude=${Uri.encodeComponent(_poi!.latLng!.longitude.toString())}");
     }
   }
 }
+
 /// 曲线路径
 class CurveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path()..lineTo(0, 40);
 
-    var firstControlPoint = Offset(size.width/2, 0);
-    var firstEdnPoint = Offset(size.width,40);
+    var firstControlPoint = Offset(size.width / 2, 0);
+    var firstEdnPoint = Offset(size.width, 40);
 
-    path.quadraticBezierTo(
-        firstControlPoint.dx,
-        firstControlPoint.dy,
-        firstEdnPoint.dx,
-        firstEdnPoint.dy);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEdnPoint.dx, firstEdnPoint.dy);
 
-    path..lineTo(size.width, size.height )
-      ..lineTo(0, size.height );
+    path..lineTo(size.width, size.height)..lineTo(0, size.height);
 
     return path;
   }

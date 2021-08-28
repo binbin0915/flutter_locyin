@@ -140,7 +140,6 @@ class UserController extends GetxController{
   }
   void updateLocation(Map<String, Object>? loc){
     _location= loc;
-    print(loc);
     print("更新位置视图");
     update(['location']);
   }
