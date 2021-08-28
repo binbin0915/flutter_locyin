@@ -1,4 +1,5 @@
 import 'package:flutter_locyin/page/Dynamic/dynamic_detail.dart';
+import 'package:flutter_locyin/page/Map/post.dart';
 import 'package:flutter_locyin/page/Welcome/welcome.dart';
 import 'package:flutter_locyin/page/User/login_code.dart';
 import 'package:flutter_locyin/page/advantage.dart';
@@ -20,6 +21,7 @@ class RouteMap {
       return Get.find<UserController>().user==null?LoginCodePage(): MainHomePage();
     }),
     GetPage(name: '/index/dynamic/detail', page: () => DynamicDetailPage()),
+    GetPage(name: '/index/dynamic/post', page: () => DynamicPostPage()),
     GetPage(name: '/menu/settings', page: () => SettingsPage()),
     GetPage(name: '/menu/settings/theme', page: () => ThemePage()),
     GetPage(name: '/menu/settings/language', page: () => LanguagePage()),

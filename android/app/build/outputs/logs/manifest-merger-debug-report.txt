@@ -1,41 +1,64 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-68:12
-INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-68:12
-INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-68:12
-INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-68:12
-MERGED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-68:12
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-66:12
+INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-66:12
+INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-66:12
+INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-66:12
+MERGED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-66:12
 MERGED from [:amap_flutter_map] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\amap_flutter_map\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_plugin_android_lifecycle] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:image_gallery_saver] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\image_gallery_saver\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:shared_preferences] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:sqflite] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:webview_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\webview_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:path_provider] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\path_provider\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:amap_flutter_location] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\amap_flutter_location\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:sentry_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sentry_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-18:12
+MERGED from [:photo_manager] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\photo_manager\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-11:12
+MERGED from [:device_info] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\device_info\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:video_player] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\video_player\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:package_info_plus] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\package_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:url_launcher] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-14:12
 MERGED from [:share] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-19:12
 MERGED from [:permission_handler] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\permission_handler\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.webkit:webkit:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\cbbb6921b2521959953b0c781fe5c304\webkit-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2fd9120a6da4df3dbabdd40f6a2d8995\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\eb26273f8f7192460456ce62b9bdf9ef\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.loader:loader:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d9536c14ffde0b7289f12ba6def6bfa4\loader-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.activity:activity:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\68dbf8ea01a1dbd974fc87b5753550f0\jetified-activity-1.0.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.customview:customview:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\bc28a09d8d2212ffd5788fe6c1853326\customview-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.core:core:1.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\9d2ac2ae8a44d697ec01e22fb5b300b2\core-1.3.1\AndroidManifest.xml:17:1-26:12
-MERGED from [io.sentry:sentry-android:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fc78ecaffeb9eb62b23f07be6cf38857\jetified-sentry-android-5.0.1\AndroidManifest.xml:2:1-11:12
-MERGED from [io.sentry:sentry-android-ndk:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\4c86f8373978911c058dbde5eb2e168d\jetified-sentry-android-ndk-5.0.1\AndroidManifest.xml:2:1-9:12
-MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\0e1a99823bd8c176e2f6adf5771c49e7\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:2:1-20:12
-MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:17:1-32:12
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ca6b214160bd0909b103aa12202ef51c\lifecycle-runtime-2.2.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2271d874344878e62b9a8e309af0c39d\jetified-savedstate-1.0.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fb333fb43575d8a3b51161295454427f\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\cad25976877a6ae855ef6821534f58a1\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\96aee308bccd03bc62c306516c23a410\versionedparcelable-1.1.0\AndroidManifest.xml:17:1-27:12
-MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\5f606c30f064eed94124828de37fadc0\core-runtime-2.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\15792e6083b2b5b5a7ffa285d47daa24\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [:camera] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\camera\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-10:12
+MERGED from [androidx.webkit:webkit:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\604a8e7cb24e08af3f6fb0b1dc26a12c\webkit-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat:1.3.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\11c325cfc6403e9790064995b30f4a5d\appcompat-1.3.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-ktx:1.6.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\01421d48cb3c6435656dd4fc3e0a6f44\jetified-core-ktx-1.6.0\AndroidManifest.xml:2:1-9:12
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\be9825ae4f1068a3cb6cdd2296a51920\jetified-glide-4.11.0\AndroidManifest.xml:2:1-12:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.2] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\81e1e687559234dea3364f00f92eeadc\exifinterface-1.3.2\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fd0bd2cb2f0119dd7ba700549ab2d20d\jetified-exoplayer-hls-2.14.1\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2885221270255755b5971ba9e6c5f50e\jetified-exoplayer-dash-2.14.1\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\e8d72fa862ce410760a2b09298e0cd51\jetified-exoplayer-smoothstreaming-2.14.1\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\57c77c2cec1795d244a3a14d4a92f25c\jetified-exoplayer-core-2.14.1\AndroidManifest.xml:17:1-26:12
+MERGED from [io.sentry:sentry-android:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\03a5aabd5fdd1a381541080326d7d35c\jetified-sentry-android-5.0.1\AndroidManifest.xml:2:1-11:12
+MERGED from [io.sentry:sentry-android-ndk:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\6406b4e62c557bf7f5fd2fb480270f58\jetified-sentry-android-ndk-5.0.1\AndroidManifest.xml:2:1-9:12
+MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\50b0440287665c3b05abceff28ae4909\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:2:1-20:12
+MERGED from [androidx.fragment:fragment:1.3.4] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\4d983a0a72aecc9589c8c173373afe81\fragment-1.3.4\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.2.3] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c2b6532e5a5b49094f1a21589683a781\jetified-activity-1.2.3\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat-resources:1.3.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\f6fe7267d11519245467f367acd8b3e7\jetified-appcompat-resources-1.3.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\da6620b9bc48bf5ee4250ed2d4243100\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\31e636660de7a70a8c70169a01b3097c\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\6f08dd0d2840d2a87019f03205248ed7\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\5deccd5fc87a40d99612758fa0156e05\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\8e5375a27263550e78dde8efb2387044\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\cf33851c0b68ab053faa8b9471deed8b\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.6.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\3db6d125c6afcb0a6fe221b28e1b5f57\core-1.6.0\AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:17:1-32:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\011c42ad7fe52b5fd75344ea2265ee1e\lifecycle-runtime-2.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\52196ac41bf2fb7cc27efac53557f75a\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\a0459c6326839962c0ab62cedbf1ef02\jetified-lifecycle-viewmodel-savedstate-2.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2b7a7ec035df635b3fe6fe79fcb3b540\jetified-savedstate-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\6cb36cc2e2abf070b8d9ce0da284e20c\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2396a3af87fed12c07cdefa41e61fbce\jetified-gifdecoder-4.11.0\AndroidManifest.xml:2:1-11:12
+MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\bd22ab524bed37faa14ddd44e0831a71\jetified-exoplayer-extractor-2.14.1\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\03b104f87ffd6494d924cb9b8756533c\jetified-exoplayer-common-2.14.1\AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ae65f2a7121d828c47c96dad312c1e05\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ee62cc2054f782a126419a788ca31b2c\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\9d94875cb34299bbbd3e03beb3d39df2\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\76605fa902a78560d4cdf09077ed5376\core-runtime-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\1813c8e4627db77392c9553b28e783b7\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\302682d93129c63da9a172e62f7109fe\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\b49f327f03b373d7ebbba6c09076bbb2\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
 INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml:1:1-7:12
@@ -45,132 +68,136 @@ INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_loc
 		INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-68:12
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-66:12
 		INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml
 	android:versionCode
 		INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-68:12
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:1-66:12
 		INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:1:11-69
-uses-permission#android.permission.INTERNET
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:4:5-66
-MERGED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:4:5-66
-MERGED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:4:5-66
-MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\0e1a99823bd8c176e2f6adf5771c49e7\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:9:5-67
-MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\0e1a99823bd8c176e2f6adf5771c49e7\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:9:5-67
-	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:4:22-64
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:6:5-80
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:4:5-80
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:6:22-78
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:4:22-78
 uses-permission#android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:8:5-89
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:6:5-89
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:8:22-86
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:6:22-86
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:10:5-78
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:8:5-78
+	android:name
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:8:22-76
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:10:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\57c77c2cec1795d244a3a14d4a92f25c\jetified-exoplayer-core-2.14.1\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\57c77c2cec1795d244a3a14d4a92f25c\jetified-exoplayer-core-2.14.1\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\03b104f87ffd6494d924cb9b8756533c\jetified-exoplayer-common-2.14.1\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\03b104f87ffd6494d924cb9b8756533c\jetified-exoplayer-common-2.14.1\AndroidManifest.xml:24:5-79
 	android:name
 		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:10:22-76
-uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:12:5-79
-	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:12:22-76
 uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:14:5-75
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:12:5-75
+	android:name
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:12:22-73
+uses-permission#android.permission.CHANGE_WIFI_STATE
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:14:5-76
 	android:name
 		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:14:22-73
-uses-permission#android.permission.CHANGE_WIFI_STATE
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:16:5-76
-	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:16:22-73
 uses-permission#android.permission.READ_PHONE_STATE
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:18:5-74
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:16:5-74
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:18:22-72
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:16:22-72
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:20:5-79
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:18:5-79
+MERGED from [:photo_manager] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\photo_manager\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-80
+MERGED from [:photo_manager] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\photo_manager\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-80
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:20:22-77
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:18:22-77
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:22:5-80
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:20:5-80
+MERGED from [:photo_manager] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\photo_manager\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
+MERGED from [:photo_manager] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\photo_manager\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:22:22-78
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:20:22-78
 application
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:25:4-67:19
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:23:4-65:19
 MERGED from [:sentry_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sentry_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-16:19
 MERGED from [:sentry_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sentry_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-16:19
 MERGED from [:url_launcher] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-12:19
 MERGED from [:url_launcher] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-12:19
 MERGED from [:share] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-17:19
 MERGED from [:share] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-17:19
-MERGED from [androidx.core:core:1.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\9d2ac2ae8a44d697ec01e22fb5b300b2\core-1.3.1\AndroidManifest.xml:24:5-89
-MERGED from [androidx.core:core:1.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\9d2ac2ae8a44d697ec01e22fb5b300b2\core-1.3.1\AndroidManifest.xml:24:5-89
-MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\0e1a99823bd8c176e2f6adf5771c49e7\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:11:5-18:19
-MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\0e1a99823bd8c176e2f6adf5771c49e7\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:11:5-18:19
-MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:24:5-30:19
-MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:24:5-30:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\96aee308bccd03bc62c306516c23a410\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\96aee308bccd03bc62c306516c23a410\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\be9825ae4f1068a3cb6cdd2296a51920\jetified-glide-4.11.0\AndroidManifest.xml:10:5-20
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\be9825ae4f1068a3cb6cdd2296a51920\jetified-glide-4.11.0\AndroidManifest.xml:10:5-20
+MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\50b0440287665c3b05abceff28ae4909\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:11:5-18:19
+MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\50b0440287665c3b05abceff28ae4909\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:11:5-18:19
+MERGED from [androidx.core:core:1.6.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\3db6d125c6afcb0a6fe221b28e1b5f57\core-1.6.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.6.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\3db6d125c6afcb0a6fe221b28e1b5f57\core-1.6.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:24:5-30:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:24:5-30:19
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2396a3af87fed12c07cdefa41e61fbce\jetified-gifdecoder-4.11.0\AndroidManifest.xml:9:5-20
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2396a3af87fed12c07cdefa41e61fbce\jetified-gifdecoder-4.11.0\AndroidManifest.xml:9:5-20
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ae65f2a7121d828c47c96dad312c1e05\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ae65f2a7121d828c47c96dad312c1e05\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
 	android:appComponentFactory
-		ADDED from [androidx.core:core:1.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\9d2ac2ae8a44d697ec01e22fb5b300b2\core-1.3.1\AndroidManifest.xml:24:18-86
+		ADDED from [androidx.core:core:1.6.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\3db6d125c6afcb0a6fe221b28e1b5f57\core-1.6.0\AndroidManifest.xml:24:18-86
 	android:label
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:26:9-27
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:24:9-27
 	android:icon
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:27:9-45
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:25:9-45
 meta-data#com.amap.api.v2.apikey
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:28:9-30:64
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:26:9-28:64
 	android:value
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:30:13-61
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:28:13-61
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:29:13-50
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:27:13-50
 service#com.amap.api.location.APSService
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:32:8-66
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:30:8-66
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:32:17-64
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:30:17-64
 activity#com.locyin.flutter_locyin.MainActivity
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:33:8-61:20
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:31:8-59:20
 	android:launchMode
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:35:13-43
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:33:13-43
 	android:hardwareAccelerated
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:38:13-47
-	android:windowSoftInputMode
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:39:13-55
-	android:configChanges
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:37:13-163
-	android:theme
 		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:36:13-47
+	android:windowSoftInputMode
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:37:13-55
+	android:configChanges
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:35:13-163
+	android:theme
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:34:13-47
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:34:13-41
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:32:13-41
 meta-data#io.flutter.embedding.android.NormalTheme
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:44:13-47:17
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:42:13-45:17
 	android:resource
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:46:15-52
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:44:15-52
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:45:15-70
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:43:15-70
 meta-data#io.flutter.embedding.android.SplashScreenDrawable
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:53:13-56:17
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:51:13-54:17
 	android:resource
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:55:15-61
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:53:15-61
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:54:15-79
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:52:15-79
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:57:13-60:29
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:55:13-58:29
 action#android.intent.action.MAIN
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:58:17-68
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:56:17-68
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:58:25-66
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:56:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:59:17-76
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:57:17-76
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:59:27-74
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:57:27-74
 meta-data#flutterEmbedding
-ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:64:9-66:33
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:62:9-64:33
 	android:value
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:66:13-30
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:64:13-30
 	android:name
-		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:65:13-44
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml:63:13-44
 uses-sdk
 INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml
@@ -179,8 +206,6 @@ MERGED from [:amap_flutter_map] C:\Private\ParagramLife\Projects\AndroidStudioPr
 MERGED from [:amap_flutter_map] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\amap_flutter_map\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:image_gallery_saver] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\image_gallery_saver\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:image_gallery_saver] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\image_gallery_saver\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:sqflite] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
@@ -193,6 +218,12 @@ MERGED from [:amap_flutter_location] C:\Private\ParagramLife\Projects\AndroidStu
 MERGED from [:amap_flutter_location] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\amap_flutter_location\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:sentry_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sentry_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:6:5-8:41
 MERGED from [:sentry_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sentry_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:6:5-8:41
+MERGED from [:photo_manager] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\photo_manager\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:photo_manager] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\photo_manager\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:device_info] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\device_info\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:device_info] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\device_info\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:video_player] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\video_player\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:video_player] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\video_player\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:package_info_plus] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\package_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:package_info_plus] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\package_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:url_launcher] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
@@ -201,55 +232,103 @@ MERGED from [:share] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flut
 MERGED from [:share] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:permission_handler] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\permission_handler\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:permission_handler] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\permission_handler\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [androidx.webkit:webkit:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\cbbb6921b2521959953b0c781fe5c304\webkit-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.webkit:webkit:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\cbbb6921b2521959953b0c781fe5c304\webkit-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2fd9120a6da4df3dbabdd40f6a2d8995\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2fd9120a6da4df3dbabdd40f6a2d8995\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\eb26273f8f7192460456ce62b9bdf9ef\viewpager-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\eb26273f8f7192460456ce62b9bdf9ef\viewpager-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d9536c14ffde0b7289f12ba6def6bfa4\loader-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d9536c14ffde0b7289f12ba6def6bfa4\loader-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.activity:activity:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\68dbf8ea01a1dbd974fc87b5753550f0\jetified-activity-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.activity:activity:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\68dbf8ea01a1dbd974fc87b5753550f0\jetified-activity-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.customview:customview:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\bc28a09d8d2212ffd5788fe6c1853326\customview-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\bc28a09d8d2212ffd5788fe6c1853326\customview-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core:1.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\9d2ac2ae8a44d697ec01e22fb5b300b2\core-1.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.core:core:1.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\9d2ac2ae8a44d697ec01e22fb5b300b2\core-1.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [io.sentry:sentry-android:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fc78ecaffeb9eb62b23f07be6cf38857\jetified-sentry-android-5.0.1\AndroidManifest.xml:6:5-9:57
-MERGED from [io.sentry:sentry-android:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fc78ecaffeb9eb62b23f07be6cf38857\jetified-sentry-android-5.0.1\AndroidManifest.xml:6:5-9:57
-MERGED from [io.sentry:sentry-android-ndk:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\4c86f8373978911c058dbde5eb2e168d\jetified-sentry-android-ndk-5.0.1\AndroidManifest.xml:5:5-7:41
-MERGED from [io.sentry:sentry-android-ndk:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\4c86f8373978911c058dbde5eb2e168d\jetified-sentry-android-ndk-5.0.1\AndroidManifest.xml:5:5-7:41
-MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\0e1a99823bd8c176e2f6adf5771c49e7\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:5:5-7:41
-MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\0e1a99823bd8c176e2f6adf5771c49e7\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ca6b214160bd0909b103aa12202ef51c\lifecycle-runtime-2.2.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ca6b214160bd0909b103aa12202ef51c\lifecycle-runtime-2.2.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2271d874344878e62b9a8e309af0c39d\jetified-savedstate-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2271d874344878e62b9a8e309af0c39d\jetified-savedstate-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fb333fb43575d8a3b51161295454427f\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fb333fb43575d8a3b51161295454427f\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\cad25976877a6ae855ef6821534f58a1\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\cad25976877a6ae855ef6821534f58a1\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\96aee308bccd03bc62c306516c23a410\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\96aee308bccd03bc62c306516c23a410\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\5f606c30f064eed94124828de37fadc0\core-runtime-2.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\5f606c30f064eed94124828de37fadc0\core-runtime-2.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\15792e6083b2b5b5a7ffa285d47daa24\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\15792e6083b2b5b5a7ffa285d47daa24\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [:camera] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\camera\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:camera] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\camera\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [androidx.webkit:webkit:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\604a8e7cb24e08af3f6fb0b1dc26a12c\webkit-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.webkit:webkit:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\604a8e7cb24e08af3f6fb0b1dc26a12c\webkit-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.3.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\11c325cfc6403e9790064995b30f4a5d\appcompat-1.3.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.3.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\11c325cfc6403e9790064995b30f4a5d\appcompat-1.3.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.6.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\01421d48cb3c6435656dd4fc3e0a6f44\jetified-core-ktx-1.6.0\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.core:core-ktx:1.6.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\01421d48cb3c6435656dd4fc3e0a6f44\jetified-core-ktx-1.6.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\be9825ae4f1068a3cb6cdd2296a51920\jetified-glide-4.11.0\AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\be9825ae4f1068a3cb6cdd2296a51920\jetified-glide-4.11.0\AndroidManifest.xml:6:5-8:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.2] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\81e1e687559234dea3364f00f92eeadc\exifinterface-1.3.2\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.2] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\81e1e687559234dea3364f00f92eeadc\exifinterface-1.3.2\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fd0bd2cb2f0119dd7ba700549ab2d20d\jetified-exoplayer-hls-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fd0bd2cb2f0119dd7ba700549ab2d20d\jetified-exoplayer-hls-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2885221270255755b5971ba9e6c5f50e\jetified-exoplayer-dash-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2885221270255755b5971ba9e6c5f50e\jetified-exoplayer-dash-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\e8d72fa862ce410760a2b09298e0cd51\jetified-exoplayer-smoothstreaming-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\e8d72fa862ce410760a2b09298e0cd51\jetified-exoplayer-smoothstreaming-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\57c77c2cec1795d244a3a14d4a92f25c\jetified-exoplayer-core-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\57c77c2cec1795d244a3a14d4a92f25c\jetified-exoplayer-core-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [io.sentry:sentry-android:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\03a5aabd5fdd1a381541080326d7d35c\jetified-sentry-android-5.0.1\AndroidManifest.xml:6:5-9:57
+MERGED from [io.sentry:sentry-android:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\03a5aabd5fdd1a381541080326d7d35c\jetified-sentry-android-5.0.1\AndroidManifest.xml:6:5-9:57
+MERGED from [io.sentry:sentry-android-ndk:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\6406b4e62c557bf7f5fd2fb480270f58\jetified-sentry-android-ndk-5.0.1\AndroidManifest.xml:5:5-7:41
+MERGED from [io.sentry:sentry-android-ndk:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\6406b4e62c557bf7f5fd2fb480270f58\jetified-sentry-android-ndk-5.0.1\AndroidManifest.xml:5:5-7:41
+MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\50b0440287665c3b05abceff28ae4909\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:5:5-7:41
+MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\50b0440287665c3b05abceff28ae4909\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.fragment:fragment:1.3.4] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\4d983a0a72aecc9589c8c173373afe81\fragment-1.3.4\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.4] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\4d983a0a72aecc9589c8c173373afe81\fragment-1.3.4\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.2.3] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c2b6532e5a5b49094f1a21589683a781\jetified-activity-1.2.3\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.2.3] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c2b6532e5a5b49094f1a21589683a781\jetified-activity-1.2.3\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.3.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\f6fe7267d11519245467f367acd8b3e7\jetified-appcompat-resources-1.3.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.3.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\f6fe7267d11519245467f367acd8b3e7\jetified-appcompat-resources-1.3.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\da6620b9bc48bf5ee4250ed2d4243100\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\da6620b9bc48bf5ee4250ed2d4243100\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\31e636660de7a70a8c70169a01b3097c\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\31e636660de7a70a8c70169a01b3097c\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\6f08dd0d2840d2a87019f03205248ed7\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\6f08dd0d2840d2a87019f03205248ed7\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\5deccd5fc87a40d99612758fa0156e05\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\5deccd5fc87a40d99612758fa0156e05\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\8e5375a27263550e78dde8efb2387044\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\8e5375a27263550e78dde8efb2387044\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\cf33851c0b68ab053faa8b9471deed8b\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\cf33851c0b68ab053faa8b9471deed8b\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.6.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\3db6d125c6afcb0a6fe221b28e1b5f57\core-1.6.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.6.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\3db6d125c6afcb0a6fe221b28e1b5f57\core-1.6.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\011c42ad7fe52b5fd75344ea2265ee1e\lifecycle-runtime-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\011c42ad7fe52b5fd75344ea2265ee1e\lifecycle-runtime-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\52196ac41bf2fb7cc27efac53557f75a\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\52196ac41bf2fb7cc27efac53557f75a\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\a0459c6326839962c0ab62cedbf1ef02\jetified-lifecycle-viewmodel-savedstate-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\a0459c6326839962c0ab62cedbf1ef02\jetified-lifecycle-viewmodel-savedstate-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2b7a7ec035df635b3fe6fe79fcb3b540\jetified-savedstate-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2b7a7ec035df635b3fe6fe79fcb3b540\jetified-savedstate-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\6cb36cc2e2abf070b8d9ce0da284e20c\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\6cb36cc2e2abf070b8d9ce0da284e20c\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2396a3af87fed12c07cdefa41e61fbce\jetified-gifdecoder-4.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\2396a3af87fed12c07cdefa41e61fbce\jetified-gifdecoder-4.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\bd22ab524bed37faa14ddd44e0831a71\jetified-exoplayer-extractor-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-extractor:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\bd22ab524bed37faa14ddd44e0831a71\jetified-exoplayer-extractor-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\03b104f87ffd6494d924cb9b8756533c\jetified-exoplayer-common-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\03b104f87ffd6494d924cb9b8756533c\jetified-exoplayer-common-2.14.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ae65f2a7121d828c47c96dad312c1e05\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ae65f2a7121d828c47c96dad312c1e05\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ee62cc2054f782a126419a788ca31b2c\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\ee62cc2054f782a126419a788ca31b2c\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\9d94875cb34299bbbd3e03beb3d39df2\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\9d94875cb34299bbbd3e03beb3d39df2\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\76605fa902a78560d4cdf09077ed5376\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\76605fa902a78560d4cdf09077ed5376\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\1813c8e4627db77392c9553b28e783b7\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\1813c8e4627db77392c9553b28e783b7\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\302682d93129c63da9a172e62f7109fe\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\302682d93129c63da9a172e62f7109fe\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\b49f327f03b373d7ebbba6c09076bbb2\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\b49f327f03b373d7ebbba6c09076bbb2\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
 INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml
 INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml
 	tools:overrideLibrary
-		ADDED from [io.sentry:sentry-android:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\fc78ecaffeb9eb62b23f07be6cf38857\jetified-sentry-android-5.0.1\AndroidManifest.xml:9:9-54
+		ADDED from [io.sentry:sentry-android:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\03a5aabd5fdd1a381541080326d7d35c\jetified-sentry-android-5.0.1\AndroidManifest.xml:9:9-54
 	android:targetSdkVersion
 		INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml:6:5-66
+MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\50b0440287665c3b05abceff28ae4909\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:9:5-67
+MERGED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\50b0440287665c3b05abceff28ae4909\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:9:5-67
+	android:name
+		ADDED from C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\android\app\src\debug\AndroidManifest.xml:6:22-64
 provider#io.sentry.android.core.SentryInitProvider
 ADDED from [:sentry_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sentry_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-15:35
-REJECTED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\0e1a99823bd8c176e2f6adf5771c49e7\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:14:9-17:40
+REJECTED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\50b0440287665c3b05abceff28ae4909\jetified-sentry-android-core-5.0.1\AndroidManifest.xml:14:9-17:40
 	tools:node
 		ADDED from [:sentry_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sentry_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-32
 	android:authorities
@@ -258,6 +337,10 @@ REJECTED from [io.sentry:sentry-android-core:5.0.1] C:\Users\locyin\.gradle\cach
 		ADDED from [:sentry_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sentry_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
 	android:name
 		ADDED from [:sentry_flutter] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\sentry_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-69
+uses-permission#android.permission.ACCESS_MEDIA_LOCATION
+ADDED from [:photo_manager] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\photo_manager\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-80
+	android:name
+		ADDED from [:photo_manager] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\photo_manager\intermediates\library_manifest\debug\AndroidManifest.xml:9:22-77
 activity#io.flutter.plugins.urllauncher.WebViewActivity
 ADDED from [:url_launcher] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
 	android:exported
@@ -282,13 +365,21 @@ ADDED from [:share] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutt
 		ADDED from [:share] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-65
 	android:name
 		ADDED from [:share] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
-provider#androidx.lifecycle.ProcessLifecycleOwnerInitializer
-ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:25:9-29:43
-	android:authorities
-		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:27:13-69
-	android:multiprocess
-		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:29:13-40
-	android:exported
-		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:28:13-37
+uses-permission#android.permission.CAMERA
+ADDED from [:camera] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\camera\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-65
 	android:name
-		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\c4638f988b0d37ee298bcd68de171114\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:26:13-79
+		ADDED from [:camera] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\camera\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-62
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from [:camera] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\camera\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-71
+	android:name
+		ADDED from [:camera] C:\Private\ParagramLife\Projects\AndroidStudioProjects\flutter_locyin\build\camera\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-68
+provider#androidx.lifecycle.ProcessLifecycleOwnerInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:25:9-29:43
+	android:authorities
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:27:13-69
+	android:multiprocess
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:29:13-40
+	android:exported
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:28:13-37
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\locyin\.gradle\caches\transforms-2\files-2.1\d3ebae5cb2ca4b24ef793667a87095cb\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:26:13-79

@@ -19,6 +19,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
+  flutter: '>=2.0.0'
 
 # 依赖库
 dependencies:
@@ -34,23 +35,30 @@ dependencies:
   oktoast: ^3.1.1
   get: ^4.3.8
   webview_flutter: ^2.0.12
-  shared_preferences: ^2.0.6
+  shared_preferences: ^2.0.7
   dio: ^4.0.0
-  flutter_spinkit: ^5.0.0
+  flutter_spinkit: ^5.1.0
   flutter_verification_box: ^2.0.0
   flutter_native_splash: ^1.2.1
   url_launcher: ^6.0.9
-  flutter_launcher_icons: ^0.9.1
+  flutter_launcher_icons: ^0.9.2
   flutter_easyrefresh: ^2.2.1
   skeleton_text: ^3.0.0
   flutter_swiper_null_safety: ^1.0.2
   cached_network_image: ^3.1.0
-  image_gallery_saver: ^1.6.9
   share: ^2.0.4
   permission_handler: ^8.1.4+2
   amap_flutter_location: 2.0.0
   amap_flutter_map: 2.0.2
   amap_flutter_base: 2.0.0
+  wechat_assets_picker: ^6.0.5
+  wechat_camera_picker: ^2.3.1
+  extended_image: ^4.1.0
+  package_info_plus: ^1.0.6
+  path: ^1.8.0
+  path_provider: ^2.0.2
+  provider: ^6.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

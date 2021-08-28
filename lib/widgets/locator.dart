@@ -168,7 +168,7 @@ class _LocatorWidgetState extends State<LocatorWidget> {
               Icons.location_on_outlined,
             ),
           ),
-          onPressed: () {   },
+          onPressed: widget.onPressed(_locationResult),
         ),
       )
       /*InkResponse(

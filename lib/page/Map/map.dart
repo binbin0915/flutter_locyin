@@ -2,6 +2,7 @@ import 'package:amap_flutter_base/amap_flutter_base.dart';
 import 'package:amap_flutter_map/amap_flutter_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/utils/getx.dart';
+import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/amap_gridview.dart';
 import 'package:flutter_locyin/widgets/locator.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -246,7 +247,7 @@ class MapPageState extends State<MapPage> {
                         //路径裁切组件
                         clipper: CurveClipper(), //路径
                         child: ElevatedButton(
-                          onPressed: () {  },
+                          onPressed: _goDynamicPostPage,
                           child: SizedBox(
                             child: Column(
                               children: [
@@ -464,7 +465,18 @@ class MapPageState extends State<MapPage> {
       _markers[marker.id] = marker;
     });
   }
-
+  void _goDynamicPostPage(){
+    if(_poi == null){
+      ToastUtils.success('请选择一个地点！');
+    }else{
+      getx.Get.toNamed(
+          "/index/dynamic/post"
+              "?position=${Uri.encodeComponent(_poi!.name.toString())}"
+              "&latitude=${Uri.encodeComponent(_poi!.latLng!.latitude.toString())}"
+              "&longitude=${Uri.encodeComponent(_poi!.latLng!.longitude.toString())}"
+      );
+    }
+  }
 }
 /// 曲线路径
 class CurveClipper extends CustomClipper<Path> {
