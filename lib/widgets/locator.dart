@@ -157,7 +157,21 @@ class _LocatorWidgetState extends State<LocatorWidget> {
     );*/
     return ClipPath.shape(
       shape: StadiumBorder(),
-      child: InkResponse(
+      child:
+      ClipPath.shape(
+        shape: StadiumBorder(),
+        child: ElevatedButton(
+          child: SizedBox(
+            width: 60,
+            height: 40,
+            child: Icon(
+              Icons.location_on_outlined,
+            ),
+          ),
+          onPressed: () {   },
+        ),
+      )
+      /*InkResponse(
         child: Row(
           children: [
             SizedBox(
@@ -176,7 +190,7 @@ class _LocatorWidgetState extends State<LocatorWidget> {
           ],
         ),
         onTap: () {  widget.onPressed(_locationResult); },
-      ),
+      ),*/
     );
   }
 

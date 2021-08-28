@@ -170,87 +170,38 @@ class MapPageState extends State<MapPage> {
                     child: amap,
                   ),
                   Positioned(
-                    right: -20,
-                    bottom: 72,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ClipPath.shape(
-                          shape: StadiumBorder(),
-                          child: InkResponse(
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                  width: 80,
-                                  height: 40,
-                                  color: Colors.blue,
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                  height: 40,
-                                )
-                              ],
-                            ),
-                            onTap: _zoomIn,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                          height: 20,
-                        ),
-                        /*InkResponse(
-                          child: Container(
+                      right: -10,
+                      bottom: 132,
+                      child: ClipPath.shape(
+                        shape: StadiumBorder(),
+                        child: ElevatedButton(
+                          child: SizedBox(
+                            width: 60,
+                            height: 40,
                             child: Icon(
                               Icons.add,
-                              color: Colors.white,
                             ),
-                            width: 40,
-                            height: 40,
-                            color: Colors.blue,
                           ),
-                          onTap: _zoomIn,
-                        ),*/
-                        ClipPath.shape(
-                          shape: StadiumBorder(),
-                          child: InkResponse(
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Icon(
-                                    Icons.remove,
-                                    color: Colors.white,
-                                  ),
-                                  width: 80,
-                                  height: 40,
-                                  color: Colors.blue,
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                  height: 40,
-                                )
-                              ],
-                            ),
-                            onTap: _zoomOut,
-                          ),
+                          onPressed: _zoomIn,
                         ),
-                       /* InkResponse(
-                          child: Container(
+                      )
+                  ),
+                  Positioned(
+                      right: -10,
+                      bottom: 72,
+                      child: ClipPath.shape(
+                        shape: StadiumBorder(),
+                        child: ElevatedButton(
+                          child: SizedBox(
+                            width: 60,
+                            height: 40,
                             child: Icon(
                               Icons.remove,
-                              color: Colors.white,
                             ),
-                            color: Colors.blue,
-                            width: 40,
-                            height: 40,
                           ),
-                          onTap: _zoomOut,
-                        ),*/
-                      ],
-                    ),
+                          onPressed: _zoomOut,
+                        ),
+                      )
                   ),
                   getx.GetBuilder<UserController>(
                     init: UserController(),
@@ -262,7 +213,7 @@ class MapPageState extends State<MapPage> {
                         initMineLocation  = true;
                       }
                       return Positioned(
-                          left: -20,
+                          left: -10,
                           bottom: 72,
                           child: LocatorWidget(onPressed: (Map<String,
                               Object>? _locationResult) {
@@ -272,44 +223,69 @@ class MapPageState extends State<MapPage> {
                       );
                   }),
                   Positioned(
-                      left: -20,
+                      left: -10,
                       bottom: 132,
                       child: ClipPath.shape(
                         shape: StadiumBorder(),
-                        child: InkResponse(
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 20,
-                                height: 40,
-                              ),
-                              Container(
-                                child: Icon(
-                                  Icons.settings,
-                                  color: Colors.white,
-                                ),
-                                width: 80,
-                                height: 40,
-                                color: Colors.blue,
-                              ),
-                            ],
+                        child: ElevatedButton(
+                          child: SizedBox(
+                            width: 60,
+                            height: 40,
+                            child: Icon(
+                              Icons.settings,
+                            ),
                           ),
-                          onTap: () {   },
+                          onPressed: () {   },
                         ),
                       )
                   ),
                   Positioned(
-                    bottom: 0,
-                    child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.grey,
-                    padding: EdgeInsets.all(5),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      _currentZoom.toString(),
-                      style: TextStyle(color: Colors.white),
-                    ),
+                      left: MediaQuery.of(context).size.width/2 -45,
+                      bottom: 24,
+                      child: ClipPath(
+                        //路径裁切组件
+                        clipper: CurveClipper(), //路径
+                        child: ElevatedButton(
+                          onPressed: () {  },
+                          child: SizedBox(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Expanded(
+                                  child: Icon(
+                                    Icons.send,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                      "发布游记",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            width: 60,
+                            height: 100,
+                          ),
+                        ),
+                      ),
                   ),
+
+                  Positioned(
+                    bottom: 0,
+                      child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.grey,
+                      padding: EdgeInsets.all(5),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        _currentZoom.toString(),
+                      ),
+                    ),
                   ),
                   Positioned(
                     top: 40,
@@ -322,27 +298,6 @@ class MapPageState extends State<MapPage> {
                 ],
               ),
             ),
-            /*Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                            width: MediaQuery.of(context).size.width,
-                            color: Colors.grey,
-                            padding: EdgeInsets.all(5),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              _currentZoom.toString(),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                    ),
-                    Container(
-                      child: _cameraOptions(),
-                    ),
-                  ],
-                ),
-              ),
-            ),*/
           ],
         ));
   }
@@ -510,4 +465,28 @@ class MapPageState extends State<MapPage> {
     });
   }
 
+}
+/// 曲线路径
+class CurveClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path()..lineTo(0, 40);
+
+    var firstControlPoint = Offset(size.width/2, 0);
+    var firstEdnPoint = Offset(size.width,40);
+
+    path.quadraticBezierTo(
+        firstControlPoint.dx,
+        firstControlPoint.dy,
+        firstEdnPoint.dx,
+        firstEdnPoint.dy);
+
+    path..lineTo(size.width, size.height )
+      ..lineTo(0, size.height );
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
