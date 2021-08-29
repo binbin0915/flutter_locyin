@@ -6,12 +6,23 @@ import 'package:flutter_locyin/utils/getx.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 
-class Locator {
+class LocationBasedService {
+
+  static final _instance = LocationBasedService._internal();
+
+  //借助工厂模式实现单例模式
+  factory LocationBasedService() {
+    return _instance;
+  }
+  LocationBasedService._internal(){
+    _init();
+  }
+
   Map<String, Object>? _locationResult;
 
   AMapFlutterLocation _locationPlugin = new AMapFlutterLocation();
 
-  Locator(){
+  _init(){
     /// 动态申请定位权限
     _requestPermission();
 
@@ -44,7 +55,6 @@ class Locator {
           Get.find<UserController>().updateLocation(_locationResult);
         }
     });
-    startLocation();
   }
 
   ///设置定位参数

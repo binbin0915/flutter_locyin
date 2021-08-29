@@ -2,9 +2,8 @@ import 'package:amap_flutter_base/amap_flutter_base.dart';
 import 'package:amap_flutter_map/amap_flutter_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/utils/getx.dart';
+import 'package:flutter_locyin/utils/location_based_service.dart';
 import 'package:flutter_locyin/utils/toast.dart';
-import 'package:flutter_locyin/widgets/amap_gridview.dart';
-import 'package:flutter_locyin/widgets/locator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'const_config.dart';
 import 'package:get/get.dart' as getx;
@@ -83,6 +82,9 @@ class MapPageState extends State<MapPage> {
 
   AMapPoi? _poi;
 
+  //实例化定位服务类
+  var _locator = new LocationBasedService();
+
   void _checkPermissions() async {
     Map<Permission, PermissionStatus> statuses =
         await needPermissionList.request();
@@ -95,7 +97,8 @@ class MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     _checkPermissions();
-    Locator();
+    //开始定位
+    _locator.startLocation();
   }
 
   @override
@@ -133,30 +136,6 @@ class MapPageState extends State<MapPage> {
       //创建地图时，给marker属性赋值一个空的set，否则后续无法添加marker
       markers: Set<Marker>.of(_markers.values),
     );
-    List<Widget> _optionsWidget = [
-      _createMyFloatButton('改变显示区域', _changeLatLngBounds),
-      _createMyFloatButton('改变中心点', _changeCameraPosition),
-      _createMyFloatButton('改变缩放级别到18', _changeCameraZoom),
-      _createMyFloatButton('按照像素移动地图', _scrollBy),
-    ];
-
-    Widget _cameraOptions() {
-      return Container(
-        padding: EdgeInsets.all(5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              child: AMapGradView(
-                childrenWidgets: _optionsWidget,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return ConstrainedBox(
         constraints: BoxConstraints.expand(),
         child: Column(
@@ -172,6 +151,7 @@ class MapPageState extends State<MapPage> {
                     width: MediaQuery.of(context).size.width,
                     child: amap,
                   ),
+                  //缩放加1按钮
                   Positioned(
                       right: -10,
                       bottom: 132,
@@ -188,6 +168,7 @@ class MapPageState extends State<MapPage> {
                           onPressed: _zoomIn,
                         ),
                       )),
+                  //缩放减1按钮
                   Positioned(
                       right: -10,
                       bottom: 72,
@@ -205,6 +186,7 @@ class MapPageState extends State<MapPage> {
                         ),
                       )
                   ),
+                  //自动定位
                   getx.GetBuilder<UserController>(
                       init: UserController(),
                       id: "location",
@@ -220,6 +202,7 @@ class MapPageState extends State<MapPage> {
                         }
                         return Container();
                       }),
+                  //定位按钮
                   Positioned(
                       left: -10,
                       bottom: 72,
@@ -246,6 +229,7 @@ class MapPageState extends State<MapPage> {
                         ),
                       )
                   ),
+                  //设置按钮
                   Positioned(
                       left: -10,
                       bottom: 132,
@@ -262,6 +246,7 @@ class MapPageState extends State<MapPage> {
                           onPressed: () {},
                         ),
                       )),
+                  //发布按钮
                   Positioned(
                     left: MediaQuery.of(context).size.width / 2 - 45,
                     bottom: 24,
@@ -297,6 +282,7 @@ class MapPageState extends State<MapPage> {
                       ),
                     ),
                   ),
+                  //缩放提示
                   Positioned(
                     bottom: 0,
                     child: Container(
@@ -309,6 +295,7 @@ class MapPageState extends State<MapPage> {
                       ),
                     ),
                   ),
+                  //点滴信息提示
                   Positioned(
                     top: 40,
                     width: MediaQuery.of(context).size.width,
