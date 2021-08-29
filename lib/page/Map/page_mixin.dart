@@ -184,12 +184,14 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
     },assets[i].file).then((value) => _uploadAssets(i-1));
   }
   Future<void> _post() async {
+    _closeKeyboard(context);
     _showDialog();
     await _uploadAssets(assets.length-1);
     print(assetsMapList);
     apiService.publishDynamic((Response response){
       print("发布成功");
-      getx.Get.offNamed("/index");
+      getx.Get.back();
+      getx.Get.back();
     }, (DioError error) {
       print(error);
       Navigator.of(context).pop();
@@ -206,5 +208,8 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
             loadingView: SpinKitCircle(color: getx.Get.theme.accentColor),
           );
         });
+  }
+  void _closeKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(blankNode);
   }
 }
