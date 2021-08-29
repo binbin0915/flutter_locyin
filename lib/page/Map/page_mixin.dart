@@ -2,10 +2,14 @@
 /// [Author] Alex (https://github.com/AlexV525)
 /// [Date] 2021/7/13 11:46
 ///
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_locyin/utils/toast.dart';
+import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/widgets/loading_dialog.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:flutter_locyin/widgets/lists//selected_assets_list_view.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
@@ -54,6 +58,7 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
       }
     }
   }
+  List<Map<String,String>> assetsMapList = [];
 
   FocusNode blankNode = FocusNode();
 
@@ -78,6 +83,9 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
 
   @override
   Widget build(BuildContext context) {
+    print(widget._position);
+    print(widget._latitude);
+    print(widget._longitude);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -102,10 +110,7 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
                 ),
               ),
               InkWell(
-                onTap: () {
-                  ToastUtils.toast("发布按钮");
-                  //_scaffoldKey.currentState.openDrawer();
-                },
+                onTap: _post,
                 child: Icon(Icons.send),
               ),
             ],
@@ -162,5 +167,44 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
         ),
       ),
     );
+  }
+  Future<void> _uploadAssets(int i) async {
+    if(i<0){
+      return ;
+    }
+    await apiService.uploadImage((Response response){
+      String _entityType = assets[i].type.toString();
+      assetsMapList.add({
+        "type": _entityType.substring(_entityType.lastIndexOf(".") + 1, _entityType.length),
+        "url": response.data["src"].toString()
+      });
+      print("上传成功${assets[i].id}");
+    }, (DioError error) {
+      print(error);
+    },assets[i].file).then((value) => _uploadAssets(i-1));
+  }
+  Future<void> _post() async {
+    _showDialog();
+    await _uploadAssets(assets.length-1);
+    print(assetsMapList);
+    apiService.publishDynamic((Response response){
+      print("发布成功");
+      getx.Get.offNamed("/index");
+    }, (DioError error) {
+      print(error);
+      Navigator.of(context).pop();
+    },_contentController.text,widget._position,widget._latitude,widget._longitude,assetsMapList);
+  }
+  void _showDialog(){
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return LoadingDialog(
+            showContent: false,
+            backgroundColor: getx.Get.theme.dialogBackgroundColor,
+            loadingView: SpinKitCircle(color: getx.Get.theme.accentColor),
+          );
+        });
   }
 }

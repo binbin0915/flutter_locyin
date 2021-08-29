@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_locyin/utils/handle_laravel_errors.dart';
 import 'package:flutter_locyin/utils/toast.dart';
-import 'package:flutter_locyin/utils/sputils.dart';
 import 'package:get/get.dart' as getx;
 import 'getx.dart';
 
@@ -24,7 +23,7 @@ class BaseNetWork {
           connectTimeout: 10000,
           receiveTimeout: 1000 * 60 * 60 * 24,
           responseType: ResponseType.json,
-          headers: {"Content-Type": "application/json;charset=utf-8"}
+          headers: {"Content-Type": "application/json;charset=utf-8",}
       )
     //网络状态拦截
       ..interceptors.add(AuthInterceptor())
@@ -40,13 +39,14 @@ class BaseNetWork {
 class AuthInterceptor extends Interceptor {
   @override
   Future onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    String? accessToken = SPUtils.getToken();
+    String? accessToken = getx.Get.find<ConstantController>().token;
     if (accessToken != null && accessToken != '') {
       print("获取到本地Token："+ accessToken);
-      options.headers['Authorization'] = accessToken;
+      options.headers["Authorization"] = accessToken;
     }else{
       print("没有获取到本地Token");
     }
+    options.headers["AcceptLanguage"] = getx.Get.find<LocaleController>().locale ?? "";
     return super.onRequest(options,handler);
   }
 }
@@ -79,7 +79,7 @@ class HttpLog extends Interceptor{
       BaseNetWork.instance.dio.lock();
       print("正在刷新Token");
       print("新的Token值 => "+response.headers["authorization"]![0]);
-      SPUtils.saveToken(response.headers["authorization"]![0]);
+      getx.Get.find<ConstantController>().setToken(response.headers["authorization"]![0]);
       BaseNetWork.instance.dio.unlock();
     }
     return super.onResponse(response,handler);
@@ -112,7 +112,6 @@ class ErrorInterceptor extends Interceptor {
           break;
         case DioErrorType.response:
           handleLaravelErrors(error);
-          print(error);
           print("出现异常");
           break;
         case DioErrorType.cancel:

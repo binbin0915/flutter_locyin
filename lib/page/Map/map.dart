@@ -483,10 +483,7 @@ class MapPageState extends State<MapPage> {
     if (_poi == null) {
       ToastUtils.success('请选择一个地点！');
     } else {
-      getx.Get.toNamed("/index/dynamic/post"
-          "?position=${Uri.encodeComponent(_poi!.name.toString())}"
-          "&latitude=${Uri.encodeComponent(_poi!.latLng!.latitude.toString())}"
-          "&longitude=${Uri.encodeComponent(_poi!.latLng!.longitude.toString())}");
+      getx.Get.toNamed("/index/dynamic/post"+ "?position=${Uri.encodeComponent(_poi!.name.toString())}"+"&latitude=${Uri.encodeComponent(_poi!.latLng!.latitude.toString())}"+"&longitude=${Uri.encodeComponent(_poi!.latLng!.longitude.toString())}");
     }
   }
 }

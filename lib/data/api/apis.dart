@@ -29,4 +29,13 @@ class Apis {
 
   /// 评论模型
   static const String COMMENT =  "comments";
+
+
+  /// 发布动态
+  static const String PUBLISH_DYNAMIC =  "dynamics/publish";
+
+  /// 上传图片
+  static const String UPLOAD_IMAGE = "images";
+
+
 }

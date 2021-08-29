@@ -102,6 +102,7 @@ class _DynamicListItemState extends State<DynamicListItem> {
               Padding(
                 padding: const EdgeInsets.only(left: 40),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     widget.imageUrl!=null?InkWell(
                       onTap: () {

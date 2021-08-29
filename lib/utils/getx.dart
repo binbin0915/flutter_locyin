@@ -160,6 +160,7 @@ class LocaleController extends GetxController {
       print("设置系统语言为："+ _locale.toString());
     }else{
       print("设置系统语言为："+ Get.deviceLocale.toString());
+      _locale = Locale(Get.deviceLocale.toString());
     }
   }
 

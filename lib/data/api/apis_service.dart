@@ -5,6 +5,8 @@ import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/dio_manager.dart';
+import 'dart:io';
+import 'dart:convert';
 
 ApiService _apiService = new ApiService();
 
@@ -134,6 +136,35 @@ class ApiService {
       "dynamic_id": _dynamic_id,
     };
     BaseNetWork.instance.dio.post(Apis.COMMENT, data: formData).then((response) async {
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+  /// 上传图片
+  Future<void> uploadImage(Function callback, Function errorCallback , Future<File?>_file,) async {
+    File? file = await _file;
+    String path = file!.path;
+    var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+    FormData formdata = FormData.fromMap({
+      "file": await MultipartFile.fromFile(path, filename:name)
+    });
+    await BaseNetWork.instance.dio.post(Apis.UPLOAD_IMAGE,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+  /// 发布游记
+  Future<void> publishDynamic(Function callback, Function errorCallback , String _content,String? _location,String? _latitude,String? _longitude,List<Map<String,String>> _assets,) async {
+    Map  map={
+      "content": _content.toString(),
+      "location": _location.toString(),
+      "latitude": _latitude.toString(),
+      "longitude": _longitude.toString(),
+      "assets": json.encode(_assets),
+    };
+    await BaseNetWork.instance.dio.post(Apis.PUBLISH_DYNAMIC,data: map).then((response){
       callback(response);
     }).catchError((e) {
       errorCallback(e);
