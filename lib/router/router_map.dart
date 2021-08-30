@@ -21,7 +21,6 @@ class RouteMap {
       return Get.find<UserController>().user==null?LoginCodePage(): MainHomePage();
     }),
     GetPage(name: '/index/dynamic/detail', page: () => DynamicDetailPage()),
-    GetPage(name: '/index/dynamic/post', page: () => DynamicPostPage()),
     GetPage(name: '/menu/settings', page: () => SettingsPage()),
     GetPage(name: '/menu/settings/theme', page: () => ThemePage()),
     GetPage(name: '/menu/settings/language', page: () => LanguagePage()),

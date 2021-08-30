@@ -11,6 +11,7 @@ import 'package:flutter_locyin/page/Map/selected_assets_list_view.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/loading_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
@@ -27,8 +28,9 @@ class DynamicPostPage extends StatefulWidget {
   final String? position;
   final String? latitude;
   final String? longitude;
+  final PanelController panelController;
 
-  const DynamicPostPage({Key? key, this.position, this.latitude, this.longitude}) : super(key: key);
+  const DynamicPostPage({Key? key, this.position, this.latitude, this.longitude, required this.panelController}) : super(key: key);
 
   @override
   _DynamicPostPageState createState() => _DynamicPostPageState();
@@ -121,7 +123,7 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
                   "发布游记",
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
-                    fontSize: 16.0,
+                    fontSize: 14.0,
                   ),
                 ),
               ],
@@ -166,28 +168,38 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                        onPressed: (){selectAssets(PickMethod.cameraAndStay( maxAssetsCount: maxAssetsCount ));},
+                        icon: Icon(Icons.picture_in_picture)
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    IconButton(
+                        onPressed: (){ selectAssets(PickMethod.video( maxAssetsCount ));},
+                        icon: Icon(Icons.video_call)
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    IconButton(
+                        onPressed: (){ selectAssets(PickMethod.audio( maxAssetsCount ));},
+                        icon: Icon(Icons.music_note_outlined)
+                    ),
+                  ],
+                ),
                 IconButton(
-                    onPressed: (){selectAssets(PickMethod.cameraAndStay( maxAssetsCount: maxAssetsCount ));},
-                    icon: Icon(Icons.picture_in_picture)
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                IconButton(
-                    onPressed: (){ selectAssets(PickMethod.video( maxAssetsCount ));},
-                    icon: Icon(Icons.video_call)
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                IconButton(
-                    onPressed: (){ selectAssets(PickMethod.audio( maxAssetsCount ));},
-                    icon: Icon(Icons.music_note_outlined)
+                    onPressed: _post,
+                    icon: Icon(Icons.send)
                 ),
               ],
-            )
+            ),
+
           ],
         ),
       ),
@@ -222,7 +234,9 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
     apiService.publishDynamic((Response response){
       print("发布成功");
       ToastUtils.toast("发布成功");
-      getx.Get.back();
+      _contentController.text = "";
+      assets.clear();
+      widget.panelController.close();
       getx.Get.back();
     }, (DioError error) {
       print(error);

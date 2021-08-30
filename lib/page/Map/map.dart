@@ -94,6 +94,8 @@ class MapPageState extends State<MapPage> {
 
   FocusNode blankNode = FocusNode();
 
+  PanelController _pc = new PanelController();
+
   void _checkPermissions() async {
     Map<Permission, PermissionStatus> statuses =
         await needPermissionList.request();
@@ -150,11 +152,11 @@ class MapPageState extends State<MapPage> {
     _panelHeightOpen = MediaQuery.of(context).size.height * .80;
     return Scaffold(
       body: SlidingUpPanel(
-
+        controller: _pc,
         panel: Center(
-          child: _poi==null?DynamicPostPage():DynamicPostPage(position: _poi!.name.toString(),latitude: _poi!.latLng!.latitude.toString(),longitude: _poi!.latLng!.longitude.toString(),),
+          child: _poi==null?DynamicPostPage(panelController: _pc,):DynamicPostPage(position: _poi!.name.toString(),latitude: _poi!.latLng!.latitude.toString(),longitude: _poi!.latLng!.longitude.toString(), panelController: _pc),
         ),
-        maxHeight: _panelHeightOpen,
+        //maxHeight: _panelHeightOpen,
         minHeight: _panelHeightClosed,
         parallaxEnabled: true,
         parallaxOffset: .5,

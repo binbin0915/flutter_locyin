@@ -128,7 +128,6 @@ class UserController extends GetxController{
     }, (DioError error) {
       print("获取用户信息失败！");
       //handleLaravelErrors(error);
-
     },);
   }
   void setUser(UserEntity user) {
