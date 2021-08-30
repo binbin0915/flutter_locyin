@@ -136,179 +136,170 @@ class MapPageState extends State<MapPage> {
       //创建地图时，给marker属性赋值一个空的set，否则后续无法添加marker
       markers: Set<Marker>.of(_markers.values),
     );
-    return ConstrainedBox(
-        constraints: BoxConstraints.expand(),
-        child: Column(
-          children: [
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                  minWidth: MediaQuery.of(context).size.width,
-                  minHeight: MediaQuery.of(context).size.height - 64),
-              child: Stack(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height - 64,
-                    width: MediaQuery.of(context).size.width,
-                    child: amap,
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height - 64,
+            width: MediaQuery.of(context).size.width,
+            child: amap,
+          ),
+          //缩放加1按钮
+          Positioned(
+              right: -10,
+              bottom: 132,
+              child: ClipPath.shape(
+                shape: StadiumBorder(),
+                child: ElevatedButton(
+                  child: SizedBox(
+                    width: 60,
+                    height: 40,
+                    child: Icon(
+                      Icons.add,
+                    ),
                   ),
-                  //缩放加1按钮
-                  Positioned(
-                      right: -10,
-                      bottom: 132,
-                      child: ClipPath.shape(
-                        shape: StadiumBorder(),
-                        child: ElevatedButton(
-                          child: SizedBox(
-                            width: 60,
-                            height: 40,
-                            child: Icon(
-                              Icons.add,
-                            ),
-                          ),
-                          onPressed: _zoomIn,
-                        ),
-                      )),
-                  //缩放减1按钮
-                  Positioned(
-                      right: -10,
-                      bottom: 72,
-                      child: ClipPath.shape(
-                        shape: StadiumBorder(),
-                        child: ElevatedButton(
-                          child: SizedBox(
-                            width: 60,
-                            height: 40,
-                            child: Icon(
-                              Icons.remove,
-                            ),
-                          ),
-                          onPressed: _zoomOut,
-                        ),
-                      )
+                  onPressed: _zoomIn,
+                ),
+              )),
+          //缩放减1按钮
+          Positioned(
+              right: -10,
+              bottom: 72,
+              child: ClipPath.shape(
+                shape: StadiumBorder(),
+                child: ElevatedButton(
+                  child: SizedBox(
+                    width: 60,
+                    height: 40,
+                    child: Icon(
+                      Icons.remove,
+                    ),
                   ),
-                  //自动定位
-                  getx.GetBuilder<UserController>(
-                      init: UserController(),
-                      id: "location",
-                      builder: (controller) {
-                        if (controller.location != null &&
-                            (_initMineLocation == false)) {
-                          _mineLocation(
-                              double.parse(
-                                  controller.location!["latitude"].toString()),
-                              double.parse(controller.location!["longitude"]
-                                  .toString()));
-                          _initMineLocation = true;
-                        }
-                        return Container();
-                      }),
-                  //定位按钮
-                  Positioned(
-                      left: -10,
-                      bottom: 72,
-                      child: ClipPath.shape(
-                        shape: StadiumBorder(),
-                        child: ElevatedButton(
-                          child: SizedBox(
-                            width: 60,
-                            height: 40,
-                            child: Icon(
-                              Icons.location_on_outlined,
-                            ),
-                          ),
-                          onPressed: (){if (getx.Get.find<UserController>().location != null) {
-                            _mineLocation(
-                                double.parse(
-                                    getx.Get.find<UserController>().location!["latitude"].toString()),
-                                double.parse(getx.Get.find<UserController>().location!["longitude"]
-                                    .toString()));
-                          }else{
-                            ToastUtils.error("没有获取到定位信息");
-                          }
-                          },
-                        ),
-                      )
+                  onPressed: _zoomOut,
+                ),
+              )
+          ),
+          //自动定位
+          getx.GetBuilder<UserController>(
+              init: UserController(),
+              id: "location",
+              builder: (controller) {
+                if (controller.location != null &&
+                    (_initMineLocation == false)) {
+                  _mineLocation(
+                      double.parse(
+                          controller.location!["latitude"].toString()),
+                      double.parse(controller.location!["longitude"]
+                          .toString()));
+                  _initMineLocation = true;
+                }
+                return Container();
+              }),
+          //定位按钮
+          Positioned(
+              left: -10,
+              bottom: 72,
+              child: ClipPath.shape(
+                shape: StadiumBorder(),
+                child: ElevatedButton(
+                  child: SizedBox(
+                    width: 60,
+                    height: 40,
+                    child: Icon(
+                      Icons.location_on_outlined,
+                    ),
                   ),
-                  //设置按钮
-                  Positioned(
-                      left: -10,
-                      bottom: 132,
-                      child: ClipPath.shape(
-                        shape: StadiumBorder(),
-                        child: ElevatedButton(
-                          child: SizedBox(
-                            width: 60,
-                            height: 40,
-                            child: Icon(
-                              Icons.settings,
-                            ),
-                          ),
-                          onPressed: () {},
-                        ),
-                      )),
-                  //发布按钮
-                  Positioned(
-                    left: MediaQuery.of(context).size.width / 2 - 45,
-                    bottom: 24,
-                    child: ClipPath(
-                      //路径裁切组件
-                      clipper: CurveClipper(), //路径
-                      child: ElevatedButton(
-                        onPressed: _goDynamicPostPage,
-                        child: SizedBox(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Expanded(
-                                child: Icon(
-                                  Icons.send,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  "发布游记",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          width: 60,
-                          height: 100,
+                  onPressed: (){if (getx.Get.find<UserController>().location != null) {
+                    _mineLocation(
+                        double.parse(
+                            getx.Get.find<UserController>().location!["latitude"].toString()),
+                        double.parse(getx.Get.find<UserController>().location!["longitude"]
+                            .toString()));
+                  }else{
+                    ToastUtils.error("没有获取到定位信息");
+                  }
+                  },
+                ),
+              )
+          ),
+          //设置按钮
+          Positioned(
+              left: -10,
+              bottom: 132,
+              child: ClipPath.shape(
+                shape: StadiumBorder(),
+                child: ElevatedButton(
+                  child: SizedBox(
+                    width: 60,
+                    height: 40,
+                    child: Icon(
+                      Icons.settings,
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              )),
+          //发布按钮
+          Positioned(
+            left: MediaQuery.of(context).size.width / 2 - 45,
+            bottom: 24,
+            child: ClipPath(
+              //路径裁切组件
+              clipper: CurveClipper(), //路径
+              child: ElevatedButton(
+                onPressed: _goDynamicPostPage,
+                child: SizedBox(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Expanded(
+                        child: Icon(
+                          Icons.send,
                         ),
                       ),
-                    ),
-                  ),
-                  //缩放提示
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.grey,
-                      padding: EdgeInsets.all(5),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        _currentZoom.toString(),
+                      Expanded(
+                        child: Text(
+                          "发布游记",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  //点滴信息提示
-                  Positioned(
-                    top: 40,
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: Container(
-                      child: _poiInfo,
-                    ),
-                  )
-                ],
+                  width: 60,
+                  height: 100,
+                ),
               ),
             ),
-          ],
-        ));
+          ),
+          //缩放提示
+          Positioned(
+            bottom: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey,
+              padding: EdgeInsets.all(5),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                _currentZoom.toString(),
+              ),
+            ),
+          ),
+          //点滴信息提示
+          Positioned(
+            top: 40,
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            child: Container(
+              child: _poiInfo,
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   void _onMapCreated(AMapController controller) {

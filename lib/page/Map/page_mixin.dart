@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/loading_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -111,7 +112,7 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
               ),
               InkWell(
                 onTap: _post,
-                child: Icon(Icons.send),
+                child: Icon(Icons.send)
               ),
             ],
           ),
@@ -137,12 +138,27 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
                 onResult: onResult,
                 onRemoveAsset: removeAsset,
               ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.location_on_outlined,
+                    color: getx.Get.theme.accentColor,
+                  ),
+                  Text(
+                    /*"乌镇南浔水乡"*/
+                    widget._position.toString(),
+                    style: TextStyle(
+                      color: getx.Get.theme.accentColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 8,
-                ),
                 IconButton(
                     onPressed: (){selectAssets(PickMethod.cameraAndStay( maxAssetsCount: maxAssetsCount ));},
                     icon: Icon(Icons.picture_in_picture)
@@ -190,6 +206,7 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
     print(assetsMapList);
     apiService.publishDynamic((Response response){
       print("发布成功");
+      ToastUtils.toast("发布成功");
       getx.Get.back();
       getx.Get.back();
     }, (DioError error) {
