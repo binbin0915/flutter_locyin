@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/page/Dynamic/Dynamic.dart';
 import 'package:flutter_locyin/page/find.dart';
-import 'package:flutter_locyin/page/message.dart';
 import 'package:flutter_locyin/page/mine.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:get/get.dart';
 
 import 'Map/map.dart';
+import 'Message/message.dart';
 
 class MainHomePage extends StatefulWidget {
   @override

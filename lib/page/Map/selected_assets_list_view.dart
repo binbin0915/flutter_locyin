@@ -7,7 +7,7 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart'
     show AssetEntity, AssetPicker, AssetPickerViewer;
 
 
-import 'package:flutter_locyin/widgets/asset_widget_builder.dart';
+import 'package:flutter_locyin/widgets/lists/asset_widget_builder.dart';
 
 class SelectedAssetsListView extends StatelessWidget {
   const SelectedAssetsListView({

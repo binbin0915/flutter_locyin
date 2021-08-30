@@ -1,5 +1,5 @@
 import 'package:flutter_locyin/page/Dynamic/dynamic_detail.dart';
-import 'package:flutter_locyin/page/Map/page_mixin.dart';
+import 'package:flutter_locyin/page/Map/post.dart';
 import 'package:flutter_locyin/page/Welcome/welcome.dart';
 import 'package:flutter_locyin/page/User/login_code.dart';
 import 'package:flutter_locyin/page/advantage.dart';

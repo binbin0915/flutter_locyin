@@ -7,12 +7,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/page/Map/selected_assets_list_view.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/loading_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-import 'package:flutter_locyin/widgets/lists//selected_assets_list_view.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 import 'picker_method.dart';
 import 'package:get/get.dart' as getx;
@@ -20,9 +20,15 @@ import 'package:get/get.dart' as getx;
 
 class DynamicPostPage extends StatefulWidget {
 
-  String? _position = getx.Get.parameters['position'];
+  /*String? _position = getx.Get.parameters['position'];
   String? _latitude = getx.Get.parameters['latitude'];
-  String? _longitude = getx.Get.parameters['longitude'];
+  String? _longitude = getx.Get.parameters['longitude'];*/
+
+  final String? position;
+  final String? latitude;
+  final String? longitude;
+
+  const DynamicPostPage({Key? key, this.position, this.latitude, this.longitude}) : super(key: key);
 
   @override
   _DynamicPostPageState createState() => _DynamicPostPageState();
@@ -84,39 +90,42 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
 
   @override
   Widget build(BuildContext context) {
-    print(widget._position);
-    print(widget._latitude);
-    print(widget._longitude);
-    return Scaffold(
-      body: SafeArea(
+    print(widget.position);
+    print(widget.latitude);
+    print(widget.longitude);
+    return SafeArea(
+      child: MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
         child: Column(
           children: <Widget>[
-          Container(
-          height: 48,
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                onTap: () {
-                  getx.Get.back();
-                },
-                child: Icon(Icons.arrow_back_ios),
-              ),
-              Text(
-                "发布游记",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 30,
+                  height: 5,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 ),
-              ),
-              InkWell(
-                onTap: _post,
-                child: Icon(Icons.send)
-              ),
-            ],
-          ),
-        ),
+              ],
+            ),
+            SizedBox(
+              height: 8.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "发布游记",
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 16.0,
+                  ),
+                ),
+              ],
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -124,7 +133,7 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
                   controller: _contentController,
                   maxLines: 16,
                   keyboardType: TextInputType.multiline,
-                  autofocus: true,
+                  autofocus: false,
                   decoration: InputDecoration.collapsed(
                     hintText: "身未动，心已远",
                   ),
@@ -148,7 +157,7 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
                   ),
                   Text(
                     /*"乌镇南浔水乡"*/
-                    widget._position.toString(),
+                    widget.position==null?"选择一个位置吧~":widget.position.toString(),
                     style: TextStyle(
                       color: getx.Get.theme.accentColor,
                     ),
@@ -188,6 +197,7 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
     if(i<0){
       return ;
     }
+    print(assets[i].mimeType);
     await apiService.uploadImage((Response response){
       String _entityType = assets[i].type.toString();
       assetsMapList.add({
@@ -200,10 +210,15 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
     },assets[i].file).then((value) => _uploadAssets(i-1));
   }
   Future<void> _post() async {
+    //关闭键盘
     _closeKeyboard(context);
+    //打开加载
     _showDialog();
+    //等待所有图片上传完成
     await _uploadAssets(assets.length-1);
+    //获取到图片数组
     print(assetsMapList);
+    //发布游记
     apiService.publishDynamic((Response response){
       print("发布成功");
       ToastUtils.toast("发布成功");
@@ -211,8 +226,8 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
       getx.Get.back();
     }, (DioError error) {
       print(error);
-      Navigator.of(context).pop();
-    },_contentController.text,widget._position,widget._latitude,widget._longitude,assetsMapList);
+      getx.Get.back();
+    },_contentController.text,widget.position,widget.latitude,widget.longitude,assetsMapList);
   }
   void _showDialog(){
     showDialog(
