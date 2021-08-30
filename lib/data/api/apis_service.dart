@@ -170,4 +170,57 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 上传文件
+  Future<void> uploadFile(Function callback, Function errorCallback , File _file,) async {
+    FormData formdata = FormData.fromMap({
+      "file": _file
+    });
+    await BaseNetWork.instance.dio.post(Apis.UPLOAD_FILE,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+  /// 初始化聊天室
+  Future<void> initMessage(Function callback, Function errorCallback , String _client_id) async {
+    FormData formdata = FormData.fromMap({
+      "client_id": _client_id.toString(),
+    });
+    await BaseNetWork.instance.dio.post(Apis.INIT_MESSAGE,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+  /// 聊天列表
+  Future<void> messageList(Function callback, Function errorCallback) async {
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_LIST).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+  /// 发消息
+  Future<void> sendMessage(Function callback, Function errorCallback ,int _to_id , String _content) async {
+    FormData formdata = FormData.fromMap({
+      "to_id": _to_id,
+      "content": _content.toString(),
+    });
+    await BaseNetWork.instance.dio.post(Apis.SEND_MESSAGE,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+  /// 查看聊天记录
+  Future<void> messageRecord(Function callback, Function errorCallback , int _id) async {
+    FormData formdata = FormData.fromMap({
+      "id": _id,
+    });
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_RECORD,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }

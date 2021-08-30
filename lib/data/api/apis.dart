@@ -37,5 +37,18 @@ class Apis {
   /// 上传图片
   static const String UPLOAD_IMAGE = "images";
 
+  /// 初始化聊天室
+  static const String INIT_MESSAGE = "messages/init";
 
+  /// 聊天室列表
+  static const String MESSAGE_LIST = "messages/list";
+
+  /// 发送消息
+  static const String SEND_MESSAGE = "messages/send";
+
+  /// 上传文件
+  static const String UPLOAD_FILE = "files";
+
+  /// 聊天记录
+  static const String MESSAGE_RECORD = "messages/record";
 }

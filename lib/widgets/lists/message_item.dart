@@ -36,10 +36,12 @@ class MessageListItem extends StatelessWidget {
                   fontSize: 16
               ))
           ),
-          Text('20-02-06', style: TextStyle(
-              color: color4,
-              fontSize: 12
-          ))
+          Text('20-02-06',
+              style: TextStyle(
+                color: color4,
+                fontSize: 12,
+              ),
+          )
         ],
       ),
       // 子标题，给一个向上的5px的间距，同时右边有一个红色的未读消息的标示
@@ -50,10 +52,13 @@ class MessageListItem extends StatelessWidget {
           children: <Widget>[
             Expanded(
                 flex: 1,
-                child: Text('消息内容啦啦啦', style: TextStyle(
+                child: Text('消息内容啦啦啦消息内消息内容啦啦啦消息内容啦啦啦', style: TextStyle(
                     color: color3,
                     fontSize: 12
-                ))
+                ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )
             ),
             // 小圆点，使用Container类似div的方式实现
             Container(

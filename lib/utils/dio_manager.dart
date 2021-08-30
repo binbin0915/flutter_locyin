@@ -88,6 +88,7 @@ class HttpLog extends Interceptor{
 class ErrorInterceptor extends Interceptor {
   @override
   Future onError(DioError error , ErrorInterceptorHandler handler) async {
+    print(error.response);
     print('ERROR[${error.response?.statusCode}] => PATH: ${error.requestOptions.path}');
     if (error.response != null && error.response!.statusCode == 401 && getx.Get.find<ConstantController>().token!=null ) {
       getx.Get.find<ConstantController>().clearToken();
