@@ -54,4 +54,7 @@ class Apis {
 
   /// 聊天状态
   static const String MESSAGE_STATUS = "messages/status";
+
+  /// 已读消息
+  static const String MESSAGE_READ = "messages/read";
 }

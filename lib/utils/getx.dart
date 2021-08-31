@@ -357,6 +357,11 @@ class MessageController extends GetxController{
   ChatMessageEntity? _chatList;
   ChatMessageEntity? get chatList => _chatList;
 
+  //所有列表的键值对映射
+  Map<int,ChatMessageEntity> _allMessageData = {};
+
+  Map<int,ChatMessageEntity> get allMessageData => _allMessageData;
+
   //用于判断是否正在异步请求数据，避免多次请求
   bool _chatRunning  = false;
 
@@ -398,6 +403,7 @@ class MessageController extends GetxController{
     _chatRunning = true;
     apiService.messageRecord((ChatMessageEntity model) {
       _chatList = model;
+      _allMessageData[id] = _chatList!;
       print("更新聊天界面视图");
       _chatRunning = false;
       update(['message_chat']);
@@ -448,5 +454,14 @@ class MessageController extends GetxController{
   }
   Future<void> receiveMessage() async {
 
+  }
+  Future<void> readMessage(int _toID) async {
+    apiService.readMessages((dio.Response response) {
+      _messageList!.data.firstWhere( (element) => element.stranger.id == _toID).count = 0;
+      print("更新聊天会话视图");
+      update(['message_list']);
+    }, (dio.DioError error) {
+      print(error.response);
+    },_toID);
   }
 }

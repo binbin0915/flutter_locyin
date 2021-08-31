@@ -237,4 +237,15 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 已读
+  Future<void> readMessages(Function callback, Function errorCallback , int _toID) async {
+    FormData formdata = FormData.fromMap({
+      "id": _toID,
+    });
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_READ,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }

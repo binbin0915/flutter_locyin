@@ -6,7 +6,6 @@ import 'package:flutter_locyin/data/model/chat_message_entity.dart';
 import 'package:flutter_locyin/data/model/message_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/getx.dart';
-import 'package:flutter_locyin/utils/socket.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -23,6 +22,7 @@ class ChatPageState extends State<ChatPage> {
   //
   int _toId = Get.arguments['id'];
   bool _new = Get.arguments['new'];
+  String _nickname = Get.arguments['nickname'];
 
   // 信息列表
   late List<MessageEntity> _msgList;
@@ -33,14 +33,20 @@ class ChatPageState extends State<ChatPage> {
   // 滚动控制器
   late ScrollController _scrollController;
 
-  //
 
   @override
   void initState() {
     super.initState();
     print("窗口 id: $_toId");
+
     Get.find<MessageController>().setCurrentWindow(_toId);
     if(_new){
+      Get.find<MessageController>().readMessage(_toId);
+    }
+    if(_new || !Get
+        .find<MessageController>()
+        .allMessageData
+        .containsKey(_toId) ){
       Get.find<MessageController>().getChatMessageList(_toId);
     }
     /*_msgList = [
@@ -49,7 +55,7 @@ class ChatPageState extends State<ChatPage> {
     ];*/
     _textEditingController = TextEditingController();
     _textEditingController.addListener(() {
-      setState(() {});
+      //setState(() {});
     });
     _scrollController = ScrollController();
   }
@@ -75,11 +81,12 @@ class ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('KnoYo'),
+        title: Text( _nickname,style: TextStyle(),),
         centerTitle: false,
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Get.theme.splashColor,
         elevation: 0.0,
         actions: <Widget>[
           IconButton(
@@ -96,110 +103,117 @@ class ChatPageState extends State<ChatPage> {
           Divider(
             height: 0.5,
           ),
-          Expanded(
-            flex: 1,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                // 判断列表内容是否大于展示区域
-                bool overflow = false;
-                double heightTmp = 0.0;
-                if(Get.find<MessageController>().chatList != null){
-                  for (ChatMessageData entity in Get.find<MessageController>().chatList!.data) {
-                    heightTmp +=
-                        _calculateMsgHeight(context, constraints, entity);
-                    if (heightTmp > constraints.maxHeight) {
-                      overflow = true;
+        GetBuilder<MessageController>(
+            init: MessageController(),
+            id: "message_chat",
+            builder: (controller) {
+              bool _hasData = controller.allMessageData.containsKey(_toId);
+              return Expanded(
+                flex: 1,
+                child:
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    // 判断列表内容是否大于展示区域
+                    bool overflow = false;
+                    double heightTmp = 0.0;
+                    if (_hasData) {
+                      for (ChatMessageData entity in Get
+                          .find<MessageController>()
+                          .allMessageData[_toId]!.data) {
+                        heightTmp +=
+                            _calculateMsgHeight(context, constraints, entity);
+                        if (heightTmp > constraints.maxHeight) {
+                          overflow = true;
+                        }
+                      }
                     }
-                  }
-                }
 
-                return EasyRefresh.custom(
-                  scrollController: _scrollController,
-                  reverse: true,
-                  footer: CustomFooter(
-                      enableInfiniteLoad: false,
-                      extent: 40.0,
-                      triggerDistance: 50.0,
-                      footerBuilder: (context,
-                          loadState,
-                          pulledExtent,
-                          loadTriggerPullDistance,
-                          loadIndicatorExtent,
-                          axisDirection,
-                          float,
-                          completeDuration,
-                          enableInfiniteLoad,
-                          success,
-                          noMore) {
-                        return Stack(
-                          children: <Widget>[
-                            Positioned(
-                              bottom: 0.0,
-                              left: 0.0,
-                              right: 0.0,
-                              child: Container(
-                                width: 30.0,
-                                height: 30.0,
-                                child: SpinKitCircle(
-                                  color: Colors.green,
-                                  size: 30.0,
+                    return EasyRefresh.custom(
+                      scrollController: _scrollController,
+                      reverse: true,
+                      footer: CustomFooter(
+                          enableInfiniteLoad: false,
+                          extent: 40.0,
+                          triggerDistance: 50.0,
+                          footerBuilder: (context,
+                              loadState,
+                              pulledExtent,
+                              loadTriggerPullDistance,
+                              loadIndicatorExtent,
+                              axisDirection,
+                              float,
+                              completeDuration,
+                              enableInfiniteLoad,
+                              success,
+                              noMore) {
+                            return Stack(
+                              children: <Widget>[
+                                Positioned(
+                                  bottom: 0.0,
+                                  left: 0.0,
+                                  right: 0.0,
+                                  child: Container(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    child: SpinKitCircle(
+                                      color: Colors.green,
+                                      size: 30.0,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                  slivers: <Widget>[
-                    GetBuilder<MessageController>(
-                        init: MessageController(),
-                        id: "message_chat",
-                        builder: (controller) {
-                          if(controller.chatList ==null){
-                            return SliverToBoxAdapter(child: Container());
-                          }
-                          if (overflow){
-                            return SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  if(controller.chatList !=null){
-                                    return _buildMsg(controller.chatList!.data[index]);
+                              ],
+                            );
+                          }),
+                      slivers: <Widget>[
+                        if (overflow && _hasData)
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                  if (controller.allMessageData
+                                      .containsKey(_toId)) {
+                                    return _buildMsg(
+                                        controller.allMessageData[_toId]!
+                                            .data[index]);
                                   }
                                 },
-                                childCount: controller.chatList==null ? 0 : controller.chatList!.data.length
+                                childCount: controller.chatList == null
+                                    ? 0
+                                    : controller.chatList!.data.length
+                            ),
+                          ),
+                        if (!overflow && _hasData)
+                          SliverToBoxAdapter(
+                            child: Container(
+                              height: constraints.maxHeight,
+                              width: double.infinity,
+                              child: Column(
+                                children: <Widget>[
+                                  for (ChatMessageData entity in controller
+                                      .allMessageData[_toId]!.data
+                                      .reversed)
+                                    _buildMsg(entity),
+                                ],
                               ),
-                            );
-                          } else{
-                            return SliverToBoxAdapter(
-                              child: Container(
-                                height: constraints.maxHeight,
-                                width: double.infinity,
-                                child: Column(
-                                  children: <Widget>[
-                                    for (ChatMessageData entity in controller.chatList!.data.reversed)
-                                      _buildMsg(entity),
-                                  ],
-                                ),
-                              ),
-                            );
+                            ),
+                          ),
+                      ],
+                      onLoad: () async {
+                        await Future.delayed(Duration(seconds: 2), () {
+                          if (mounted) {
+                            setState(() {
+                              _msgList.addAll([
+                                MessageEntity(true, "It's good!"),
+                                MessageEntity(false, 'EasyRefresh'),
+                              ]);
+                            });
                           }
-                        }),
-                  ],
-                  onLoad: () async {
-                    await Future.delayed(Duration(seconds: 2), () {
-                      if (mounted) {
-                        setState(() {
-                          _msgList.addAll([
-                            MessageEntity(true, "It's good!"),
-                            MessageEntity(false, 'EasyRefresh'),
-                          ]);
                         });
-                      }
-                    });
+                      },
+                    );
                   },
-                );
-              },
-            ),
-          ),
+                ),
+              );
+            }),
           SafeArea(
             child: Container(
               color: Colors.grey[100],

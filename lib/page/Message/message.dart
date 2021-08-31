@@ -135,7 +135,8 @@ class _MessagePageState extends State<MessagePage> {
         onPressed: () {
           Get.toNamed("/index/message/chat",arguments: {
             "id":_messageList.data[index].stranger.id,
-            "new":_messageList.data[index].count>0
+            "new":_messageList.data[index].count>0,
+            "nickname":_messageList.data[index].stranger.nickname,
           });
         },
         count: _messageList.data[index].count,
