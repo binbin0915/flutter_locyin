@@ -452,8 +452,37 @@ class MessageController extends GetxController{
       print(error.response);
     },_toID,_content,_type);
   }
-  Future<void> receiveMessage() async {
+  Future<void> receiveMessage(String _type,int _window_id,String _content) async {
+    if(_window_id == _windowID){
+      print("用户在当前会话");
+      if(!allMessageData.containsKey(_window_id)){
+        print("没有初始化数据");
+        getChatMessageList(_window_id);
+      }else{
+        print("当前会话，直接添加");
+        Map<String,dynamic>  map = {
+          "to_id": Get.find<UserController>().user!.data.id ,
+          "from_id": _window_id,
+          "content": _content,
+          "push": 0,
+          "read": 1,
+          "status": 1,
+          "type": _type,
+          "created_at": "2021-08-31T11:14:34.000000Z",
+          "updated_at": "2021-08-31T11:14:34.000000Z"
+        };
+        allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
+        print("更新聊天页面视图");
+        update(['message_chat']);
+      }
 
+    }else{
+      print("用户不在当前会话");
+      _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).count ++;
+      _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).excerpt = _content;
+      print("更新聊天会话视图");
+      update(['message_list']);
+    }
   }
   Future<void> readMessage(int _toID) async {
     apiService.readMessages((dio.Response response) {

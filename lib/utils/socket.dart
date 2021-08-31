@@ -34,6 +34,9 @@ class WebsocketManager{
   String _url="ws://192.168.10.10:8282";
 
   late  WebSocketChannel channel;
+
+  String? _client_id ;
+
   Map<String, dynamic> headers = new Map();
 
   Future connect() async{
@@ -69,6 +72,15 @@ class WebsocketManager{
                 }else{
                   //ToastUtils.error(mesData['msg']);
                 }
+                break;
+                case "offline" :
+
+                break;
+              case "chatMessage" :
+                print(mesData['data']['type'].runtimeType);
+                print(mesData['data']['window_id'].runtimeType);
+                print(mesData['data']['content'].runtimeType);
+                getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content']);
                 break;
               default:break;
             }

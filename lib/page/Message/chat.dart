@@ -38,8 +38,6 @@ class ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     print("窗口 id: $_toId");
-
-    Get.find<MessageController>().setCurrentWindow(_toId);
     if(_new){
       Get.find<MessageController>().readMessage(_toId);
     }
@@ -65,7 +63,7 @@ class ChatPageState extends State<ChatPage> {
     super.dispose();
     _textEditingController.dispose();
     _scrollController.dispose();
-    Get.find<MessageController>().setCurrentWindow(0);
+
   }
 
   // 发送消息
