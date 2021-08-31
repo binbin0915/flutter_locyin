@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/toast.dart';
+import 'package:get/get.dart' as getx;
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:dio/dio.dart';
@@ -57,6 +59,9 @@ class WebsocketManager{
                     isConnect=StatusEnum.connect,
                     socketStatusController.add(StatusEnum.connect)
                 });
+                break;
+              case "status" :
+                getx.Get.find<MessageController>().updateSrangerStatus(mesData['data']['id'], mesData['data']['status']);
                 break;
               case "notice" :
                 if(mesData['code'] == 0){

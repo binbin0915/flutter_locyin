@@ -133,9 +133,13 @@ class _MessagePageState extends State<MessagePage> {
         excerpt: _messageList.data[index].excerpt,
         time: _messageList.data[index].updatedAt,
         onPressed: () {
-          Get.toNamed("/index/message/chat",arguments: _messageList.data[index].stranger.id);
+          Get.toNamed("/index/message/chat",arguments: {
+            "id":_messageList.data[index].stranger.id,
+            "new":_messageList.data[index].count>0
+          });
         },
         count: _messageList.data[index].count,
+        status: Get.find<MessageController>().iconsList[_messageList.data[index].stranger.status].icon,
       );
     }
   }
@@ -154,7 +158,7 @@ class _MessagePageState extends State<MessagePage> {
                 },
                 child: GetBuilder<MessageController>(
                     init: MessageController(),
-                    id: "message_status",
+                    id: "mine_status",
                     builder: (controller) {
                       return Row(
                         children: [
@@ -193,29 +197,6 @@ class _MessagePageState extends State<MessagePage> {
     );
   }
 
-  Widget _statusWidgetBuilder(int index) {
-    List<StatusEntity> _iconsList = Get.find<MessageController>().iconsList;
-    bool currentStatus = Get.find<MessageController>().messageStatusCode == index;
-    return InkWell(
-      onTap: () { Get.find<MessageController>().updateMessageStatus(index); },
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.blueGrey,
-            borderRadius: BorderRadius.all(Radius.circular(2.0))),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //Icon: iconsList[index].,
-            Badge(
-                badgeColor: currentStatus?Colors.green:Colors.transparent,
-                child:_iconsList[index].icon,
-            ),
-            Text(_iconsList[index].label),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _statusPanel() {
     return Scaffold(
@@ -256,7 +237,7 @@ class _MessagePageState extends State<MessagePage> {
             Expanded(
                 child: GetBuilder<MessageController>(
                     init: MessageController(),
-                    id: "message_status",
+                    id: "mine_status",
                     builder: (controller) {
                       return GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -276,6 +257,30 @@ class _MessagePageState extends State<MessagePage> {
       ),
     );
   }
+  Widget _statusWidgetBuilder(int index) {
+    List<StatusEntity> _iconsList = Get.find<MessageController>().iconsList;
+    bool currentStatus = Get.find<MessageController>().messageStatusCode == index;
+    return InkWell(
+      onTap: () { Get.find<MessageController>().updateMessageStatus(index); },
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.blueGrey,
+            borderRadius: BorderRadius.all(Radius.circular(2.0))),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //Icon: iconsList[index].,
+            Badge(
+              badgeColor: currentStatus?Colors.green:Colors.transparent,
+              child:_iconsList[index].icon,
+            ),
+            Text(_iconsList[index].label),
+          ],
+        ),
+      ),
+    );
+  }
+
 }
 
 class StatusEntity {

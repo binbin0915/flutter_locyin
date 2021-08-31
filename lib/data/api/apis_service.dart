@@ -203,10 +203,11 @@ class ApiService {
     });
   }
   /// 发消息
-  Future<void> sendMessage(Function callback, Function errorCallback ,int _to_id , String _content) async {
+  Future<void> sendMessage(Function callback, Function errorCallback , int _toID,String _content,String _type) async {
     FormData formdata = FormData.fromMap({
-      "to_id": _to_id,
-      "content": _content.toString(),
+      "to_id": _toID,
+      "content": _content,
+      "type": _type,
     });
     await BaseNetWork.instance.dio.post(Apis.SEND_MESSAGE,data: formdata).then((response){
       callback(response);

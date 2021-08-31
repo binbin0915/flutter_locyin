@@ -6,6 +6,7 @@ import 'package:flutter_locyin/data/model/chat_message_entity.dart';
 import 'package:flutter_locyin/data/model/message_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/getx.dart';
+import 'package:flutter_locyin/utils/socket.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,8 @@ class ChatPage extends StatefulWidget {
 
 class ChatPageState extends State<ChatPage> {
   //
-  int _toId = Get.arguments;
+  int _toId = Get.arguments['id'];
+  bool _new = Get.arguments['new'];
 
   // 信息列表
   late List<MessageEntity> _msgList;
@@ -36,8 +38,11 @@ class ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+    print("窗口 id: $_toId");
     Get.find<MessageController>().setCurrentWindow(_toId);
-    Get.find<MessageController>().getChatMessageList(_toId);
+    if(_new){
+      Get.find<MessageController>().getChatMessageList(_toId);
+    }
     /*_msgList = [
       MessageEntity(true, "It's good!"),
       MessageEntity(false, 'EasyRefresh'),
@@ -58,12 +63,14 @@ class ChatPageState extends State<ChatPage> {
   }
 
   // 发送消息
-  void _sendMsg(String msg) {
-    setState(() {
+  void _sendMsg(String msg,String type) {
+    /*setState(() {
       _msgList.insert(0, MessageEntity(true, msg));
     });
     _scrollController.animateTo(0.0,
-        duration: Duration(milliseconds: 300), curve: Curves.linear);
+        duration: Duration(milliseconds: 300), curve: Curves.linear);*/
+    Get.find<MessageController>().sendChatMessages(_toId, msg, type );
+
   }
 
   @override
@@ -224,7 +231,7 @@ class ChatPageState extends State<ChatPage> {
                         decoration: null,
                         onSubmitted: (value) {
                           if (_textEditingController.text.isNotEmpty) {
-                            _sendMsg(_textEditingController.text);
+                            _sendMsg(_textEditingController.text,"text");
                             _textEditingController.text = '';
                           }
                         },
@@ -234,7 +241,7 @@ class ChatPageState extends State<ChatPage> {
                   InkWell(
                     onTap: () {
                       if (_textEditingController.text.isNotEmpty) {
-                        _sendMsg(_textEditingController.text);
+                        _sendMsg(_textEditingController.text,"text");
                         _textEditingController.text = '';
                       }
                     },

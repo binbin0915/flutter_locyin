@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -361,7 +363,7 @@ class MessageController extends GetxController{
   bool get chatRunning => _chatRunning;
 
   //初始值默认为离线3
-  int _messageStatusCode = 2;
+  int _messageStatusCode = Get.find<UserController>().user!.data.status;
   int get messageStatusCode  => _messageStatusCode ;
 
   int _windowID = 0;
@@ -371,7 +373,7 @@ class MessageController extends GetxController{
     _listRunning = true;
     apiService.messageList((MessageListEntity model) {
       _messageList = model;
-      print("更新视图");
+      print("更新联系人列表视图");
       _listRunning = false;
       update(['message_list']);
     }, (dio.DioError error) {
@@ -382,17 +384,21 @@ class MessageController extends GetxController{
   Future updateMessageStatus(int status) async{
     apiService.updateMessageStatus((dio.Response response) {
       _messageStatusCode = status;
-      update(['message_status']);
+      update(['mine_status']);
     }, (dio.DioError error) {
       print(error.response);
     },status);
+  }
+  Future updateSrangerStatus(int id,int status) async{
+    _messageList!.data.firstWhere( (element) => element.stranger.id == id).stranger.status = status;
+    update(['message_list']);
   }
 
   Future getChatMessageList (int id) async{
     _chatRunning = true;
     apiService.messageRecord((ChatMessageEntity model) {
       _chatList = model;
-      print("更新视图");
+      print("更新聊天界面视图");
       _chatRunning = false;
       update(['message_chat']);
     }, (dio.DioError error) {
@@ -402,5 +408,45 @@ class MessageController extends GetxController{
   }
   void setCurrentWindow(int id){
     _windowID = id;
+  }
+  Future sendChatMessages (int _toID,String _content,String _type) async{
+    apiService.sendMessage((dio.Response response) {
+      if(_chatList == null){
+        /*Map  map={
+            "from_id": Get.find<UserController>().user!.data.id ,
+            "to_id": _toID,
+            "content": _content,
+            "push": 0,
+            "read": 0,
+            "status": 1,
+            "type": _type,
+            "created_at": "2021-08-31T11:14:34.000000Z",
+            "updated_at": "2021-08-31T11:14:34.000000Z"
+        };*/
+        print("网络获取");
+        getChatMessageList(_toID);
+      }else{
+        Map<String,dynamic>  map = {
+            "from_id": Get.find<UserController>().user!.data.id ,
+            "to_id": _toID,
+            "content": _content,
+            "push": 0,
+            "read": 0,
+            "status": 1,
+            "type": _type,
+            "created_at": "2021-08-31T11:14:34.000000Z",
+            "updated_at": "2021-08-31T11:14:34.000000Z"
+        };
+        _chatList!.data.insert(0,(ChatMessageData().fromJson(map)));
+        print(_chatList!.data.length);
+      }
+      print("更新聊天页面视图");
+      update(['message_chat']);
+    }, (dio.DioError error) {
+      print(error.response);
+    },_toID,_content,_type);
+  }
+  Future<void> receiveMessage() async {
+
   }
 }
