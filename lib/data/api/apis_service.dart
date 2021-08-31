@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_locyin/data/api/apis.dart';
+import 'package:flutter_locyin/data/model/chat_message_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
@@ -219,7 +220,7 @@ class ApiService {
       "id": _id,
     });
     await BaseNetWork.instance.dio.post(Apis.MESSAGE_RECORD,data: formdata).then((response){
-      callback(response);
+      callback(ChatMessageEntity().fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);
     });

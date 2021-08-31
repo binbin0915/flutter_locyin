@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/data/model/chat_message_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
@@ -341,7 +342,7 @@ class MessageController extends GetxController{
     StatusEntity("搬砖", "working", Icon(Icons.file_copy_sharp,color: Colors.cyan)),
   ];
   List<StatusEntity> get iconsList => _iconsList;
-  //聊天列表
+  //聊天总体列表
   MessageListEntity? _messageList;
   MessageListEntity? get messageList => _messageList;
 
@@ -350,10 +351,21 @@ class MessageController extends GetxController{
 
   bool get listRunning => _listRunning;
 
+  //单个聊天列表
+  ChatMessageEntity? _chatList;
+  ChatMessageEntity? get chatList => _chatList;
+
+  //用于判断是否正在异步请求数据，避免多次请求
+  bool _chatRunning  = false;
+
+  bool get chatRunning => _chatRunning;
+
   //初始值默认为离线3
   int _messageStatusCode = 2;
   int get messageStatusCode  => _messageStatusCode ;
 
+  int _windowID = 0;
+  int get windowID => _windowID;
 
   Future getMessageList () async{
     _listRunning = true;
@@ -374,5 +386,21 @@ class MessageController extends GetxController{
     }, (dio.DioError error) {
       print(error.response);
     },status);
+  }
+
+  Future getChatMessageList (int id) async{
+    _chatRunning = true;
+    apiService.messageRecord((ChatMessageEntity model) {
+      _chatList = model;
+      print("更新视图");
+      _chatRunning = false;
+      update(['message_chat']);
+    }, (dio.DioError error) {
+      _chatRunning = false;
+      print(error.response);
+    },id);
+  }
+  void setCurrentWindow(int id){
+    _windowID = id;
   }
 }

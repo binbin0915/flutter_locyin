@@ -13,6 +13,8 @@ import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/generated/json/dynamic_comment_entity_helper.dart';
 import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/generated/json/dynamic_detail_entity_helper.dart';
+import 'package:flutter_locyin/data/model/chat_message_entity.dart';
+import 'package:flutter_locyin/generated/json/chat_message_entity_helper.dart';
 
 class JsonConvert<T> {
 	T fromJson(Map<String, dynamic> json) {
@@ -66,7 +68,17 @@ class JsonConvert<T> {
 			case DynamicDetailDataUser:
 				return dynamicDetailDataUserFromJson(data as DynamicDetailDataUser, json) as T;
 			case DynamicDetailDataImages:
-				return dynamicDetailDataImagesFromJson(data as DynamicDetailDataImages, json) as T;    }
+				return dynamicDetailDataImagesFromJson(data as DynamicDetailDataImages, json) as T;
+			case ChatMessageEntity:
+				return chatMessageEntityFromJson(data as ChatMessageEntity, json) as T;
+			case ChatMessageData:
+				return chatMessageDataFromJson(data as ChatMessageData, json) as T;
+			case ChatMessageLinks:
+				return chatMessageLinksFromJson(data as ChatMessageLinks, json) as T;
+			case ChatMessageMeta:
+				return chatMessageMetaFromJson(data as ChatMessageMeta, json) as T;
+			case ChatMessageMetaLinks:
+				return chatMessageMetaLinksFromJson(data as ChatMessageMetaLinks, json) as T;    }
 		return data as T;
 	}
 
@@ -114,6 +126,16 @@ class JsonConvert<T> {
 				return dynamicDetailDataUserToJson(data as DynamicDetailDataUser);
 			case DynamicDetailDataImages:
 				return dynamicDetailDataImagesToJson(data as DynamicDetailDataImages);
+			case ChatMessageEntity:
+				return chatMessageEntityToJson(data as ChatMessageEntity);
+			case ChatMessageData:
+				return chatMessageDataToJson(data as ChatMessageData);
+			case ChatMessageLinks:
+				return chatMessageLinksToJson(data as ChatMessageLinks);
+			case ChatMessageMeta:
+				return chatMessageMetaToJson(data as ChatMessageMeta);
+			case ChatMessageMetaLinks:
+				return chatMessageMetaLinksToJson(data as ChatMessageMetaLinks);
 			}
 			return data as T;
 		}
@@ -183,6 +205,21 @@ class JsonConvert<T> {
 		if(type == (DynamicDetailDataImages).toString()){
 			return DynamicDetailDataImages().fromJson(json);
 		}
+		if(type == (ChatMessageEntity).toString()){
+			return ChatMessageEntity().fromJson(json);
+		}
+		if(type == (ChatMessageData).toString()){
+			return ChatMessageData().fromJson(json);
+		}
+		if(type == (ChatMessageLinks).toString()){
+			return ChatMessageLinks().fromJson(json);
+		}
+		if(type == (ChatMessageMeta).toString()){
+			return ChatMessageMeta().fromJson(json);
+		}
+		if(type == (ChatMessageMetaLinks).toString()){
+			return ChatMessageMetaLinks().fromJson(json);
+		}
 
 		return null;
 	}
@@ -251,6 +288,21 @@ class JsonConvert<T> {
 		}
 		if(<DynamicDetailDataImages>[] is M){
 			return data.map<DynamicDetailDataImages>((e) => DynamicDetailDataImages().fromJson(e)).toList() as M;
+		}
+		if(<ChatMessageEntity>[] is M){
+			return data.map<ChatMessageEntity>((e) => ChatMessageEntity().fromJson(e)).toList() as M;
+		}
+		if(<ChatMessageData>[] is M){
+			return data.map<ChatMessageData>((e) => ChatMessageData().fromJson(e)).toList() as M;
+		}
+		if(<ChatMessageLinks>[] is M){
+			return data.map<ChatMessageLinks>((e) => ChatMessageLinks().fromJson(e)).toList() as M;
+		}
+		if(<ChatMessageMeta>[] is M){
+			return data.map<ChatMessageMeta>((e) => ChatMessageMeta().fromJson(e)).toList() as M;
+		}
+		if(<ChatMessageMetaLinks>[] is M){
+			return data.map<ChatMessageMetaLinks>((e) => ChatMessageMetaLinks().fromJson(e)).toList() as M;
 		}
 
 		throw Exception("not found");

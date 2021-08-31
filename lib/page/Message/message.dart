@@ -1,10 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:flutter_locyin/data/model/message_list_entity.dart';
-import 'package:flutter_locyin/page/Message/socket_panel.dart';
 import 'package:flutter_locyin/utils/getx.dart';
+import 'package:flutter_locyin/utils/socket.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/lists/message_item.dart';
 import 'package:flutter_locyin/widgets/skeleton.dart';
@@ -59,6 +58,7 @@ class _MessagePageState extends State<MessagePage> {
     super.initState();
     //初始化控制器
     _controller = EasyRefreshController();
+    WebsocketManager().connect();
   }
 
   @override
@@ -133,9 +133,9 @@ class _MessagePageState extends State<MessagePage> {
         excerpt: _messageList.data[index].excerpt,
         time: _messageList.data[index].updatedAt,
         onPressed: () {
-          ToastUtils.toast("跳转到发送消息页");
+          Get.toNamed("/index/message/chat",arguments: _messageList.data[index].stranger.id);
         },
-        count: 4,
+        count: _messageList.data[index].count,
       );
     }
   }

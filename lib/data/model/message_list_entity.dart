@@ -7,6 +7,7 @@ class MessageListEntity with JsonConvert<MessageListEntity> {
 
 class MessageListData with JsonConvert<MessageListData> {
 	late MessageListDataStranger stranger;
+	late int count;
 	late String type;
 	late String excerpt;
 	@JSONField(name: "created_at")
@@ -24,7 +25,7 @@ class MessageListDataStranger with JsonConvert<MessageListDataStranger> {
 	late String introduction;
 	@JSONField(name: "notification_count")
 	late int notificationCount;
-	late String status;
+	late int status;
 	@JSONField(name: "created_at")
 	late String createdAt;
 	@JSONField(name: "updated_at")

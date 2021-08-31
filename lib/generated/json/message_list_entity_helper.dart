@@ -17,6 +17,11 @@ messageListDataFromJson(MessageListData data, Map<String, dynamic> json) {
 	if (json['stranger'] != null) {
 		data.stranger = MessageListDataStranger().fromJson(json['stranger']);
 	}
+	if (json['count'] != null) {
+		data.count = json['count'] is String
+				? int.tryParse(json['count'])
+				: json['count'].toInt();
+	}
 	if (json['type'] != null) {
 		data.type = json['type'].toString();
 	}
@@ -35,6 +40,7 @@ messageListDataFromJson(MessageListData data, Map<String, dynamic> json) {
 Map<String, dynamic> messageListDataToJson(MessageListData entity) {
 	final Map<String, dynamic> data = new Map<String, dynamic>();
 	data['stranger'] = entity.stranger.toJson();
+	data['count'] = entity.count;
 	data['type'] = entity.type;
 	data['excerpt'] = entity.excerpt;
 	data['created_at'] = entity.createdAt;
@@ -69,7 +75,9 @@ messageListDataStrangerFromJson(MessageListDataStranger data, Map<String, dynami
 				: json['notification_count'].toInt();
 	}
 	if (json['status'] != null) {
-		data.status = json['status'].toString();
+		data.status = json['status'] is String
+				? int.tryParse(json['status'])
+				: json['status'].toInt();
 	}
 	if (json['created_at'] != null) {
 		data.createdAt = json['created_at'].toString();
