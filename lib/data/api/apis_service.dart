@@ -3,6 +3,7 @@ import 'package:flutter_locyin/data/api/apis.dart';
 import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
+import 'package:flutter_locyin/data/model/message_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/dio_manager.dart';
 import 'dart:io';
@@ -195,7 +196,7 @@ class ApiService {
   /// 聊天列表
   Future<void> messageList(Function callback, Function errorCallback) async {
     await BaseNetWork.instance.dio.post(Apis.MESSAGE_LIST).then((response){
-      callback(response);
+      callback(MessageListEntity().fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);
     });
@@ -218,6 +219,17 @@ class ApiService {
       "id": _id,
     });
     await BaseNetWork.instance.dio.post(Apis.MESSAGE_RECORD,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+  /// 发消息
+  Future<void> updateMessageStatus(Function callback, Function errorCallback , int _status) async {
+    FormData formdata = FormData.fromMap({
+      "status": _status,
+    });
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_STATUS,data: formdata).then((response){
       callback(response);
     }).catchError((e) {
       errorCallback(e);

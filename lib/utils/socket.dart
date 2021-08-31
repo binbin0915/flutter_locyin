@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/utils/toast.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:dio/dio.dart';
@@ -56,6 +57,13 @@ class WebsocketManager{
                     isConnect=StatusEnum.connect,
                     socketStatusController.add(StatusEnum.connect)
                 });
+                break;
+              case "notice" :
+                if(mesData['code'] == 0){
+                  //ToastUtils.success(mesData['msg']);
+                }else{
+                  //ToastUtils.error(mesData['msg']);
+                }
                 break;
               default:break;
             }

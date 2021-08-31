@@ -51,4 +51,7 @@ class Apis {
 
   /// 聊天记录
   static const String MESSAGE_RECORD = "messages/record";
+
+  /// 聊天状态
+  static const String MESSAGE_STATUS = "messages/status";
 }

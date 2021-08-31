@@ -1,11 +1,13 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_detail_entity.dart';
 import 'package:flutter_locyin/data/model/dynamic_list_entity.dart';
+import 'package:flutter_locyin/data/model/message_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
+import 'package:flutter_locyin/page/Message/message.dart';
 import 'package:flutter_locyin/utils/sputils.dart';
 import 'package:get/get.dart';
 
@@ -125,7 +127,7 @@ class UserController extends GetxController{
       print("获取用户信息成功！");
       _user = model;
       update();
-    }, (DioError error) {
+    }, (dio.DioError error) {
       print("获取用户信息失败！");
       //handleLaravelErrors(error);
     },);
@@ -264,7 +266,7 @@ class DynamicController extends GetxController{
       print("更新视图");
       _dynamic_running = false;
       update(['list']);
-    }, (DioError error) {
+    }, (dio.DioError error) {
       _dynamic_running = false;
       print(error.response);
     },page);
@@ -278,7 +280,7 @@ class DynamicController extends GetxController{
       _dynamicDetail = data;
       _dynamic_running = false;
       update(['detail']);
-    }, (DioError error) {
+    }, (dio.DioError error) {
       _dynamic_running = false;
       print(error);
     }, id);
@@ -288,7 +290,7 @@ class DynamicController extends GetxController{
     _dynamicList!.data.firstWhere( (element) => element.id == id).thumbed = (_dynamicList!.data.firstWhere( (element) => element.id == id).thumbed-1).abs();
     apiService.thumbDynamic((){
       update(['thumb']);
-    }, (DioError error) {
+    }, (dio.DioError error) {
       print(error);
     },id);
   }
@@ -297,7 +299,7 @@ class DynamicController extends GetxController{
     _dynamicList!.data.firstWhere( (element) => element.id == id).collected = (_dynamicList!.data.firstWhere( (element) => element.id == id).collected-1).abs();
     apiService.thumbDynamic((){
       update(['collect']);
-    }, (DioError error) {
+    }, (dio.DioError error) {
       print(error);
     },id);
   }
@@ -319,7 +321,7 @@ class DynamicController extends GetxController{
       print("更新评论视图");
       _comment_running = false;
       update(['comment']);
-    }, (DioError error) {
+    }, (dio.DioError error) {
       _comment_running = false;
       print(error.response);
     },id,page);
@@ -331,4 +333,46 @@ class DynamicController extends GetxController{
 }
 class MessageController extends GetxController{
 
+  final List<StatusEntity> _iconsList  = [
+    StatusEntity("在线", "online", Icon(Icons.online_prediction_rounded,color: Colors.green)),
+    StatusEntity("隐身", "hide", Icon(Icons.view_headline_rounded,color: Colors.orange)),
+    StatusEntity("离线", "offline", Icon(Icons.logout,color: Colors.grey)),
+    StatusEntity("忙碌", "busy", Icon(Icons.event_busy,color: Colors.red)),
+    StatusEntity("搬砖", "working", Icon(Icons.file_copy_sharp,color: Colors.cyan)),
+  ];
+  List<StatusEntity> get iconsList => _iconsList;
+  //聊天列表
+  MessageListEntity? _messageList;
+  MessageListEntity? get messageList => _messageList;
+
+  //用于判断是否正在异步请求数据，避免多次请求
+  bool _listRunning  = false;
+
+  bool get listRunning => _listRunning;
+
+  //初始值默认为离线3
+  int _messageStatusCode = 2;
+  int get messageStatusCode  => _messageStatusCode ;
+
+
+  Future getMessageList () async{
+    _listRunning = true;
+    apiService.messageList((MessageListEntity model) {
+      _messageList = model;
+      print("更新视图");
+      _listRunning = false;
+      update(['message_list']);
+    }, (dio.DioError error) {
+      _listRunning = false;
+      print(error.response);
+    });
+  }
+  Future updateMessageStatus(int status) async{
+    apiService.updateMessageStatus((dio.Response response) {
+      _messageStatusCode = status;
+      update(['message_status']);
+    }, (dio.DioError error) {
+      print(error.response);
+    },status);
+  }
 }
