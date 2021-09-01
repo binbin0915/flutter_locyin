@@ -17,7 +17,6 @@ class DefaultApp {
     Get.lazyPut(()=>UserController());
     Get.lazyPut(()=>LocaleController());
     Get.lazyPut(()=>DarkThemeController());
-    Get.lazyPut(()=>MessageController());
     WidgetsFlutterBinding.ensureInitialized();
     beforeInitApp().then((value) => initApp());
 
@@ -73,10 +72,6 @@ class MyApp extends StatelessWidget {
       fallbackLocale: Messages.fallbackLocale,
       translations: Messages(),
       routingCallback: (Routing? route) {
-        if(route!=null && route.current=='/index'){
-          print("正在清除");
-          Get.find<MessageController>().setCurrentWindow(0);
-        }
       },
     );
   }

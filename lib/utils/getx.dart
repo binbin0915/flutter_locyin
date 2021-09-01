@@ -266,7 +266,7 @@ class DynamicController extends GetxController{
         _dynamicList!.meta = model.meta;
         _dynamicList!.links = model.links;
       }
-      print("更新视图");
+      print("更新游记列表视图");
       _dynamic_running = false;
       update(['list']);
     }, (dio.DioError error) {
@@ -353,10 +353,6 @@ class MessageController extends GetxController{
 
   bool get listRunning => _listRunning;
 
-  //单个聊天列表
-  ChatMessageEntity? _chatList;
-  ChatMessageEntity? get chatList => _chatList;
-
   //所有列表的键值对映射
   Map<int,ChatMessageEntity> _allMessageData = {};
 
@@ -399,42 +395,41 @@ class MessageController extends GetxController{
     update(['message_list']);
   }
 
-  Future getChatMessageList (int id) async{
+  Future getChatMessageList (int id,int page) async{
     _chatRunning = true;
     apiService.messageRecord((ChatMessageEntity model) {
-      _chatList = model;
-      _allMessageData[id] = _chatList!;
+      print(model);
+      if(!allMessageData.containsKey(id)){
+        //_allMessageData.remove(id);
+        _allMessageData[id] = model;
+      }else{
+          if(_allMessageData[id]!.meta.currentPage == model.meta.currentPage){
+            return;
+          }
+          _allMessageData[id]!.data.addAll(model.data);
+          _allMessageData[id]!.meta = model.meta;
+          _allMessageData[id]!.links = model.links;
+      }
       print("更新聊天界面视图");
       _chatRunning = false;
       update(['message_chat']);
-    }, (dio.DioError error) {
+    }, (error) {
       _chatRunning = false;
-      print(error.response);
-    },id);
+      print(error);
+    },id,page);
   }
   void setCurrentWindow(int id){
     _windowID = id;
   }
-  Future sendChatMessages (int _toID,String _content,String _type) async{
+  Future sendChatMessages (int _to_id,String _content,String _type) async{
     apiService.sendMessage((dio.Response response) {
-      if(_chatList == null){
-        /*Map  map={
-            "from_id": Get.find<UserController>().user!.data.id ,
-            "to_id": _toID,
-            "content": _content,
-            "push": 0,
-            "read": 0,
-            "status": 1,
-            "type": _type,
-            "created_at": "2021-08-31T11:14:34.000000Z",
-            "updated_at": "2021-08-31T11:14:34.000000Z"
-        };*/
+      if(!allMessageData.containsKey(_to_id)){
         print("网络获取");
-        getChatMessageList(_toID);
+        getChatMessageList(_to_id,1);
       }else{
         Map<String,dynamic>  map = {
             "from_id": Get.find<UserController>().user!.data.id ,
-            "to_id": _toID,
+            "to_id": _to_id,
             "content": _content,
             "push": 0,
             "read": 0,
@@ -443,21 +438,20 @@ class MessageController extends GetxController{
             "created_at": "2021-08-31T11:14:34.000000Z",
             "updated_at": "2021-08-31T11:14:34.000000Z"
         };
-        _chatList!.data.insert(0,(ChatMessageData().fromJson(map)));
-        print(_chatList!.data.length);
+        allMessageData[_to_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
       }
       print("更新聊天页面视图");
       update(['message_chat']);
     }, (dio.DioError error) {
       print(error.response);
-    },_toID,_content,_type);
+    },_to_id,_content,_type);
   }
   Future<void> receiveMessage(String _type,int _window_id,String _content) async {
     if(_window_id == _windowID){
       print("用户在当前会话");
       if(!allMessageData.containsKey(_window_id)){
         print("没有初始化数据");
-        getChatMessageList(_window_id);
+        getChatMessageList(_window_id,1);
       }else{
         print("当前会话，直接添加");
         Map<String,dynamic>  map = {
@@ -480,17 +474,17 @@ class MessageController extends GetxController{
       print("用户不在当前会话");
       _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).count ++;
       _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).excerpt = _content;
-      print("更新聊天会话视图");
+      print("更新会话列表视图");
       update(['message_list']);
     }
   }
-  Future<void> readMessage(int _toID) async {
+  Future<void> readMessage(int _to_id) async {
     apiService.readMessages((dio.Response response) {
-      _messageList!.data.firstWhere( (element) => element.stranger.id == _toID).count = 0;
-      print("更新聊天会话视图");
+      _messageList!.data.firstWhere( (element) => element.stranger.id == _to_id).count = 0;
+      print("更新会话列表视图");
       update(['message_list']);
     }, (dio.DioError error) {
       print(error.response);
-    },_toID);
+    },_to_id);
   }
 }

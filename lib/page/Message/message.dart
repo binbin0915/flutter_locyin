@@ -132,13 +132,20 @@ class _MessagePageState extends State<MessagePage> {
         strangerAvatar: _messageList.data[index].stranger.avatar,
         excerpt: _messageList.data[index].excerpt,
         time: _messageList.data[index].updatedAt,
-        onPressed: () {
-          Get.toNamed("/index/message/chat",arguments: {
+        onPressed: () async {
+          print("设置聊天窗口id");
+          Get.find<MessageController>().setCurrentWindow(_messageList.data[index].stranger.id);
+          var result = await Get.toNamed("/index/message/chat",arguments: {
             "id":_messageList.data[index].stranger.id,
             "new":_messageList.data[index].count>0,
             "nickname":_messageList.data[index].stranger.nickname,
           });
-          Get.find<MessageController>().setCurrentWindow(_messageList.data[index].stranger.id);
+          print(result);
+          if(result != null){
+            print("重置聊天窗口id");
+            Get.find<MessageController>().setCurrentWindow(0);
+          }
+
         },
         count: _messageList.data[index].count,
         status: Get.find<MessageController>().iconsList[_messageList.data[index].stranger.status].icon,

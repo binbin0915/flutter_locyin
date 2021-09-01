@@ -45,7 +45,7 @@ class ChatPageState extends State<ChatPage> {
         .find<MessageController>()
         .allMessageData
         .containsKey(_toId) ){
-      Get.find<MessageController>().getChatMessageList(_toId);
+      Get.find<MessageController>().getChatMessageList(_toId,1);
     }
     /*_msgList = [
       MessageEntity(true, "It's good!"),
@@ -82,6 +82,7 @@ class ChatPageState extends State<ChatPage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: InkWell(child: Icon(Icons.arrow_back),onTap: (){Get.back(result: _toId);}),
         title: Text( _nickname,style: TextStyle(),),
         centerTitle: false,
         backgroundColor: Get.theme.splashColor,
@@ -96,196 +97,194 @@ class ChatPageState extends State<ChatPage> {
         ],
       ),
       backgroundColor: Colors.grey[200],
-      body: Column(
-        children: <Widget>[
-          Divider(
-            height: 0.5,
-          ),
-        GetBuilder<MessageController>(
-            init: MessageController(),
-            id: "message_chat",
-            builder: (controller) {
-              bool _hasData = controller.allMessageData.containsKey(_toId);
-              return Expanded(
-                flex: 1,
-                child:
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    // 判断列表内容是否大于展示区域
-                    bool overflow = false;
-                    double heightTmp = 0.0;
-                    if (_hasData) {
-                      for (ChatMessageData entity in Get
-                          .find<MessageController>()
-                          .allMessageData[_toId]!.data) {
-                        heightTmp +=
-                            _calculateMsgHeight(context, constraints, entity);
-                        if (heightTmp > constraints.maxHeight) {
-                          overflow = true;
+      body: WillPopScope(
+        onWillPop: (){Get.back(result: _toId);return Future.value(true);},
+        child: Column(
+          children: <Widget>[
+            Divider(
+              height: 0.5,
+            ),
+          GetBuilder<MessageController>(
+              init: MessageController(),
+              id: "message_chat",
+              builder: (controller) {
+                bool _hasData = controller.allMessageData.containsKey(_toId);
+                print("是否有数据：$_hasData ");
+                return Expanded(
+                  flex: 1,
+                  child:
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      // 判断列表内容是否大于展示区域
+                      bool overflow = false;
+                      double heightTmp = 0.0;
+                      if (_hasData) {
+                        for (ChatMessageData entity in Get
+                            .find<MessageController>()
+                            .allMessageData[_toId]!.data) {
+                          heightTmp +=
+                              _calculateMsgHeight(context, constraints, entity);
+                          if (heightTmp > constraints.maxHeight) {
+                            print("溢出了");
+                            overflow = true;
+                          }
                         }
                       }
-                    }
 
-                    return EasyRefresh.custom(
-                      scrollController: _scrollController,
-                      reverse: true,
-                      footer: CustomFooter(
-                          enableInfiniteLoad: false,
-                          extent: 40.0,
-                          triggerDistance: 50.0,
-                          footerBuilder: (context,
-                              loadState,
-                              pulledExtent,
-                              loadTriggerPullDistance,
-                              loadIndicatorExtent,
-                              axisDirection,
-                              float,
-                              completeDuration,
-                              enableInfiniteLoad,
-                              success,
-                              noMore) {
-                            return Stack(
-                              children: <Widget>[
-                                Positioned(
-                                  bottom: 0.0,
-                                  left: 0.0,
-                                  right: 0.0,
-                                  child: Container(
-                                    width: 30.0,
-                                    height: 30.0,
-                                    child: SpinKitCircle(
-                                      color: Colors.green,
-                                      size: 30.0,
+                      return EasyRefresh.custom(
+                        scrollController: _scrollController,
+                        reverse: true,
+                        footer: CustomFooter(
+                            enableInfiniteLoad: false,
+                            extent: 40.0,
+                            triggerDistance: 50.0,
+                            footerBuilder: (context,
+                                loadState,
+                                pulledExtent,
+                                loadTriggerPullDistance,
+                                loadIndicatorExtent,
+                                axisDirection,
+                                float,
+                                completeDuration,
+                                enableInfiniteLoad,
+                                success,
+                                noMore) {
+                              return Stack(
+                                children: <Widget>[
+                                  Positioned(
+                                    bottom: 0.0,
+                                    left: 0.0,
+                                    right: 0.0,
+                                    child: Container(
+                                      width: 30.0,
+                                      height: 30.0,
+                                      child: SpinKitCircle(
+                                        color: Colors.green,
+                                        size: 30.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            );
-                          }),
-                      slivers: <Widget>[
-                        if (overflow && _hasData)
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                                  if (controller.allMessageData
-                                      .containsKey(_toId)) {
-                                    return _buildMsg(
-                                        controller.allMessageData[_toId]!
-                                            .data[index]);
-                                  }
-                                },
-                                childCount: controller.chatList == null
-                                    ? 0
-                                    : controller.chatList!.data.length
-                            ),
-                          ),
-                        if (!overflow && _hasData)
-                          SliverToBoxAdapter(
-                            child: Container(
-                              height: constraints.maxHeight,
-                              width: double.infinity,
-                              child: Column(
-                                children: <Widget>[
-                                  for (ChatMessageData entity in controller
-                                      .allMessageData[_toId]!.data
-                                      .reversed)
-                                    _buildMsg(entity),
                                 ],
+                              );
+                            }),
+                        slivers: <Widget>[
+                          if (overflow && _hasData)
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                        return _buildMsg(
+                                            controller.allMessageData[_toId]!
+                                                .data[index]);
+                                  },
+                                  childCount: controller.allMessageData[_toId]!.data.length
                               ),
                             ),
-                          ),
-                      ],
-                      onLoad: () async {
-                        await Future.delayed(Duration(seconds: 2), () {
-                          if (mounted) {
-                            setState(() {
-                              _msgList.addAll([
-                                MessageEntity(true, "It's good!"),
-                                MessageEntity(false, 'EasyRefresh'),
-                              ]);
-                            });
-                          }
-                        });
-                      },
-                    );
-                  },
-                ),
-              );
-            }),
-          SafeArea(
-            child: Container(
-              color: Colors.grey[100],
-              padding: EdgeInsets.only(
-                left: 15.0,
-                right: 15.0,
-                top: 10.0,
-                bottom: 10.0,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        left: 5.0,
-                        right: 5.0,
-                        top: 10.0,
-                        bottom: 10.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(
-                          4.0,
-                        )),
-                      ),
-                      child: TextField(
-                        controller: _textEditingController,
-                        decoration: null,
-                        onSubmitted: (value) {
-                          if (_textEditingController.text.isNotEmpty) {
-                            _sendMsg(_textEditingController.text,"text");
-                            _textEditingController.text = '';
-                          }
+                          if (!overflow && _hasData)
+                            SliverToBoxAdapter(
+                              child: Container(
+                                height: constraints.maxHeight,
+                                width: double.infinity,
+                                child: Column(
+                                  children: <Widget>[
+                                    for (ChatMessageData entity in controller
+                                        .allMessageData[_toId]!.data
+                                        .reversed)
+                                      _buildMsg(entity),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                        onLoad: () async {
+                          await Future.delayed(Duration(seconds: 2), () {
+                            if (mounted && _hasData) {
+                              var meta = Get.find<MessageController>().allMessageData[_toId]!.meta;
+                              if(meta.currentPage < meta.lastPage){
+                                Get.find<MessageController>().getChatMessageList(_toId,meta.currentPage+1);
+                              }
+                            }
+                          });
                         },
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      if (_textEditingController.text.isNotEmpty) {
-                        _sendMsg(_textEditingController.text,"text");
-                        _textEditingController.text = '';
-                      }
+                      );
                     },
-                    child: Container(
-                      height: 30.0,
-                      width: 60.0,
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(
-                        left: 15.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _textEditingController.text.isEmpty
-                            ? Colors.grey
-                            : Colors.green,
-                        borderRadius: BorderRadius.all(Radius.circular(
-                          4.0,
-                        )),
-                      ),
-                      child: Text(
-                        "发送",
-                        style: TextStyle(
+                  ),
+                );
+              }),
+            SafeArea(
+              child: Container(
+                color: Colors.grey[100],
+                padding: EdgeInsets.only(
+                  left: 15.0,
+                  right: 15.0,
+                  top: 10.0,
+                  bottom: 10.0,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          left: 5.0,
+                          right: 5.0,
+                          top: 10.0,
+                          bottom: 10.0,
+                        ),
+                        decoration: BoxDecoration(
                           color: Colors.white,
-                          fontSize: 16.0,
+                          borderRadius: BorderRadius.all(Radius.circular(
+                            4.0,
+                          )),
+                        ),
+                        child: TextField(
+                          controller: _textEditingController,
+                          decoration: null,
+                          onSubmitted: (value) {
+                            if (_textEditingController.text.isNotEmpty) {
+                              _sendMsg(_textEditingController.text,"text");
+                              _textEditingController.text = '';
+                            }
+                          },
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    InkWell(
+                      onTap: () {
+                        if (_textEditingController.text.isNotEmpty) {
+                          _sendMsg(_textEditingController.text,"text");
+                          _textEditingController.text = '';
+                        }
+                      },
+                      child: Container(
+                        height: 30.0,
+                        width: 60.0,
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(
+                          left: 15.0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _textEditingController.text.isEmpty
+                              ? Colors.grey
+                              : Colors.green,
+                          borderRadius: BorderRadius.all(Radius.circular(
+                            4.0,
+                          )),
+                        ),
+                        child: Text(
+                          "发送",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

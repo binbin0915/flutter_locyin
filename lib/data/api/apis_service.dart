@@ -216,11 +216,12 @@ class ApiService {
     });
   }
   /// 查看聊天记录
-  Future<void> messageRecord(Function callback, Function errorCallback , int _id) async {
-    FormData formdata = FormData.fromMap({
+  Future<void> messageRecord(Function callback, Function errorCallback , int _id,int _page) async {
+    Map<String,dynamic> formdata = {
       "id": _id,
-    });
-    await BaseNetWork.instance.dio.post(Apis.MESSAGE_RECORD,data: formdata).then((response){
+      "page": _page
+    };
+    await BaseNetWork.instance.dio.get(Apis.MESSAGE_RECORD,queryParameters: formdata).then((response){
       callback(ChatMessageEntity().fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);
