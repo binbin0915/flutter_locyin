@@ -18,7 +18,6 @@ class DynamicDetailPage extends StatefulWidget {
 class _DynamicDetailPageState extends State<DynamicDetailPage> {
   //从路由参数获取文章 id
   int _id = int.parse(getx.Get.parameters['id'].toString());
-  String followButtonText = "关注";
   final ScrollController _scroll_controller = ScrollController(keepScrollOffset: false);
 
   @override
@@ -148,13 +147,20 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                               highlightColor: getx.Get.theme.highlightColor,
                               colorBrightness: Brightness.dark,
                               splashColor: getx.Get.theme.splashColor,
-                              child: Text(followButtonText),
+                              child: Text("私聊"),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0)),
-                              onPressed: () {
-                                setState(() {
-                                  followButtonText = "私聊";
+                              onPressed: () async {
+                                getx.Get.find<MessageController>().addWindowFromDetailPage(controller.dynamicDetail!.data.user);
+                                var result = await getx.Get.toNamed("/index/message/chat",arguments: {
+                                  "id":controller.dynamicDetail!.data.user.id,
+                                  "nickname":controller.dynamicDetail!.data.user.nickname,
                                 });
+                                print(result);
+                                if(result != null){
+                                  print("重置聊天窗口id");
+                                  getx.Get.find<MessageController>().setCurrentWindow(0);
+                                }
                               },
                             ),
                           )

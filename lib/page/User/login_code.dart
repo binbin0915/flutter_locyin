@@ -260,16 +260,12 @@ class _LoginPage2State extends State<LoginCodePage> {
       }, _phoneController.text);
   }
   void _showDialog(){
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return LoadingDialog(
-            showContent: false,
-            backgroundColor: getx.Get.theme.dialogBackgroundColor,
-            loadingView: SpinKitCircle(color: getx.Get.theme.accentColor),
-          );
-        });
+      getx.Get.dialog(
+        LoadingDialog(
+          showContent: false,
+          backgroundColor: getx.Get.theme.dialogBackgroundColor,
+          loadingView: SpinKitCircle(color: getx.Get.theme.accentColor),
+        ));
   }
   void _login(String value){
     _showDialog();

@@ -114,6 +114,11 @@ dynamicDetailDataUserFromJson(DynamicDetailDataUser data, Map<String, dynamic> j
 				? int.tryParse(json['notification_count'])
 				: json['notification_count'].toInt();
 	}
+	if (json['status'] != null) {
+		data.status = json['status'] is String
+				? int.tryParse(json['status'])
+				: json['status'].toInt();
+	}
 	if (json['created_at'] != null) {
 		data.createdAt = json['created_at'].toString();
 	}
@@ -132,6 +137,7 @@ Map<String, dynamic> dynamicDetailDataUserToJson(DynamicDetailDataUser entity) {
 	data['email'] = entity.email;
 	data['introduction'] = entity.introduction;
 	data['notification_count'] = entity.notificationCount;
+	data['status'] = entity.status;
 	data['created_at'] = entity.createdAt;
 	data['updated_at'] = entity.updatedAt;
 	return data;

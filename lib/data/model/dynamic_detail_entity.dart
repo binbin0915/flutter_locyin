@@ -36,6 +36,7 @@ class DynamicDetailDataUser with JsonConvert<DynamicDetailDataUser> {
 	late String introduction;
 	@JSONField(name: "notification_count")
 	late int notificationCount;
+	late int status;
 	@JSONField(name: "created_at")
 	late String createdAt;
 	@JSONField(name: "updated_at")

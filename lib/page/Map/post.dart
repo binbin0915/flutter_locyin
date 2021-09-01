@@ -95,113 +95,114 @@ class _DynamicPostPageState extends State<DynamicPostPage>{
     print(widget.position);
     print(widget.latitude);
     print(widget.longitude);
-    return SafeArea(
-      child: MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 30,
-                  height: 5,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 16.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 30,
+                height: 5,
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 8.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "发布游记",
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14.0,
                 ),
-              ],
+              ),
+            ],
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _contentController,
+                maxLines: 16,
+                keyboardType: TextInputType.multiline,
+                autofocus: false,
+                decoration: InputDecoration.collapsed(
+                  hintText: "身未动，心已远",
+                ),
+              ),
             ),
-            SizedBox(
-              height: 8.0,
+          ),
+          if (assets.isNotEmpty)
+            SelectedAssetsListView(
+              assets: assets,
+              isDisplayingDetail: isDisplayingDetail,
+              onResult: onResult,
+              onRemoveAsset: removeAsset,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.location_on_outlined,
+                  color: getx.Get.theme.accentColor,
+                ),
                 Text(
-                  "发布游记",
+                  /*"乌镇南浔水乡"*/
+                  widget.position==null?"选择一个位置吧~":widget.position.toString(),
                   style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 14.0,
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: _contentController,
-                  maxLines: 16,
-                  keyboardType: TextInputType.multiline,
-                  autofocus: false,
-                  decoration: InputDecoration.collapsed(
-                    hintText: "身未动，心已远",
-                  ),
-                ),
-              ),
-            ),
-            if (assets.isNotEmpty)
-              SelectedAssetsListView(
-                assets: assets,
-                isDisplayingDetail: isDisplayingDetail,
-                onResult: onResult,
-                onRemoveAsset: removeAsset,
-              ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.location_on_outlined,
                     color: getx.Get.theme.accentColor,
                   ),
-                  Text(
-                    /*"乌镇南浔水乡"*/
-                    widget.position==null?"选择一个位置吧~":widget.position.toString(),
-                    style: TextStyle(
-                      color: getx.Get.theme.accentColor,
-                    ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                      onPressed: (){selectAssets(PickMethod.cameraAndStay( maxAssetsCount: maxAssetsCount ));},
+                      icon: Icon(Icons.picture_in_picture)
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  IconButton(
+                      onPressed: (){ selectAssets(PickMethod.video( maxAssetsCount ));},
+                      icon: Icon(Icons.video_call)
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  IconButton(
+                      onPressed: (){ selectAssets(PickMethod.audio( maxAssetsCount ));},
+                      icon: Icon(Icons.music_note_outlined)
                   ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                        onPressed: (){selectAssets(PickMethod.cameraAndStay( maxAssetsCount: maxAssetsCount ));},
-                        icon: Icon(Icons.picture_in_picture)
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    IconButton(
-                        onPressed: (){ selectAssets(PickMethod.video( maxAssetsCount ));},
-                        icon: Icon(Icons.video_call)
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    IconButton(
-                        onPressed: (){ selectAssets(PickMethod.audio( maxAssetsCount ));},
-                        icon: Icon(Icons.music_note_outlined)
-                    ),
-                  ],
-                ),
-                IconButton(
-                    onPressed: _post,
-                    icon: Icon(Icons.send)
-                ),
-              ],
-            ),
+              IconButton(
+                  onPressed: _post,
+                  icon: Icon(Icons.send)
+              ),
+            ],
+          ),
 
-          ],
-        ),
+        ],
       ),
     );
   }

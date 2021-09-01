@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as dio;
@@ -19,9 +20,9 @@ class ConstantController extends GetxController{
 
   String? _token;
 
-  String _baseUrl = kDebugMode?"http://192.168.10.10/api/v1/":"https://locyin.com/api/v1/";
+  //String _baseUrl = kDebugMode?"http://192.168.10.10/api/v1/":"https://api.locyin.com/api/v1/";
   //接口基础 Url
-  //String _baseUrl = "https://api.locyin.com/api/v1/";
+  String _baseUrl = "https://api.locyin.com/api/v1/";
 
   //广告页点击跳转网址
   String _advantageUrl = "https://flutter.dev";
@@ -399,17 +400,7 @@ class MessageController extends GetxController{
     _chatRunning = true;
     apiService.messageRecord((ChatMessageEntity model) {
       print(model);
-      if(!allMessageData.containsKey(id)){
-        //_allMessageData.remove(id);
-        _allMessageData[id] = model;
-      }else{
-          if(_allMessageData[id]!.meta.currentPage == model.meta.currentPage){
-            return;
-          }
-          _allMessageData[id]!.data.addAll(model.data);
-          _allMessageData[id]!.meta = model.meta;
-          _allMessageData[id]!.links = model.links;
-      }
+      _allMessageData[id] = model;
       print("更新聊天界面视图");
       _chatRunning = false;
       update(['message_chat']);
@@ -421,15 +412,15 @@ class MessageController extends GetxController{
   void setCurrentWindow(int id){
     _windowID = id;
   }
-  Future sendChatMessages (int _to_id,String _content,String _type) async{
+  Future sendChatMessages (int _window_id,String _content,String _type) async{
     apiService.sendMessage((dio.Response response) {
-      if(!allMessageData.containsKey(_to_id)){
+      if(!allMessageData.containsKey(_window_id)){
         print("网络获取");
-        getChatMessageList(_to_id,1);
+        getChatMessageList(_window_id,1);
       }else{
         Map<String,dynamic>  map = {
             "from_id": Get.find<UserController>().user!.data.id ,
-            "to_id": _to_id,
+            "to_id": _window_id,
             "content": _content,
             "push": 0,
             "read": 0,
@@ -438,13 +429,15 @@ class MessageController extends GetxController{
             "created_at": "2021-08-31T11:14:34.000000Z",
             "updated_at": "2021-08-31T11:14:34.000000Z"
         };
-        allMessageData[_to_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
+        allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
       }
+      _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).excerpt = _content;
+      update(['message_list']);
       print("更新聊天页面视图");
       update(['message_chat']);
     }, (dio.DioError error) {
       print(error.response);
-    },_to_id,_content,_type);
+    },_window_id,_content,_type);
   }
   Future<void> receiveMessage(String _type,int _window_id,String _content) async {
     if(_window_id == _windowID){
@@ -466,25 +459,66 @@ class MessageController extends GetxController{
           "updated_at": "2021-08-31T11:14:34.000000Z"
         };
         allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
+        _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).excerpt = _content;
         print("更新聊天页面视图");
         update(['message_chat']);
+        print("更新会话列表视图");
+        update(['message_list']);
       }
 
     }else{
       print("用户不在当前会话");
-      _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).count ++;
-      _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).excerpt = _content;
+      if(_messageList == null){
+        getMessageList();
+      }else{
+        _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).count ++;
+        _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).excerpt = _content;
+      }
       print("更新会话列表视图");
       update(['message_list']);
     }
   }
-  Future<void> readMessage(int _to_id) async {
+  Future<void> readMessage(int _window_id) async {
     apiService.readMessages((dio.Response response) {
-      _messageList!.data.firstWhere( (element) => element.stranger.id == _to_id).count = 0;
+      _messageList!.data.firstWhere( (element) => element.stranger.id == _window_id).count = 0;
       print("更新会话列表视图");
       update(['message_list']);
     }, (dio.DioError error) {
       print(error.response);
-    },_to_id);
+    },_window_id);
+  }
+  void addWindowFromDetailPage(DynamicDetailDataUser _user){
+
+    var date = new DateTime.now();
+    String timestamp = "${date.year.toString()}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
+    print(timestamp);
+    if(!_allMessageData.containsKey(_user.id)){
+      Map<String,dynamic> listMap = {
+            "data":[{
+              "stranger": _user.toJson(),
+              "count": 0,
+              "type": "text",
+              "excerpt": "",
+              "created_at": timestamp.toString(),
+              "updated_at": timestamp.toString()
+            }]
+      };
+      Map<String,dynamic>  itemMap = {
+        "stranger": _user.toJson(),
+        "count": 0,
+        "type": "text",
+        "excerpt": "",
+        "created_at": timestamp.toString(),
+        "updated_at": timestamp.toString()
+      };
+      if(_messageList == null){
+        //获取列表
+        MessageListEntity().fromJson(listMap);
+      }else{
+        _messageList!.data.insert(0,(MessageListData().fromJson(itemMap)));
+      }
+      print(_messageList!.data.length);
+      update(['message_list']);
+    }
   }
 }

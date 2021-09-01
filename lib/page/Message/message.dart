@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -23,42 +25,33 @@ class _MessagePageState extends State<MessagePage> {
   final ScrollController _scroll_controller =
       ScrollController(keepScrollOffset: false);
 
-  /* final List<Icon> _iconssList = [
-    Icon(Icons.online_prediction_rounded,color: Colors.green, size: 30.0),
-    Icon(Icons.view_headline_rounded,color: Colors.orange, size: 30.0),
-    Icon(Icons.logout,color: Colors.grey, size: 30.0),
-    Icon(Icons.event_busy,color: Colors.red, size: 30.0),
-    Icon(Icons.file_copy_sharp,color: Colors.cyan, size: 30.0)
-  ];
-  final List<Map<String ,String>> _typeList = [
-    {
-      "type":"online",
-      "label":"在线"
-    },
-    {
-      "type":"hide",
-      "label":"隐身"
-    },
-    {
-      "type": "offline",
-      "label": "离线"
-    },
-    {
-      "type":"busy",
-      "label":"忙碌"
-    },
-    {
-      "type":"working",
-      "label":"搬砖"
-    }
-  ];*/
+  late Timer _timer;
+  var period = const Duration(seconds: 30);
+  _initTimer() {
+    WebsocketManager().socketStatusController.stream.listen((event) {
+        if(event == StatusEnum.connect){
+          try {
+            //定时器，period为周期
+            _timer = Timer.periodic(period, (timer) {
+              WebsocketManager().send("ping");
+              if (event == StatusEnum.close) {
+                timer.cancel();
+              }
+            });
+          } catch (e) {
+          }
+        }
+        print(event);
+    });
 
+  }
   @override
   void initState() {
     super.initState();
     //初始化控制器
     _controller = EasyRefreshController();
     WebsocketManager().connect();
+    _initTimer();
   }
 
   @override
@@ -137,7 +130,6 @@ class _MessagePageState extends State<MessagePage> {
           Get.find<MessageController>().setCurrentWindow(_messageList.data[index].stranger.id);
           var result = await Get.toNamed("/index/message/chat",arguments: {
             "id":_messageList.data[index].stranger.id,
-            "new":_messageList.data[index].count>0,
             "nickname":_messageList.data[index].stranger.nickname,
           });
           print(result);

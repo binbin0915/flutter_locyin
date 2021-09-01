@@ -31,7 +31,8 @@ class WebsocketManager{
   }
   StatusEnum isConnect=StatusEnum.close ;  //默认为未连接.
 
-  String _url="ws://192.168.10.10:8282";
+  String _url="wss://api.locyin.com/wss";
+  //String _url="ws://192.168.10.10.com/wss";
 
   late  WebSocketChannel channel;
 
@@ -41,7 +42,7 @@ class WebsocketManager{
 
   Future connect() async{
     print("正在启动 Socket 服务...");
-    headers['origin'] = 'http://api.luoxun.com'; // 加上一个origin，防止被拦截
+    headers['origin'] = 'https://api.locyin.com'; // 加上一个origin，防止被拦截
     if(isConnect==StatusEnum.close){
       print("Socket未连接,尝试正在连接 Socket 服务器...");
       isConnect=StatusEnum.connecting;
@@ -49,7 +50,7 @@ class WebsocketManager{
       channel= IOWebSocketChannel.connect(
           Uri.parse(_url),
           // 可以设置请求头
-          //headers: headers
+          headers: headers
       );
       channel.stream.listen(
         //监听服务器消息

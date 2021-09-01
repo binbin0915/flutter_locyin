@@ -21,7 +21,7 @@ class ChatPage extends StatefulWidget {
 class ChatPageState extends State<ChatPage> {
   //
   int _toId = Get.arguments['id'];
-  bool _new = Get.arguments['new'];
+
   String _nickname = Get.arguments['nickname'];
 
   // 信息列表
@@ -38,15 +38,20 @@ class ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     print("窗口 id: $_toId");
-    if(_new){
-      Get.find<MessageController>().readMessage(_toId);
-    }
-    if(_new || !Get
+    if(!Get
         .find<MessageController>()
         .allMessageData
         .containsKey(_toId) ){
       Get.find<MessageController>().getChatMessageList(_toId,1);
+    }else{
+      //如果有新消息
+      if(Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.stranger.id == _toId).count>0){
+        print("有新消息！");
+        Get.find<MessageController>().getChatMessageList(_toId,1);
+      }
     }
+    Get.find<MessageController>().readMessage(_toId);
+
     /*_msgList = [
       MessageEntity(true, "It's good!"),
       MessageEntity(false, 'EasyRefresh'),

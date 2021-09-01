@@ -90,7 +90,7 @@ class MapPageState extends State<MapPage> {
   final double _initFabHeight = 120.0;
   double _fabHeight = 0;
   double _panelHeightOpen = 0;
-  double _panelHeightClosed = 72.0;
+  double _panelHeightClosed = 60.0;
 
   FocusNode blankNode = FocusNode();
 
