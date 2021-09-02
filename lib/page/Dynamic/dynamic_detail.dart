@@ -7,7 +7,7 @@ import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/collect_button.dart';
 import 'package:flutter_locyin/widgets/like_button.dart';
 import 'package:flutter_locyin/widgets/lists/comment_item.dart';
-import 'package:flutter_locyin/widgets/skeleton.dart';
+import 'package:flutter_locyin/widgets/skeleton_item.dart';
 import 'package:share/share.dart';
 import 'package:get/get.dart' as getx;
 
@@ -287,7 +287,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                 ),
               );
             } else {
-              return SkeletonWidget();
+              return SkeletonListItem();
             }
           }),
     );
@@ -324,7 +324,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
               (context, index) {
                 DynamicCommentEntity? _comment_list = controller.commentList;
                 if (_comment_list == null) {
-                  return SkeletonWidget();
+                  return SkeletonListItem();
                 } else {
                   return CommentListItem(
                     dynamic_id: _id,
@@ -343,7 +343,7 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                 }
               },
               childCount: controller.commentList == null
-                  ? 5
+                  ? 10
                   : controller.commentList!.data.length,
             ),
           );

@@ -63,7 +63,7 @@ class ChatPageState extends State<ChatPage> {
     ];*/
     _textEditingController = TextEditingController();
     _textEditingController.addListener(() {
-      //setState(() {});
+      setState(() {});
     });
     _scrollController = ScrollController();
   }
@@ -185,9 +185,35 @@ class ChatPageState extends State<ChatPage> {
                               ],
                             );
                           }),
+                      emptyWidget: (_hasData?controller.allMessageData[_toId]!.data.length==0:!_hasData)
+                          ? Container(
+                        height: double.infinity,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: SizedBox(),
+                              flex: 2,
+                            ),
+                            SizedBox(
+                              width: 100.0,
+                              height: 100.0,
+                              child: Image.asset('assets/images/nodata.png'),
+                            ),
+                            Text(
+                              "没有数据",
+                              style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+                            ),
+                            Expanded(
+                              child: SizedBox(),
+                              flex: 3,
+                            ),
+                          ],
+                        ),
+                      )
+                          : null,
                       slivers: <Widget>[
-
-
                         if (overflow && _hasData)
                           SliverList(
                             delegate: SliverChildBuilderDelegate(

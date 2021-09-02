@@ -8,7 +8,7 @@ import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/socket.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/lists/message_item.dart';
-import 'package:flutter_locyin/widgets/skeleton.dart';
+import 'package:flutter_locyin/widgets/skeleton_item.dart';
 import 'package:get/get.dart';
 
 class MessagePage extends StatefulWidget {
@@ -67,12 +67,73 @@ class _MessagePageState extends State<MessagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: EasyRefresh(
+        child: GetBuilder<MessageController>(
+            init: MessageController(),
+            id: "message_list",
+            builder: (controller) {
+        return EasyRefresh(
           enableControlFinishRefresh: false,
           enableControlFinishLoad: true,
           controller: _controller,
           header: ClassicalHeader(),
           footer: ClassicalFooter(),
+          /*firstRefresh: true,
+          firstRefreshWidget: Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+                child: SizedBox(
+                  height: 200.0,
+                  width: 300.0,
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: 50.0,
+                          height: 50.0,
+                          child: SpinKitFadingCube(
+                            color: Theme.of(context).primaryColor,
+                            size: 25.0,
+                          ),
+                        ),
+                        Container(
+                          child: Text("加载中..."),
+                        )
+                      ],
+                    ),
+                  ),
+                )),
+          ),*/
+          emptyWidget: (controller.messageList!=null?controller.messageList!.data.length == 0:controller.messageList!=null)
+              ? Container(
+            height: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: SizedBox(),
+                  flex: 2,
+                ),
+                SizedBox(
+                  width: 100.0,
+                  height: 100.0,
+                  child: Image.asset('assets/images/nodata.png'),
+                ),
+                Text(
+                  "没有数据",
+                  style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+                ),
+                Expanded(
+                  child: SizedBox(),
+                  flex: 3,
+                ),
+              ],
+            ),
+          )
+              : null,
           //下拉刷新
           onRefresh: () async {
             await Future.delayed(Duration(seconds: 2), () {
@@ -93,26 +154,24 @@ class _MessagePageState extends State<MessagePage> {
               //=====列表=====//
               _getMessageAppBar(),
               Container(
-                child: GetBuilder<MessageController>(
-                    init: MessageController(),
-                    id: "message_list",
-                    builder: (controller) {
-                      return SliverList(
+                child:
+                     SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (context, index) {
                             return getMessageListView(index);
                             //return getDynamicListView(index);
                           },
                           childCount: controller.messageList == null
-                              ? 5
+                              ? 10
                               : controller.messageList!.data.length,
                         ),
-                      );
-                    }),
+                      ),
+
               ),
             ],
           ),
-        ),
+        );
+        }),
       ),
     );
   }
@@ -127,7 +186,7 @@ class _MessagePageState extends State<MessagePage> {
       /*if (!Get.find<DynamicController>().dynamic_running) {
         Get.find<DynamicController>().getDynamicList(1);
       }*/
-      return SkeletonWidget();
+      return SkeletonListItem();
     } else {
       return MessageListItem(
         strangerNickname: _messageList.data[index].stranger.nickname,

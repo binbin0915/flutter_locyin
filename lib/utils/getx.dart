@@ -471,10 +471,15 @@ class MessageController extends GetxController{
   Future sendChatMessages (int _window_id,String _content,String _type) async{
     //print(DateTime.now());
     //print(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt));
-    int difference = DateTime.now().difference(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt)).inMinutes;
-    print("时间差：$difference");
+    bool _needTimeStamp = false;
+    print(allMessageData[_window_id]!.data);
+    if(allMessageData[_window_id]!.data.isNotEmpty){
+      _needTimeStamp = DateTime.now().difference(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt)).inMinutes>5;
+    }else{
+      _needTimeStamp = true;
+    }
     apiService.sendMessage((dio.Response response) {
-      if(difference>5){
+      if(_needTimeStamp){
         Map<String,dynamic>  _dateMap = {
           "from_id": Get.find<UserController>().user!.data.id ,
           "to_id": _window_id,
@@ -506,14 +511,18 @@ class MessageController extends GetxController{
       update(['message_list']);
     }, (error) {
       print(error);
-    },_window_id,_content,_type,difference>5?1:0);
+    },_window_id,_content,_type,_needTimeStamp?1:0);
   }
   Future<void> receiveMessage(String _type,int _window_id,String _content) async {
     if(_window_id == _windowID){
       print("用户在当前会话,直接添加");
-      int difference = DateTime.now().difference(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt)).inMinutes;
-      print("时间差：$difference");
-      if(difference>5){
+      bool _needTimeStamp = false;
+      if(allMessageData[_window_id]!.data.isNotEmpty){
+        _needTimeStamp = DateTime.now().difference(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt)).inMinutes>5;
+      }else{
+        _needTimeStamp = true;
+      }
+      if(_needTimeStamp){
         Map<String,dynamic>  _dateMap = {
           "from_id": Get.find<UserController>().user!.data.id ,
           "to_id": _window_id,

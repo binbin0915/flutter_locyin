@@ -6,7 +6,7 @@ import 'package:flutter_locyin/page/menu/menu.dart';
 import 'package:flutter_locyin/utils/back_to_top.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/widgets/lists/dynamic_item.dart';
-import 'package:flutter_locyin/widgets/skeleton.dart';
+import 'package:flutter_locyin/widgets/skeleton_item.dart';
 import 'package:get/get.dart';
 
 class DynamicPage extends StatefulWidget {
@@ -111,7 +111,7 @@ class _DynamicPageState extends State<DynamicPage> {
                                     //return getDynamicListView(index);
                                   },
                                   childCount: controller.dynamicList == null
-                                      ? 5
+                                      ? 10
                                       : controller.dynamicList!.data.length,
                                 ),
                               );
@@ -139,7 +139,7 @@ class _DynamicPageState extends State<DynamicPage> {
       if (!Get.find<DynamicController>().dynamic_running) {
         Get.find<DynamicController>().getDynamicList(1);
       }
-      return SkeletonWidget();
+      return SkeletonListItem();
     } else {
       return DynamicListItem(
           id: _dynamic_list.data[index].id,
