@@ -48,13 +48,13 @@ class ChatPageState extends State<ChatPage> {
           print("正在初始化聊天记录，窗口：$_toId ");
           Get.find<MessageController>().initChatRecord(_toId);
           Get.find<MessageController>().getChatMessageList(_toId,1);
-    }else{
+    }/*else{
       //如果有新消息
       if(Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.id == _toId).count>0){
         print("有新消息！");
         Get.find<MessageController>().getChatMessageList(_toId,1);
       }
-    }
+    }*/
     Get.find<MessageController>().readMessage(_toId);
 
     /*_msgList = [

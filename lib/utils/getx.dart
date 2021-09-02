@@ -511,6 +511,22 @@ class MessageController extends GetxController{
   Future<void> receiveMessage(String _type,int _window_id,String _content) async {
     if(_window_id == _windowID){
       print("用户在当前会话,直接添加");
+      int difference = DateTime.now().difference(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt)).inMinutes;
+      print("时间差：$difference");
+      if(difference>5){
+        Map<String,dynamic>  _dateMap = {
+          "from_id": Get.find<UserController>().user!.data.id ,
+          "to_id": _window_id,
+          "content": _content,
+          "push": 0,
+          "read": 0,
+          "status": 1,
+          "type": "date",
+          "created_at": DateTime.now(),
+          "updated_at": DateTime.now()
+        };
+        allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(_dateMap)));
+      }
       Map<String,dynamic>  map = {
         "to_id": Get.find<UserController>().user!.data.id ,
         "from_id": _window_id,
@@ -519,8 +535,8 @@ class MessageController extends GetxController{
         "read": 1,
         "status": 1,
         "type": _type,
-        "created_at": "2021-08-31T11:14:34.000000Z",
-        "updated_at": "2021-08-31T11:14:34.000000Z"
+        "created_at": DateTime.now(),
+        "updated_at": DateTime.now()
       };
       allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
       _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
@@ -540,8 +556,42 @@ class MessageController extends GetxController{
             _contain = true;
           }
         });
-        print(_messageList!.data.contains(_window_id));
         if(_contain){
+          if(_allMessageData.containsKey(_window_id)){
+            print("已初始化聊天页面窗口：$_window_id");
+            int difference = DateTime.now().difference(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt)).inMinutes;
+            print("时间差：$difference");
+            if(difference>5){
+              Map<String,dynamic>  _dateMap = {
+                "from_id": Get.find<UserController>().user!.data.id ,
+                "to_id": _window_id,
+                "content": _content,
+                "push": 0,
+                "read": 0,
+                "status": 1,
+                "type": "date",
+                "created_at": DateTime.now(),
+                "updated_at": DateTime.now()
+              };
+              allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(_dateMap)));
+            }
+            Map<String,dynamic>  map = {
+              "to_id": Get.find<UserController>().user!.data.id ,
+              "from_id": _window_id,
+              "content": _content,
+              "push": 0,
+              "read": 1,
+              "status": 1,
+              "type": _type,
+              "created_at": DateTime.now(),
+              "updated_at": DateTime.now()
+            };
+            allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
+            print("更新聊天页面视图");
+            update(['message_chat']);
+          }else{
+            print("未初始化聊天页面窗口：$_window_id");
+          }
           _messageList!.data.firstWhere( (element) => element.id == _window_id).count ++;
           _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
           _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
