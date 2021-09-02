@@ -8,6 +8,7 @@ import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/utils/date.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/toast.dart';
+import 'package:flutter_locyin/widgets/bubble.dart';
 import 'package:flutter_locyin/widgets/loading_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -294,6 +295,10 @@ class ChatPageState extends State<ChatPage> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Icon(Icons.emoji_emotions_outlined),
+                  ),
                   InkWell(
                     onTap: () {
                       if (_textEditingController.text.isNotEmpty) {
@@ -306,7 +311,7 @@ class ChatPageState extends State<ChatPage> {
                       width: 60.0,
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(
-                        left: 15.0,
+                        left: 0,
                       ),
                       decoration: BoxDecoration(
                         color: _textEditingController.text.isEmpty
@@ -342,7 +347,7 @@ class ChatPageState extends State<ChatPage> {
           children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text(DateUtil.parse(DateTime.parse(entity.createdAt)),style: TextStyle(
+            child: Text(DateUtil.parse(DateTime.parse(entity.createdAt).toLocal()),style: TextStyle(
               fontSize: 12
             ),),
           )
@@ -356,7 +361,8 @@ class ChatPageState extends State<ChatPage> {
     }
     MessageListDataStranger _stranger = _message.data.firstWhere( (element) => element.id == _toId).stranger;
     if (entity.fromId==_user.data.id) {
-      return Container(
+      return
+        Container(
         margin: EdgeInsets.all(
           10.0,
         ),
@@ -378,24 +384,30 @@ class ChatPageState extends State<ChatPage> {
                   margin: EdgeInsets.only(
                     top: 5.0,
                   ),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
+                  //padding: EdgeInsets.all(10.0),
+                  /*decoration: BoxDecoration(
                     color: Colors.lightGreen,
                     borderRadius: BorderRadius.all(Radius.circular(
                       4.0,
                     )),
-                  ),
+                  ),*/
                   constraints: BoxConstraints(
                     maxWidth: 200.0,
                   ),
-                  child: Text(
-                    entity.content,
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(
-                      fontSize: 16.0,
+                  child: Bubble(
+                    color: Colors.white,
+                    direction: BubbleDirection.right,
+                    child: Text(
+                      entity.content,
+                      overflow: TextOverflow.clip,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
                     ),
-                  ),
+                  )
+
                 )
+
               ],
             ),
             Card(
@@ -464,23 +476,27 @@ class ChatPageState extends State<ChatPage> {
                   margin: EdgeInsets.only(
                     top: 5.0,
                   ),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
+                  //padding: EdgeInsets.all(10.0),
+                  /*decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(
                       4.0,
                     )),
-                  ),
+                  ),*/
                   constraints: BoxConstraints(
                     maxWidth: 200.0,
                   ),
-                  child: Text(
-                    entity.content,
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(
-                      fontSize: 16.0,
+                    child: Bubble(
+                      color: Colors.white,
+                      direction: BubbleDirection.left,
+                      child: Text(
+                        entity.content,
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
                     ),
-                  ),
                 )
               ],
             ),
