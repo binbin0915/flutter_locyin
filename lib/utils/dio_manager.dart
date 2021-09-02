@@ -14,6 +14,7 @@ class BaseNetWork {
   static final BaseNetWork _instance =  BaseNetWork._internal();
 
   late final Dio dio;
+
   BaseOptions? options ;
 
   BaseNetWork._internal() {
@@ -23,7 +24,7 @@ class BaseNetWork {
           connectTimeout: 10000,
           receiveTimeout: 1000 * 60 * 60 * 24,
           responseType: ResponseType.json,
-          headers: {"Content-Type": "application/json;charset=utf-8",}
+          headers: {"Content-Type": "application/json;charset=utf-8",},
       )
     //网络状态拦截
       ..interceptors.add(AuthInterceptor())
@@ -81,6 +82,7 @@ class HttpLog extends Interceptor{
       print("新的Token值 => "+response.headers["authorization"]![0]);
       getx.Get.find<ConstantController>().setToken(response.headers["authorization"]![0]);
       BaseNetWork.instance.dio.unlock();
+      BaseNetWork.instance.dio.clear();
     }
     return super.onResponse(response,handler);
   }
@@ -91,10 +93,30 @@ class ErrorInterceptor extends Interceptor {
     print(error.response);
     print('ERROR[${error.response?.statusCode}] => PATH: ${error.requestOptions.path}');
     if (error.response != null && error.response!.statusCode == 401 && getx.Get.find<ConstantController>().token!=null ) {
-      getx.Get.find<ConstantController>().clearToken();
-      getx.Get.find<UserController>().clearUser();
-      if(getx.Get.find<ConstantController>().appIsRunning){
-        getx.Get.offAllNamed("/login");
+      print("响应token");
+      print(error.requestOptions.headers['Authorization']);
+      print("新的token:");
+      print(getx.Get.find<ConstantController>().token);
+      print(error.requestOptions.headers['Authorization'] != getx.Get.find<ConstantController>().token);
+      if(error.requestOptions.headers['Authorization'] != getx.Get.find<ConstantController>().token){
+        print("请求path");
+        print(error.requestOptions.path);
+        print("请求方法：");
+        print( error.requestOptions.method);
+        print("请求数据：");
+        print( error.requestOptions.data);
+        print("请求query:");
+        print( error.requestOptions.queryParameters);
+        /*BaseNetWork.instance.dio.request(error.requestOptions.path,options: Options(
+          method: error.requestOptions.method
+        ) ,data: error.requestOptions.data,queryParameters: error.requestOptions.queryParameters);
+        return ;*/
+      }else{
+        getx.Get.find<ConstantController>().clearToken();
+        getx.Get.find<UserController>().clearUser();
+        if(getx.Get.find<ConstantController>().appIsRunning){
+          getx.Get.offAllNamed("/login");
+        }
       }
     }
     if(getx.Get.find<ConstantController>().appIsRunning){

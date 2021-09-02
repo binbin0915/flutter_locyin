@@ -5,8 +5,10 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_locyin/data/model/chat_message_entity.dart';
 import 'package:flutter_locyin/data/model/message_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
+import 'package:flutter_locyin/utils/date.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/toast.dart';
+import 'package:flutter_locyin/widgets/loading_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
@@ -35,17 +37,20 @@ class ChatPageState extends State<ChatPage> {
 
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    print("窗口 id: $_toId");
+    print("设置聊天窗口id: $_toId");
+    Get.find<MessageController>().setCurrentWindow(_toId);
     if(!Get
         .find<MessageController>()
         .allMessageData
         .containsKey(_toId) ){
-      Get.find<MessageController>().getChatMessageList(_toId,1);
+          print("正在初始化聊天记录，窗口：$_toId ");
+          Get.find<MessageController>().initChatRecord(_toId);
+          Get.find<MessageController>().getChatMessageList(_toId,1);
     }else{
       //如果有新消息
-      if(Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.stranger.id == _toId).count>0){
+      if(Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.id == _toId).count>0){
         print("有新消息！");
         Get.find<MessageController>().getChatMessageList(_toId,1);
       }
@@ -66,11 +71,15 @@ class ChatPageState extends State<ChatPage> {
   @override
   void dispose() {
     super.dispose();
+    print("重置聊天窗口id");
+    Get.find<MessageController>().setCurrentWindow(0);
     _textEditingController.dispose();
     _scrollController.dispose();
+    Get.find<MessageController>().readMessage(_toId);
 
   }
 
+  //
   // 发送消息
   void _sendMsg(String msg,String type) {
     /*setState(() {
@@ -87,7 +96,7 @@ class ChatPageState extends State<ChatPage> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(child: Icon(Icons.arrow_back),onTap: (){Get.back(result: _toId);}),
+        //leading: InkWell(child: Icon(Icons.arrow_back),onTap: (){Get.back(result: _toId);}),
         title: Text( _nickname,style: TextStyle(),),
         centerTitle: false,
         backgroundColor: Get.theme.splashColor,
@@ -102,206 +111,224 @@ class ChatPageState extends State<ChatPage> {
         ],
       ),
       backgroundColor: Colors.grey[200],
-      body: WillPopScope(
-        onWillPop: (){Get.back(result: _toId);return Future.value(true);},
-        child: Column(
-          children: <Widget>[
-            Divider(
-              height: 0.5,
-            ),
-          GetBuilder<MessageController>(
-              init: MessageController(),
-              id: "message_chat",
-              builder: (controller) {
-                bool _hasData = controller.allMessageData.containsKey(_toId);
-                print("是否有数据：$_hasData ");
-                return Expanded(
-                  flex: 1,
-                  child:
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      // 判断列表内容是否大于展示区域
-                      bool overflow = false;
-                      double heightTmp = 0.0;
-                      if (_hasData) {
-                        for (ChatMessageData entity in Get
-                            .find<MessageController>()
-                            .allMessageData[_toId]!.data) {
-                          heightTmp +=
-                              _calculateMsgHeight(context, constraints, entity);
-                          if (heightTmp > constraints.maxHeight) {
-                            print("溢出了");
-                            overflow = true;
-                          }
+      body: Column(
+        children: <Widget>[
+          Divider(
+            height: 0.5,
+          ),
+        GetBuilder<MessageController>(
+            init: MessageController(),
+            id: "message_chat",
+            builder: (controller) {
+              bool _hasData = controller.allMessageData[_toId]!.meta.currentPage != 0;
+              print("是否有数据：$_hasData ");
+              return Expanded(
+                flex: 1,
+                child:
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    // 判断列表内容是否大于展示区域
+                    bool overflow = false;
+                    double heightTmp = 0.0;
+                    if (_hasData) {
+                      for (ChatMessageData entity in Get
+                          .find<MessageController>()
+                          .allMessageData[_toId]!.data) {
+                        heightTmp +=
+                            _calculateMsgHeight(context, constraints, entity);
+                        if (heightTmp > constraints.maxHeight) {
+                          print("溢出了");
+                          overflow = true;
                         }
                       }
-
-                      return EasyRefresh.custom(
-                        scrollController: _scrollController,
-                        reverse: true,
-                        footer: CustomFooter(
-                            enableInfiniteLoad: false,
-                            extent: 40.0,
-                            triggerDistance: 50.0,
-                            footerBuilder: (context,
-                                loadState,
-                                pulledExtent,
-                                loadTriggerPullDistance,
-                                loadIndicatorExtent,
-                                axisDirection,
-                                float,
-                                completeDuration,
-                                enableInfiniteLoad,
-                                success,
-                                noMore) {
-                              return Stack(
-                                children: <Widget>[
-                                  Positioned(
-                                    bottom: 0.0,
-                                    left: 0.0,
-                                    right: 0.0,
-                                    child: Container(
-                                      width: 30.0,
-                                      height: 30.0,
-                                      child: SpinKitCircle(
-                                        color: Colors.green,
-                                        size: 30.0,
-                                      ),
+                    }
+                    if(!_hasData) {
+                      return LoadingDialog(
+                          showContent: false,
+                          backgroundColor: Get.theme.dialogBackgroundColor,
+                          loadingView: SpinKitCircle(color: Get.theme.accentColor),
+                      );
+                    }
+                    return EasyRefresh.custom(
+                      scrollController: _scrollController,
+                      reverse: true,
+                      footer: CustomFooter(
+                          enableInfiniteLoad: false,
+                          extent: 40.0,
+                          triggerDistance: 50.0,
+                          footerBuilder: (context,
+                              loadState,
+                              pulledExtent,
+                              loadTriggerPullDistance,
+                              loadIndicatorExtent,
+                              axisDirection,
+                              float,
+                              completeDuration,
+                              enableInfiniteLoad,
+                              success,
+                              noMore) {
+                            return Stack(
+                              children: <Widget>[
+                                Positioned(
+                                  bottom: 0.0,
+                                  left: 0.0,
+                                  right: 0.0,
+                                  child: Container(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    child: SpinKitCircle(
+                                      color: Colors.green,
+                                      size: 30.0,
                                     ),
                                   ),
-                                ],
-                              );
-                            }),
-                        slivers: <Widget>[
-                          if (overflow && _hasData)
-                            SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                      (context, index) {
-                                        return _buildMsg(
-                                            controller.allMessageData[_toId]!
-                                                .data[index]);
-                                  },
-                                  childCount: controller.allMessageData[_toId]!.data.length
-                              ),
-                            ),
-                          if (!overflow && _hasData)
-                            SliverToBoxAdapter(
-                              child: Container(
-                                height: constraints.maxHeight,
-                                width: double.infinity,
-                                child: Column(
-                                  children: <Widget>[
-                                    for (ChatMessageData entity in controller
-                                        .allMessageData[_toId]!.data
-                                        .reversed)
-                                      _buildMsg(entity),
-                                  ],
                                 ),
+                              ],
+                            );
+                          }),
+                      slivers: <Widget>[
+
+
+                        if (overflow && _hasData)
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                      return _buildMsg(
+                                          controller.allMessageData[_toId]!
+                                              .data[index]);
+                                },
+                                childCount: controller.allMessageData[_toId]!.data.length
+                            ),
+                          ),
+                        if (!overflow && _hasData)
+                          SliverToBoxAdapter(
+                            child: Container(
+                              height: constraints.maxHeight,
+                              width: double.infinity,
+                              child: Column(
+                                children: <Widget>[
+                                  for (ChatMessageData entity in controller
+                                      .allMessageData[_toId]!.data
+                                      .reversed)
+                                    _buildMsg(entity),
+                                ],
                               ),
                             ),
-                        ],
-                        onLoad: () async {
-                          await Future.delayed(Duration(seconds: 2), () {
-                            if (mounted && _hasData) {
-                              var meta = Get.find<MessageController>().allMessageData[_toId]!.meta;
-                              if(meta.currentPage < meta.lastPage){
-                                Get.find<MessageController>().getChatMessageList(_toId,meta.currentPage+1);
-                              }
-                            }
-                          });
-                        },
-                      );
-                    },
-                  ),
-                );
-              }),
-            SafeArea(
-              child: Container(
-                color: Colors.grey[100],
-                padding: EdgeInsets.only(
-                  left: 15.0,
-                  right: 15.0,
-                  top: 10.0,
-                  bottom: 10.0,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          left: 5.0,
-                          right: 5.0,
-                          top: 10.0,
-                          bottom: 10.0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(
-                            4.0,
-                          )),
-                        ),
-                        child: TextField(
-                          controller: _textEditingController,
-                          decoration: null,
-                          onSubmitted: (value) {
-                            if (_textEditingController.text.isNotEmpty) {
-                              _sendMsg(_textEditingController.text,"text");
-                              _textEditingController.text = '';
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (_textEditingController.text.isNotEmpty) {
-                          _sendMsg(_textEditingController.text,"text");
-                          _textEditingController.text = '';
-                        }
-                      },
-                      child: Container(
-                        height: 30.0,
-                        width: 60.0,
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(
-                          left: 15.0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _textEditingController.text.isEmpty
-                              ? Colors.grey
-                              : Colors.green,
-                          borderRadius: BorderRadius.all(Radius.circular(
-                            4.0,
-                          )),
-                        ),
-                        child: Text(
-                          "发送",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
                           ),
+                      ],
+                      onLoad: () async {
+                        await Future.delayed(Duration(seconds: 2), () {
+                          if (mounted && _hasData) {
+                            var meta = Get.find<MessageController>().allMessageData[_toId]!.meta;
+                            if(meta.currentPage < meta.lastPage){
+                              Get.find<MessageController>().getChatMessageList(_toId,meta.currentPage+1);
+                            }
+                          }
+                        });
+                      },
+                    );
+                  },
+                ),
+              );
+            }),
+          SafeArea(
+            child: Container(
+              color: Colors.grey[100],
+              padding: EdgeInsets.only(
+                left: 15.0,
+                right: 15.0,
+                top: 10.0,
+                bottom: 10.0,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 5.0,
+                        right: 5.0,
+                        top: 10.0,
+                        bottom: 10.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(
+                          4.0,
+                        )),
+                      ),
+                      child: TextField(
+                        controller: _textEditingController,
+                        decoration: null,
+                        onSubmitted: (value) {
+                          if (_textEditingController.text.isNotEmpty) {
+                            _sendMsg(_textEditingController.text,"text");
+                            _textEditingController.text = '';
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (_textEditingController.text.isNotEmpty) {
+                        _sendMsg(_textEditingController.text,"text");
+                        _textEditingController.text = '';
+                      }
+                    },
+                    child: Container(
+                      height: 30.0,
+                      width: 60.0,
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(
+                        left: 15.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _textEditingController.text.isEmpty
+                            ? Colors.grey
+                            : Colors.green,
+                        borderRadius: BorderRadius.all(Radius.circular(
+                          4.0,
+                        )),
+                      ),
+                      child: Text(
+                        "发送",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   // 构建消息视图
   Widget _buildMsg(ChatMessageData entity) {
+    if(entity.type == 'date'){
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(DateUtil.parse(DateTime.parse(entity.createdAt)),style: TextStyle(
+              fontSize: 12
+            ),),
+          )
+      ],
+    );
+    }
     UserEntity? _user = Get.find<UserController>().user;
     MessageListEntity? _message = Get.find<MessageController>().messageList;
     if(_user == null || _message ==null){
       return Container();
     }
-    MessageListDataStranger _stranger = _message.data.firstWhere( (element) => element.stranger.id == _toId).stranger;
+    MessageListDataStranger _stranger = _message.data.firstWhere( (element) => element.id == _toId).stranger;
     if (entity.fromId==_user.data.id) {
       return Container(
         margin: EdgeInsets.all(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/pop_comment_inputfield.dart';
+import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/collect_button.dart';
 import 'package:flutter_locyin/widgets/like_button.dart';
 import 'package:flutter_locyin/widgets/lists/comment_item.dart';
@@ -52,10 +53,10 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
     if(toLoad && !getx.Get.find<DynamicController>().comment_running && _currentPage < getx.Get.find<DynamicController>().commentList!.meta.lastPage)
       getx.Get.find<DynamicController>().getDynamicCommentList(_id, _currentPage + 1);
     }
-
-
+  bool _running = false;
   @override
   Widget build(BuildContext context) {
+     _running = false;
     return Scaffold(
         body: SafeArea(
           child: CustomScrollView(
@@ -151,15 +152,22 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0)),
                               onPressed: () async {
-                                getx.Get.find<MessageController>().addWindowFromDetailPage(controller.dynamicDetail!.data.user);
-                                var result = await getx.Get.toNamed("/index/message/chat",arguments: {
-                                  "id":controller.dynamicDetail!.data.user.id,
-                                  "nickname":controller.dynamicDetail!.data.user.nickname,
-                                });
-                                print(result);
-                                if(result != null){
-                                  print("重置聊天窗口id");
-                                  getx.Get.find<MessageController>().setCurrentWindow(0);
+                                if(getx.Get.find<UserController>().user!.data.id == controller.dynamicDetail!.data.user.id){
+                                  return;
+                                }
+                                if(!_running){
+                                  bool _initWindow = await getx.Get.find<MessageController>().chatFromDetailPage(controller.dynamicDetail!.data.user);
+                                  _running = true;
+                                  if(_initWindow){
+                                    _running = false;
+                                    getx.Get.offAndToNamed("/index/message/chat",arguments: {
+                                      "id":controller.dynamicDetail!.data.user.id,
+                                      "nickname":controller.dynamicDetail!.data.user.nickname,
+                                    });
+                                  }else{
+                                    ToastUtils.error("创建聊天窗口失败");
+                                    _running = false;
+                                  }
                                 }
                               },
                             ),

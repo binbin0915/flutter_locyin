@@ -31,8 +31,8 @@ class WebsocketManager{
   }
   StatusEnum isConnect=StatusEnum.close ;  //默认为未连接.
 
-  String _url="wss://api.locyin.com/wss";
-  //String _url="ws://192.168.10.10.com/wss";
+  //String _url="wss://api.locyin.com/wss";
+  String _url="ws://192.168.10.10:8282";
 
   late  WebSocketChannel channel;
 

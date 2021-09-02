@@ -203,11 +203,12 @@ class ApiService {
     });
   }
   /// 发消息
-  Future<void> sendMessage(Function callback, Function errorCallback , int _toID,String _content,String _type) async {
+  Future<void> sendMessage(Function callback, Function errorCallback , int _toID,String _content,String _type ,int _needTimeStamp) async {
     FormData formdata = FormData.fromMap({
       "to_id": _toID,
       "content": _content,
       "type": _type,
+      "timestamp": _needTimeStamp,
     });
     await BaseNetWork.instance.dio.post(Apis.SEND_MESSAGE,data: formdata).then((response){
       callback(response);
@@ -227,7 +228,7 @@ class ApiService {
       errorCallback(e);
     });
   }
-  /// 发消息
+  /// 更新用户状态
   Future<void> updateMessageStatus(Function callback, Function errorCallback , int _status) async {
     FormData formdata = FormData.fromMap({
       "status": _status,
@@ -249,4 +250,16 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 创建会话窗口
+  Future<void> createWindow(Function callback, Function errorCallback , int _toID) async {
+    FormData formdata = FormData.fromMap({
+      "id": _toID,
+    });
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_CREATE_WINDOW,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
 }

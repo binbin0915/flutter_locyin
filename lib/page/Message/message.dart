@@ -26,9 +26,14 @@ class _MessagePageState extends State<MessagePage> {
       ScrollController(keepScrollOffset: false);
 
   late Timer _timer;
+
   var period = const Duration(seconds: 30);
+
+  //为了控制Stream 暂停。恢复。取消监听 新建
+  late StreamSubscription _streamSubscription;
+
   _initTimer() {
-    WebsocketManager().socketStatusController.stream.listen((event) {
+    _streamSubscription = WebsocketManager().socketStatusController.stream.listen((event) {
         if(event == StatusEnum.connect){
           try {
             //定时器，period为周期
@@ -53,7 +58,11 @@ class _MessagePageState extends State<MessagePage> {
     WebsocketManager().connect();
     _initTimer();
   }
-
+  @override
+  void dispose() {
+    _streamSubscription.cancel();
+    super.dispose(); // This will free the memory space allocated to the page
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,18 +135,10 @@ class _MessagePageState extends State<MessagePage> {
         excerpt: _messageList.data[index].excerpt,
         time: _messageList.data[index].updatedAt,
         onPressed: () async {
-          print("设置聊天窗口id");
-          Get.find<MessageController>().setCurrentWindow(_messageList.data[index].stranger.id);
-          var result = await Get.toNamed("/index/message/chat",arguments: {
-            "id":_messageList.data[index].stranger.id,
+          Get.toNamed("/index/message/chat",arguments: {
+            "id":_messageList.data[index].id,
             "nickname":_messageList.data[index].stranger.nickname,
           });
-          print(result);
-          if(result != null){
-            print("重置聊天窗口id");
-            Get.find<MessageController>().setCurrentWindow(0);
-          }
-
         },
         count: _messageList.data[index].count,
         status: Get.find<MessageController>().iconsList[_messageList.data[index].stranger.status].icon,

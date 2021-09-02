@@ -57,4 +57,7 @@ class Apis {
 
   /// 已读消息
   static const String MESSAGE_READ = "messages/read";
+
+  /// 创建窗口
+  static const String MESSAGE_CREATE_WINDOW = "messages/window";
 }
