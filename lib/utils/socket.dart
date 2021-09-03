@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_locyin/common/config.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/toast.dart';
@@ -32,7 +33,7 @@ class WebsocketManager{
   StatusEnum isConnect=StatusEnum.close ;  //默认为未连接.
 
   //String _url="wss://api.locyin.com/wss";
-  String _url="ws://192.168.10.10:8282";
+  //String _url="ws://192.168.10.10:8282";
 
   late  WebSocketChannel channel;
 
@@ -48,7 +49,7 @@ class WebsocketManager{
       isConnect=StatusEnum.connecting;
       socketStatusController.add(StatusEnum.connecting);
       channel= IOWebSocketChannel.connect(
-          Uri.parse(_url),
+          Uri.parse(LocyinConfig.socketUrl),
           // 可以设置请求头
           headers: headers
       );
@@ -81,7 +82,7 @@ class WebsocketManager{
                 print(mesData['data']['type'].runtimeType);
                 print(mesData['data']['window_id'].runtimeType);
                 print(mesData['data']['content'].runtimeType);
-                getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content']);
+                getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content'],mesData['data']['uuid']);
                 break;
               default:break;
             }

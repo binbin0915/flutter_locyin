@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_locyin/common/config.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,7 +25,7 @@ class _AdvantagePageState extends State<AdvantagePage> {
   }
 
   _launchURL() async {
-    const url = 'https://flutter.dev';
+    const url = LocyinConfig.advantageUrl;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -87,7 +88,7 @@ class _AdvantagePageState extends State<AdvantagePage> {
                         height: double.infinity,
                         fit: BoxFit.fill,
                         placeholder: AssetImage("assets/images/background.png"), //占位图片（本地文件）
-                        image: NetworkImage(controller.advantageImageUrl), //网络图片
+                        image: NetworkImage(LocyinConfig.advantageImageUrl), //网络图片
                       ),
                       Positioned(
                         //top: 30,

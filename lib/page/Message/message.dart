@@ -67,17 +67,22 @@ class _MessagePageState extends State<MessagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: GetBuilder<MessageController>(
-            init: MessageController(),
-            id: "message_list",
-            builder: (controller) {
-        return EasyRefresh(
-          enableControlFinishRefresh: false,
-          enableControlFinishLoad: true,
-          controller: _controller,
-          header: ClassicalHeader(),
-          footer: ClassicalFooter(),
-          /*firstRefresh: true,
+        child: Flex(
+          direction: Axis.vertical,
+          children: [
+            _getMessageAppBar(),
+            GetBuilder<MessageController>(
+                    init: MessageController(),
+                    id: "message_list",
+                    builder: (controller) {
+                      return Flexible(
+                        child: EasyRefresh(
+                          enableControlFinishRefresh: false,
+                          enableControlFinishLoad: true,
+                          controller: _controller,
+                          header: ClassicalHeader(),
+                          footer: ClassicalFooter(),
+                          /*firstRefresh: true,
           firstRefreshWidget: Container(
             width: double.infinity,
             height: double.infinity,
@@ -87,91 +92,95 @@ class _MessagePageState extends State<MessagePage> {
                   width: 300.0,
                   child: Card(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 50.0,
-                          height: 50.0,
-                          child: SpinKitFadingCube(
-                            color: Theme.of(context).primaryColor,
-                            size: 25.0,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: 50.0,
+                            height: 50.0,
+                            child: SpinKitFadingCube(
+                              color: Theme.of(context).primaryColor,
+                              size: 25.0,
+                            ),
                           ),
-                        ),
-                        Container(
-                          child: Text("加载中..."),
-                        )
-                      ],
+                          Container(
+                            child: Text("加载中..."),
+                          )
+                        ],
                     ),
                   ),
                 )),
           ),*/
-          emptyWidget: (controller.messageList!=null?controller.messageList!.data.length == 0:controller.messageList!=null)
-              ? Container(
-            height: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: SizedBox(),
-                  flex: 2,
-                ),
-                SizedBox(
-                  width: 100.0,
-                  height: 100.0,
-                  child: Image.asset('assets/images/nodata.png'),
-                ),
-                Text(
-                  "没有数据",
-                  style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
-                ),
-                Expanded(
-                  child: SizedBox(),
-                  flex: 3,
-                ),
-              ],
-            ),
-          )
-              : null,
-          //下拉刷新
-          onRefresh: () async {
-            await Future.delayed(Duration(seconds: 2), () {
-              print("正在刷新数据...");
-              if (!Get.find<MessageController>().listRunning) {
-                Get.find<MessageController>().getMessageList();
-              }
-              _controller.resetLoadState();
-            });
-          },
-          //上拉加载
-          onLoad: () async {},
-          child: CustomScrollView(
-            controller: _scroll_controller,
-            slivers: <Widget>[
-              /*//=====头部菜单=====//
-                          SliverToBoxAdapter(child: bannerWidget()),*/
-              //=====列表=====//
-              _getMessageAppBar(),
-              Container(
-                child:
-                     SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return getMessageListView(index);
-                            //return getDynamicListView(index);
+                          emptyWidget: (controller.messageList!=null?controller.messageList!.data.length == 0:controller.messageList!=null)
+                              ? Container(
+                            height: double.infinity,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: SizedBox(),
+                                  flex: 2,
+                                ),
+                                SizedBox(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  child: Image.asset('assets/images/nodata.png'),
+                                ),
+                                Text(
+                                  "没有数据",
+                                  style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+                                ),
+                                Expanded(
+                                  child: SizedBox(),
+                                  flex: 3,
+                                ),
+                              ],
+                            ),
+                          )
+                              : null,
+                          //下拉刷新
+                          onRefresh: () async {
+                            await Future.delayed(Duration(seconds: 2), () {
+                              print("正在刷新数据...");
+                              if (!Get.find<MessageController>().listRunning) {
+                                Get.find<MessageController>().getMessageList();
+                              }
+                              _controller.resetLoadState();
+                            });
                           },
-                          childCount: controller.messageList == null
-                              ? 10
-                              : controller.messageList!.data.length,
-                        ),
-                      ),
+                          //上拉加载
+                          onLoad: () async {},
+                          child: CustomScrollView(
+                            controller: _scroll_controller,
+                            slivers: <Widget>[
+                              /*//=====头部菜单=====//
+                            SliverToBoxAdapter(child: bannerWidget()),*/
+                              //=====列表=====//
 
-              ),
-            ],
-          ),
-        );
-        }),
+                              Container(
+                                child:
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                        (context, index) {
+                                      return getMessageListView(index);
+                                      //return getDynamicListView(index);
+                                    },
+                                    childCount: controller.messageList == null
+                                        ? 10
+                                        : controller.messageList!.data.length,
+                                  ),
+                                ),
+
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+      
+          ],
+        )
       ),
     );
   }
@@ -206,8 +215,7 @@ class _MessagePageState extends State<MessagePage> {
   }
 
   Widget _getMessageAppBar() {
-    return SliverToBoxAdapter(
-      child: Padding(
+    return Padding(
         padding: const EdgeInsets.all(14.0),
         child: Stack(
           children: [
@@ -254,8 +262,7 @@ class _MessagePageState extends State<MessagePage> {
             )
           ],
         ),
-      ),
-    );
+      );
   }
 
 

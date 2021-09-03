@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/widgets/like_button.dart';
 import 'package:share/share.dart';
@@ -113,12 +113,16 @@ class _DynamicListItemState extends State<DynamicListItem> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadiusDirectional.circular(10)),
                         clipBehavior: Clip.antiAlias,
-                        child: CachedNetworkImage(
-                          imageUrl:widget.imageUrl.toString(),
+                        child:
+                        ExtendedImage.network(
+                          widget.imageUrl.toString(),
+                          fit: BoxFit.fill,
+                          cache: true,
                           width: double.maxFinite,
-                          placeholder:(context,url)=> Image.asset('assets/images/loading.gif',fit: BoxFit.cover),
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error) => new Icon(Icons.error),
+                          //border: Border.all(color: Colors.red, width: 1.0),
+                          //shape: boxShape,
+                          //borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          //cancelToken: cancellationToken,
                         ),
                       ),
                     ):Container(),

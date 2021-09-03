@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:dio/dio.dart' as dio;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:flutter_locyin/data/model/chat_message_entity.dart';
@@ -12,31 +11,18 @@ import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/page/Message/message.dart';
 import 'package:flutter_locyin/utils/sputils.dart';
 import 'package:get/get.dart';
-
+import 'package:uuid/uuid.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'auxiliaries.dart';
 import 'date.dart';
+import 'dart:io';
 
 // APP状态控制器
 class ConstantController extends GetxController{
 
   String? _token;
 
-  String _baseUrl = kDebugMode?"http://192.168.10.10/api/v1/":"https://api.locyin.com/api/v1/";
-  //接口基础 Url
-  //String _baseUrl = "https://api.locyin.com/api/v1/";
-
-  //广告页点击跳转网址
-  String _advantageUrl = "https://flutter.dev";
-
-  //广告页图片
-  String _advantageImageUrl = "https://locyin.oss-cn-beijing.aliyuncs.com/apps/luoxun_flutter/images/splash.png";
-
   String? get  token => _token;
-
-  String get  baseUrl => _baseUrl;
-
-  String get  advantageUrl => _advantageUrl;
-
-  String get  advantageImageUrl => _advantageImageUrl;
 
   int _counter = 5;
 
@@ -404,6 +390,19 @@ class MessageController extends GetxController{
       "total": 0
     }
   };
+  //消息类型枚举到字符串映射
+  /*final Map<MessageType,String> _messageTypeMap = {
+    MessageType.text:"text",
+    MessageType.audio:"audio",
+    MessageType.image:"image",
+    MessageType.video:"video",
+    MessageType.speech:"speech",
+    MessageType.file:"file",
+  };
+  Map<MessageType,String> get messageTypeMap => _messageTypeMap;*/
+  List<TempAsset> _tempAssetList  = [];
+
+  List<TempAsset> get  tempAssetList  => _tempAssetList;
   void initChatRecord(int _id){
     _allMessageData[_id] =  ChatMessageEntity().fromJson(_initChatRecord);
   }
@@ -468,31 +467,81 @@ class MessageController extends GetxController{
   void setCurrentWindow(int id){
     _windowID = id;
   }
-  Future sendChatMessages (int _window_id,String _content,String _type) async{
-    //print(DateTime.now());
-    //print(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt));
+  Future handleUploadAssets (int _window_id,AssetEntity entity) async{
+      String _uuid = Uuid().v1();
+      bool _needTimeStamp = checkNeedTimeStamp(_window_id);
+      String _type = Auxiliaries.AssetTypeToString(entity.type);
+      File? file = await entity.file;
+      String path = file!.path;
+      var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+
+      Map<String,dynamic>  _tempAssetMap = {
+        "from_id" : Get.find<UserController>().user!.data.id ,
+        "to_id": _window_id,
+        "content": path.toString(),
+        "push": 0,
+        "read": 1,
+        "status": 1,
+        "type": "tempAsset",
+        "uuid": _uuid,
+        "progress": 1.0,
+        "created_at": DateTime.now(),
+        "updated_at": DateTime.now()
+      };
+      allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(_tempAssetMap)));
+      _tempAssetList.add(new TempAsset(_uuid, entity));
+      update(['message_chat']);
+      _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = "[图片]";
+      _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
+      update(['message_list']);
+
+      apiService.uploadFile((dio.Response response){
+        print(response.data);
+        String src = response.data["src"];
+        apiService.sendMessage((dio.Response response) {
+
+        }, (error) {
+          print(error);
+        },_window_id,src,_type,_needTimeStamp?1:0,_uuid);
+        print("上传成功: ");
+
+      }, (error) {
+        print(error);
+      },await dio.MultipartFile.fromFile(path, filename:name),(var sent ,var total){
+        _allMessageData[_window_id]!.data.firstWhere( (element) => element.uuid == _uuid).progress=sent/total;
+        update(['message_chat']);
+      });
+  }
+  bool checkNeedTimeStamp(int _window_id){
     bool _needTimeStamp = false;
-    print(allMessageData[_window_id]!.data);
     if(allMessageData[_window_id]!.data.isNotEmpty){
       _needTimeStamp = DateTime.now().difference(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt)).inMinutes>5;
     }else{
       _needTimeStamp = true;
     }
+    if(_needTimeStamp){
+      Map<String,dynamic>  _dateMap = {
+        "from_id": Get.find<UserController>().user!.data.id ,
+        "to_id": _window_id,
+        "content": DateTime.now().toString(),
+        "push": 0,
+        "read": 0,
+        "status": 1,
+        "type": "date",
+        "uuid":"0",
+        "progress": 1.0,
+        "created_at": DateTime.now(),
+        "updated_at": DateTime.now()
+      };
+      allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(_dateMap)));
+      return true;
+    }else{
+      return false;
+    }
+  }
+  Future sendChatMessages (int _window_id,String _content,String _type,String _uuid) async{
+    bool _needTimeStamp = checkNeedTimeStamp(_window_id);
     apiService.sendMessage((dio.Response response) {
-      if(_needTimeStamp){
-        Map<String,dynamic>  _dateMap = {
-          "from_id": Get.find<UserController>().user!.data.id ,
-          "to_id": _window_id,
-          "content": _content,
-          "push": 0,
-          "read": 0,
-          "status": 1,
-          "type": "date",
-          "created_at": DateTime.now(),
-          "updated_at": DateTime.now()
-        };
-        allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(_dateMap)));
-      }
       Map<String,dynamic>  map = {
         "from_id": Get.find<UserController>().user!.data.id ,
         "to_id": _window_id,
@@ -501,6 +550,8 @@ class MessageController extends GetxController{
         "read": 0,
         "status": 1,
         "type": _type,
+        "uuid": _uuid,
+        "progress": 1.0,
         "created_at": DateTime.now(),
         "updated_at": DateTime.now()
       };
@@ -511,31 +562,18 @@ class MessageController extends GetxController{
       update(['message_list']);
     }, (error) {
       print(error);
-    },_window_id,_content,_type,_needTimeStamp?1:0);
+    },_window_id,_content,_type,_needTimeStamp?1:0,_uuid);
   }
-  Future<void> receiveMessage(String _type,int _window_id,String _content) async {
+
+  Future<void> receiveMessage(String _type,int _window_id,String _content,String _uuid) async {
+    if(!_allMessageData.containsKey(_window_id)){
+      print("未初始化聊天页面窗口：$_window_id");
+      initChatRecord(_window_id);
+      getChatMessageList(_window_id,1);
+    }
     if(_window_id == _windowID){
       print("用户在当前会话,直接添加");
-      bool _needTimeStamp = false;
-      if(allMessageData[_window_id]!.data.isNotEmpty){
-        _needTimeStamp = DateTime.now().difference(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt)).inMinutes>5;
-      }else{
-        _needTimeStamp = true;
-      }
-      if(_needTimeStamp){
-        Map<String,dynamic>  _dateMap = {
-          "from_id": Get.find<UserController>().user!.data.id ,
-          "to_id": _window_id,
-          "content": _content,
-          "push": 0,
-          "read": 0,
-          "status": 1,
-          "type": "date",
-          "created_at": DateTime.now(),
-          "updated_at": DateTime.now()
-        };
-        allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(_dateMap)));
-      }
+      checkNeedTimeStamp(_window_id);
       Map<String,dynamic>  map = {
         "to_id": Get.find<UserController>().user!.data.id ,
         "from_id": _window_id,
@@ -544,6 +582,8 @@ class MessageController extends GetxController{
         "read": 1,
         "status": 1,
         "type": _type,
+        "uuid": _uuid,
+        "progress": 1.0,
         "created_at": DateTime.now(),
         "updated_at": DateTime.now()
       };
@@ -566,24 +606,8 @@ class MessageController extends GetxController{
           }
         });
         if(_contain){
-          if(_allMessageData.containsKey(_window_id)){
             print("已初始化聊天页面窗口：$_window_id");
-            int difference = DateTime.now().difference(DateTime.parse(allMessageData[_window_id]!.data.first.createdAt)).inMinutes;
-            print("时间差：$difference");
-            if(difference>5){
-              Map<String,dynamic>  _dateMap = {
-                "from_id": Get.find<UserController>().user!.data.id ,
-                "to_id": _window_id,
-                "content": _content,
-                "push": 0,
-                "read": 0,
-                "status": 1,
-                "type": "date",
-                "created_at": DateTime.now(),
-                "updated_at": DateTime.now()
-              };
-              allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(_dateMap)));
-            }
+            checkNeedTimeStamp(_window_id);
             Map<String,dynamic>  map = {
               "to_id": Get.find<UserController>().user!.data.id ,
               "from_id": _window_id,
@@ -592,15 +616,15 @@ class MessageController extends GetxController{
               "read": 1,
               "status": 1,
               "type": _type,
+              "uuid":_uuid,
+              "progress": 1.0,
               "created_at": DateTime.now(),
               "updated_at": DateTime.now()
             };
             allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
             print("更新聊天页面视图");
             update(['message_chat']);
-          }else{
-            print("未初始化聊天页面窗口：$_window_id");
-          }
+
           _messageList!.data.firstWhere( (element) => element.id == _window_id).count ++;
           _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
           _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
@@ -684,3 +708,9 @@ class MessageController extends GetxController{
 
   }
 }
+class TempAsset{
+  String uuid;
+  AssetEntity entity;
+  TempAsset(this.uuid,this.entity);
+}
+

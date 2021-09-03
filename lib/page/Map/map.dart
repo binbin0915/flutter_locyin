@@ -92,10 +92,10 @@ class MapPageState extends State<MapPage> {
   double _panelHeightOpen = 0;
   double _panelHeightClosed = 60.0;
 
-  FocusNode blankNode = FocusNode();
+
 
   PanelController _pc = new PanelController();
-
+  FocusNode blankNode = FocusNode();
   void _checkPermissions() async {
     Map<Permission, PermissionStatus> statuses =
         await needPermissionList.request();
@@ -156,7 +156,7 @@ class MapPageState extends State<MapPage> {
         panel: Center(
           child: _poi==null?DynamicPostPage(panelController: _pc,):DynamicPostPage(position: _poi!.name.toString(),latitude: _poi!.latLng!.latitude.toString(),longitude: _poi!.latLng!.longitude.toString(), panelController: _pc),
         ),
-        //maxHeight: _panelHeightOpen,
+        maxHeight: _panelHeightOpen,
         minHeight: _panelHeightClosed,
         parallaxEnabled: true,
         parallaxOffset: .5,

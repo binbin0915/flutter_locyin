@@ -53,6 +53,9 @@ chatMessageDataFromJson(ChatMessageData data, Map<String, dynamic> json) {
 	if (json['type'] != null) {
 		data.type = json['type'].toString();
 	}
+	if (json['uuid'] != null) {
+		data.uuid = json['uuid'].toString();
+	}
 	if (json['created_at'] != null) {
 		data.createdAt = json['created_at'].toString();
 	}
@@ -71,6 +74,7 @@ Map<String, dynamic> chatMessageDataToJson(ChatMessageData entity) {
 	data['read'] = entity.read;
 	data['status'] = entity.status;
 	data['type'] = entity.type;
+	data['uuid'] = entity.uuid;
 	data['created_at'] = entity.createdAt;
 	data['updated_at'] = entity.updatedAt;
 	return data;

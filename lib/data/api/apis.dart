@@ -47,7 +47,7 @@ class Apis {
   static const String SEND_MESSAGE = "messages/send";
 
   /// 上传文件
-  static const String UPLOAD_FILE = "files";
+  static const String UPLOAD_FILES = "files";
 
   /// 聊天记录
   static const String MESSAGE_RECORD = "messages/record";

@@ -1,10 +1,15 @@
 import 'dart:async';
+import 'package:flutter_locyin/page/Message/photo_view.dart';
+import 'package:flutter_locyin/page/Message/video_view.dart';
+import 'package:flutter_locyin/widgets/appbar.dart';
+import 'package:flutter_locyin/widgets/lists/message_asset_widget_builder.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_locyin/data/model/chat_message_entity.dart';
 import 'package:flutter_locyin/data/model/message_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
+import 'package:flutter_locyin/page/Map/picker_method.dart';
 import 'package:flutter_locyin/utils/date.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/toast.dart';
@@ -12,7 +17,10 @@ import 'package:flutter_locyin/widgets/bubble.dart';
 import 'package:flutter_locyin/widgets/loading_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:uuid/uuid.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 /// 聊天界面示例
 class ChatPage extends StatefulWidget {
   @override
@@ -27,16 +35,40 @@ class ChatPageState extends State<ChatPage> {
 
   String _nickname = Get.arguments['nickname'];
 
-  // 信息列表
-  late List<MessageEntity> _msgList;
-
   // 输入框
   late TextEditingController _textEditingController;
 
   // 滚动控制器
   late ScrollController _scrollController;
 
+  // 响应空白处的焦点的Node
+  FocusNode blankNode = FocusNode();
 
+
+  bool _isShowDial = false;
+  //
+  ///用来控制  TextField 焦点的获取与关闭
+  FocusNode focusNode = new FocusNode();
+
+  final double _initFabHeight =0.0;
+  double _fabHeight = 0;
+  double _panelHeightOpen = 280;
+  double _panelHeightClosed = 0;
+  PanelController _pc = new PanelController();
+  // 发送消息
+  void _sendMsg(String msg,String type) {
+    /*setState(() {
+      _msgList.insert(0, MessageEntity(true, msg));
+    });*/
+    _scrollController.animateTo(0.0,
+        duration: Duration(milliseconds: 300), curve: Curves.linear);
+    Get.find<MessageController>().sendChatMessages(_toId, msg, "text" ,Uuid().v1());
+
+  }
+  //关闭键盘
+  void closeKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(blankNode);
+  }
   @override
   void initState(){
     super.initState();
@@ -46,9 +78,9 @@ class ChatPageState extends State<ChatPage> {
         .find<MessageController>()
         .allMessageData
         .containsKey(_toId) ){
-          print("正在初始化聊天记录，窗口：$_toId ");
-          Get.find<MessageController>().initChatRecord(_toId);
-          Get.find<MessageController>().getChatMessageList(_toId,1);
+      print("正在初始化聊天记录，窗口：$_toId ");
+      Get.find<MessageController>().initChatRecord(_toId);
+      Get.find<MessageController>().getChatMessageList(_toId,1);
     }/*else{
       //如果有新消息
       if(Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.id == _toId).count>0){
@@ -64,9 +96,12 @@ class ChatPageState extends State<ChatPage> {
     ];*/
     _textEditingController = TextEditingController();
     _textEditingController.addListener(() {
-      setState(() {});
+      setState(() {
+
+      });
     });
     _scrollController = ScrollController();
+    _fabHeight = _initFabHeight;
   }
 
   @override
@@ -79,24 +114,10 @@ class ChatPageState extends State<ChatPage> {
     Get.find<MessageController>().readMessage(_toId);
 
   }
-
-  //
-  // 发送消息
-  void _sendMsg(String msg,String type) {
-    /*setState(() {
-      _msgList.insert(0, MessageEntity(true, msg));
-    });
-    _scrollController.animateTo(0.0,
-        duration: Duration(milliseconds: 300), curve: Curves.linear);*/
-    Get.find<MessageController>().sendChatMessages(_toId, msg, type );
-
-  }
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         //leading: InkWell(child: Icon(Icons.arrow_back),onTap: (){Get.back(result: _toId);}),
         title: Text( _nickname,style: TextStyle(),),
         centerTitle: false,
@@ -110,231 +131,283 @@ class ChatPageState extends State<ChatPage> {
             },
           ),
         ],
-      ),
+      ),*/
       backgroundColor: Colors.grey[200],
-      body: Column(
-        children: <Widget>[
-          Divider(
-            height: 0.5,
-          ),
-        GetBuilder<MessageController>(
-            init: MessageController(),
-            id: "message_chat",
-            builder: (controller) {
-              bool _hasData = controller.allMessageData[_toId]!.meta.currentPage != 0;
-              print("是否有数据：$_hasData ");
-              return Expanded(
-                flex: 1,
-                child:
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    // 判断列表内容是否大于展示区域
-                    bool overflow = false;
-                    double heightTmp = 0.0;
-                    if (_hasData) {
-                      for (ChatMessageData entity in Get
-                          .find<MessageController>()
-                          .allMessageData[_toId]!.data) {
-                        heightTmp +=
-                            _calculateMsgHeight(context, constraints, entity);
-                        if (heightTmp > constraints.maxHeight) {
-                          print("溢出了");
-                          overflow = true;
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            CustomAppBar(title:_nickname,
+              right:IconButton(
+              icon: Icon(Icons.more_horiz),
+              onPressed: () {
+                ToastUtils.toast("跳转到用户信息页");
+              },
+            ),),
+            Divider(
+              height: 0.5,
+            ),
+            GetBuilder<MessageController>(
+              init: MessageController(),
+              id: "message_chat",
+              builder: (controller) {
+                bool _hasData = controller.allMessageData[_toId]!.meta.currentPage != 0;
+                print("是否有数据：$_hasData ");
+                return Expanded(
+                  flex: 1,
+                  child:
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      // 判断列表内容是否大于展示区域
+                      bool overflow = false;
+                      double heightTmp = 0.0;
+                      if (_hasData) {
+                        for (ChatMessageData entity in Get
+                            .find<MessageController>()
+                            .allMessageData[_toId]!.data) {
+                          heightTmp +=
+                              _calculateMsgHeight(context, constraints, entity);
+                          if (heightTmp > constraints.maxHeight) {
+                            print("溢出了");
+                            overflow = true;
+                          }
                         }
                       }
-                    }
-                    if(!_hasData) {
-                      return LoadingDialog(
-                          showContent: false,
-                          backgroundColor: Get.theme.dialogBackgroundColor,
-                          loadingView: SpinKitCircle(color: Get.theme.accentColor),
-                      );
-                    }
-                    return EasyRefresh.custom(
-                      scrollController: _scrollController,
-                      reverse: true,
-                      footer: CustomFooter(
-                          enableInfiniteLoad: false,
-                          extent: 40.0,
-                          triggerDistance: 50.0,
-                          footerBuilder: (context,
-                              loadState,
-                              pulledExtent,
-                              loadTriggerPullDistance,
-                              loadIndicatorExtent,
-                              axisDirection,
-                              float,
-                              completeDuration,
-                              enableInfiniteLoad,
-                              success,
-                              noMore) {
-                            return Stack(
-                              children: <Widget>[
-                                Positioned(
-                                  bottom: 0.0,
-                                  left: 0.0,
-                                  right: 0.0,
-                                  child: Container(
-                                    width: 30.0,
-                                    height: 30.0,
-                                    child: SpinKitCircle(
-                                      color: Colors.green,
-                                      size: 30.0,
+                      if(!_hasData) {
+                        return LoadingDialog(
+                            showContent: false,
+                            backgroundColor: Get.theme.dialogBackgroundColor,
+                            loadingView: SpinKitCircle(color: Get.theme.accentColor),
+                        );
+                      }
+                      return EasyRefresh.custom(
+                        scrollController: _scrollController,
+                        reverse: true,
+                        footer: CustomFooter(
+                            enableInfiniteLoad: false,
+                            extent: 40.0,
+                            triggerDistance: 50.0,
+                            footerBuilder: (context,
+                                loadState,
+                                pulledExtent,
+                                loadTriggerPullDistance,
+                                loadIndicatorExtent,
+                                axisDirection,
+                                float,
+                                completeDuration,
+                                enableInfiniteLoad,
+                                success,
+                                noMore) {
+                              return Stack(
+                                children: <Widget>[
+                                  Positioned(
+                                    bottom: 0.0,
+                                    left: 0.0,
+                                    right: 0.0,
+                                    child: Container(
+                                      width: 30.0,
+                                      height: 30.0,
+                                      child: SpinKitCircle(
+                                        color: Colors.green,
+                                        size: 30.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            );
-                          }),
-                      emptyWidget: (_hasData?controller.allMessageData[_toId]!.data.length==0:!_hasData)
-                          ? Container(
-                        height: double.infinity,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: SizedBox(),
-                              flex: 2,
-                            ),
-                            SizedBox(
-                              width: 100.0,
-                              height: 100.0,
-                              child: Image.asset('assets/images/nodata.png'),
-                            ),
-                            Text(
-                              "没有数据",
-                              style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
-                            ),
-                            Expanded(
-                              child: SizedBox(),
-                              flex: 3,
-                            ),
-                          ],
-                        ),
-                      )
-                          : null,
-                      slivers: <Widget>[
-                        if (overflow && _hasData)
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                                      return _buildMsg(
-                                          controller.allMessageData[_toId]!
-                                              .data[index]);
-                                },
-                                childCount: controller.allMessageData[_toId]!.data.length
-                            ),
-                          ),
-                        if (!overflow && _hasData)
-                          SliverToBoxAdapter(
-                            child: Container(
-                              height: constraints.maxHeight,
-                              width: double.infinity,
-                              child: Column(
-                                children: <Widget>[
-                                  for (ChatMessageData entity in controller
-                                      .allMessageData[_toId]!.data
-                                      .reversed)
-                                    _buildMsg(entity),
                                 ],
+                              );
+                            }),
+                        emptyWidget: (_hasData?controller.allMessageData[_toId]!.data.length==0:!_hasData)
+                            ? Container(
+                          height: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: SizedBox(),
+                                flex: 2,
+                              ),
+                              SizedBox(
+                                width: 100.0,
+                                height: 100.0,
+                                child: Image.asset('assets/images/nodata.png'),
+                              ),
+                              Text(
+                                "没有数据",
+                                style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+                              ),
+                              Expanded(
+                                child: SizedBox(),
+                                flex: 3,
+                              ),
+                            ],
+                          ),
+                        )
+                            : null,
+                        slivers: <Widget>[
+                          if (_hasData)
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                        return _buildMsg(
+                                            controller.allMessageData[_toId]!
+                                                .data[index]);
+                                  },
+                                  childCount: controller.allMessageData[_toId]!.data.length
                               ),
                             ),
-                          ),
-                      ],
-                      onLoad: () async {
-                        await Future.delayed(Duration(seconds: 2), () {
-                          if (mounted && _hasData) {
-                            var meta = Get.find<MessageController>().allMessageData[_toId]!.meta;
-                            if(meta.currentPage < meta.lastPage){
-                              Get.find<MessageController>().getChatMessageList(_toId,meta.currentPage+1);
+                          /*if (!overflow && _hasData)
+                            SliverToBoxAdapter(
+                              child: Container(
+                                height: constraints.maxHeight,
+                                width: double.infinity,
+                                child: Column(
+                                  children: <Widget>[
+                                    for (ChatMessageData entity in controller
+                                        .allMessageData[_toId]!.data
+                                        .reversed)
+                                      _buildMsg(entity),
+                                  ],
+                                ),
+                              ),
+                            ),*/
+                        ],
+                        onLoad: () async {
+                          await Future.delayed(Duration(seconds: 2), () {
+                            if (mounted && _hasData) {
+                              var meta = Get.find<MessageController>().allMessageData[_toId]!.meta;
+                              if(meta.currentPage < meta.lastPage){
+                                Get.find<MessageController>().getChatMessageList(_toId,meta.currentPage+1);
+                              }
                             }
-                          }
-                        });
-                      },
-                    );
-                  },
-                ),
-              );
-            }),
-          SafeArea(
-            child: Container(
-              color: Colors.grey[100],
-              padding: EdgeInsets.only(
-                left: 15.0,
-                right: 15.0,
-                top: 10.0,
-                bottom: 10.0,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        left: 5.0,
-                        right: 5.0,
-                        top: 10.0,
-                        bottom: 10.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(
-                          4.0,
-                        )),
-                      ),
-                      child: TextField(
-                        controller: _textEditingController,
-                        decoration: null,
-                        onSubmitted: (value) {
-                          if (_textEditingController.text.isNotEmpty) {
-                            _sendMsg(_textEditingController.text,"text");
-                            _textEditingController.text = '';
-                          }
+                          });
                         },
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Icon(Icons.emoji_emotions_outlined),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      if (_textEditingController.text.isNotEmpty) {
-                        _sendMsg(_textEditingController.text,"text");
-                        _textEditingController.text = '';
-                      }
+                      );
                     },
-                    child: Container(
-                      height: 30.0,
-                      width: 60.0,
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(
-                        left: 0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _textEditingController.text.isEmpty
-                            ? Colors.grey
-                            : Colors.green,
-                        borderRadius: BorderRadius.all(Radius.circular(
-                          4.0,
-                        )),
-                      ),
-                      child: Text(
-                        "发送",
-                        style: TextStyle(
+                  ),
+                );
+              }),
+            SafeArea(
+              child: Container(
+                color: Colors.grey[100],
+                padding: EdgeInsets.only(
+                  left: 15.0,
+                  right: 15.0,
+                  top: 10.0,
+                  bottom: 10.0,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          left: 5.0,
+                          right: 5.0,
+                          top: 10.0,
+                          bottom: 10.0,
+                        ),
+                        decoration: BoxDecoration(
                           color: Colors.white,
-                          fontSize: 16.0,
+                          borderRadius: BorderRadius.all(Radius.circular(
+                            4.0,
+                          )),
+                        ),
+                        child: TextField(
+                          onTap: (){
+                            focusNode.unfocus();
+                            if(_pc.isPanelOpen){
+                                _pc.close();
+                            }
+                            //while(_pc.isPanelOpen){continue;};
+                            //1秒后这个i行
+                            Future.delayed(Duration(milliseconds: 500), () {
+                               FocusScope.of(context).requestFocus(focusNode);
+                            });
+                            //
+                          },
+                          focusNode: focusNode,
+                          controller: _textEditingController,
+                          decoration: null,
+                          onSubmitted: (value) {
+                            if (_textEditingController.text.isNotEmpty) {
+                              _sendMsg(_textEditingController.text,"text");
+                              _textEditingController.text = '';
+                            }
+                          },
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Icon(Icons.emoji_emotions_outlined),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (_textEditingController.text.isNotEmpty) {
+                          _sendMsg(_textEditingController.text,"text");
+                          _textEditingController.text = '';
+                        }
+                      },
+                      child: _textEditingController.text.isEmpty?
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: InkWell(
+                            onTap: (){
+                              closeKeyboard(context);
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                _pc.open();
+                              });
+
+                            },
+                            child: Icon(Icons.add)
+                        ),
+                      )
+
+                          :Container(
+                        height: 30.0,
+                        width: 60.0,
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(
+                          left: 0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _textEditingController.text.isEmpty
+                              ? Colors.grey
+                              : Colors.green,
+                          borderRadius: BorderRadius.all(Radius.circular(
+                            4.0,
+                          )),
+                        ),
+                        child: Text(
+                          "发送",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+            SlidingUpPanel(
+              controller: _pc,
+              panel: Center(child: _bottomFunctions(functions)),
+              maxHeight: _panelHeightOpen,
+              minHeight: _panelHeightClosed,
+              parallaxEnabled: true,
+              parallaxOffset: .5,
+              defaultPanelState:PanelState.CLOSED,
+              isDraggable: false,
+              onPanelSlide: (double pos) => setState(() {
+                FocusScope.of(context).requestFocus(blankNode);
+                _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
+                    _initFabHeight;
+              }),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -380,32 +453,41 @@ class ChatPageState extends State<ChatPage> {
                     fontSize: 13.0,
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 5.0,
-                  ),
-                  //padding: EdgeInsets.all(10.0),
-                  /*decoration: BoxDecoration(
-                    color: Colors.lightGreen,
-                    borderRadius: BorderRadius.all(Radius.circular(
-                      4.0,
-                    )),
-                  ),*/
-                  constraints: BoxConstraints(
-                    maxWidth: 200.0,
-                  ),
-                  child: Bubble(
-                    color: Colors.white,
-                    direction: BubbleDirection.right,
-                    child: Text(
-                      entity.content,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        fontSize: 16.0,
-                      ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top:4.0),
+                      child: entity.progress!=1.0? new CircularPercentIndicator(
+                          radius: 32.0,
+                          lineWidth: 3,
+                          percent: 0.615415156,
+                          center: new Text("${entity.progress.toString().substring(2,4)}%",style: TextStyle(
+                            fontSize: 10
+                          ),),
+                          progressColor: Colors.green,
+                        ):Container(),
                     ),
-                  )
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 4.0,
+                      ),
+                      //padding: EdgeInsets.all(10.0),
+                      /*decoration: BoxDecoration(
+                        color: Colors.lightGreen,
+                        borderRadius: BorderRadius.all(Radius.circular(
+                          4.0,
+                        )),
+                      ),*/
+                      constraints: BoxConstraints(
+                        maxWidth: 200.0,
+                      ),
+                      child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.right)
 
+                    ),
+                  ],
                 )
 
               ],
@@ -486,17 +568,7 @@ class ChatPageState extends State<ChatPage> {
                   constraints: BoxConstraints(
                     maxWidth: 200.0,
                   ),
-                    child: Bubble(
-                      color: Colors.white,
-                      direction: BubbleDirection.left,
-                      child: Text(
-                        entity.content,
-                        overflow: TextOverflow.clip,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ),
+                    child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.left)
                 )
               ],
             ),
@@ -545,12 +617,229 @@ class ChatPageState extends State<ChatPage> {
     renderObject.layout(constraints);
     return renderObject.computeMinIntrinsicHeight(constraints.maxWidth);
   }
+  List<AssetEntity> assets = <AssetEntity>[];
+
+  int  maxAssetsCount = 9;
+
+  /// These fields are for the keep scroll position feature.
+  late DefaultAssetPickerProvider keepScrollProvider =
+  DefaultAssetPickerProvider();
+  DefaultAssetPickerBuilderDelegate? keepScrollDelegate;
+
+  Future<void> selectAssets(PickMethod model) async {
+    final List<AssetEntity>? result = await model.method(context, assets);
+    if (result != null) {
+      assets = List<AssetEntity>.from(result);
+      if (mounted) {
+        _upLoadAssets();
+      }
+    }
+  }
+  /*List<dio.MultipartFile> files = [];
+  Future<void> _addFile(int i) async{
+    File? file = await assets[i].file;
+    String path = file!.path;
+    var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+    //print(path);
+    //print(name);
+    files.add(await dio.MultipartFile.fromFile(path, filename:name));
+  }
+  Future<void> _control(int j) async {
+    if(j<0){
+      return ;
+    }
+    await _addFile(j).then((value) => _control(j-1));
+  }*/
+
+  Future<void> _upLoadAssets()async {
+/*      int successTask = 0;
+      int failedTask = 0;
+      int sum = assets.length;
+      files = [];
+      await _control(sum-1);
+      print(files.length);*/
+      assets.forEach((element) {
+        Get.find<MessageController>().handleUploadAssets(_toId, element);
+      });
+      /*while((successTask+failedTask) != sum){
+
+      }*/
+      //print("成功上传文件个数：$successTask");
+      //print("成功失败文件个数：$failedTask");
+      //files = [];
+  }
+  List<Icon> popIcons = [
+    Icon(Icons.picture_in_picture),
+    Icon(Icons.camera_alt),
+    Icon(Icons.mic_none_rounded),
+    Icon(Icons.video_call)
+  ];
+  List<FunctionsEntity> functions  = [
+    FunctionsEntity(Icon(Icons.picture_in_picture),"相册",0,PickMethod.cameraAndStay( maxAssetsCount: 9 ),null),
+    FunctionsEntity(Icon(Icons.camera_alt), "拍摄", 0,PickMethod.cameraAndStay( maxAssetsCount: 9 ),null),
+    FunctionsEntity(Icon(Icons.mic_none_rounded) ,"语音聊天",1,PickMethod.cameraAndStay( maxAssetsCount: 9 ),audioChat),
+    FunctionsEntity(Icon(Icons.video_call), "视频通话", 1, PickMethod.cameraAndStay( maxAssetsCount: 9 ),videoChat),
+  ];
+  /*List<Color> popColors = [
+    Colors.deepOrangeAccent,
+    Colors.deepPurple,
+    Colors.blueGrey,
+    Colors.blueAccent,
+  ];*/
+ /* List<Function> popFunctions = [
+    PickMethod.cameraAndStay( maxAssetsCount: 9 ),
+    PickMethod.cameraAndStay( maxAssetsCount: 9 ),
+    audioChat,
+    videoChat,
+    ];*/
+  Widget _selectedAssetWidget(BuildContext context, AssetEntity asset ,List<AssetEntity> tempAssets,int index) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: ValueNotifier<bool>(true),
+      builder: (_, bool value, __) => GestureDetector(
+        onTap: () async {
+          if (value) {
+            final List<AssetEntity>? result =
+            await AssetPickerViewer.pushToViewer(
+              context,
+              currentIndex: index,
+              previewAssets: tempAssets,
+              themeData: AssetPicker.themeData(Color(0xff00bc56)),
+            );
+          }
+        },
+        child: RepaintBoundary(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: MessageAssetWidgetBuilder(
+              entity: asset,
+              isDisplayingDetail: value,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _bottomFunctions( List<FunctionsEntity> list){
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      body: Container(
+        height: 300,
+        padding: EdgeInsets.only(top: 36),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              //crossAxisSpacing: 16,
+              mainAxisSpacing: 12,
+              childAspectRatio: 1),
+          itemCount: list.length,
+          itemBuilder: (BuildContext context, int index) {
+            return _functionWidgetBuilder(
+                list[index]);
+          },
+        ),
+      ),
+    );
+  }
+  Widget _functionWidgetBuilder(FunctionsEntity entity) {
+    return InkWell(
+      onTap: () { entity.type==0 ? selectAssets(entity.pickfun) : entity.fun;},
+      child: Container(
+        decoration: BoxDecoration(
+            color:  Colors.grey[200],
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color:  Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
+              ),
+              child: entity.icon,
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Text(entity.label),
+          ],
+        ),
+      ),
+    );
+  }
+  static void audioChat(){
+
+  }
+  static void videoChat(){
+
+  }
+  Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction){
+      switch(type){
+        case"text":
+          return Bubble(
+            color: Colors.white,
+            direction: direction,
+            child: Text(
+              content,
+              overflow: TextOverflow.clip,
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+          );
+        case "image":
+          print(Get.find<MessageController>().allMessageData[_toId] == null);
+          List<ChatMessageData> images  = Get.find<MessageController>().allMessageData[_toId]!.data.where((element) => element.type == "image").toList();
+          images.reversed;
+          int initPage = images.indexWhere((element) => element.uuid == uuid);
+          print(images.length);
+          print(initPage);
+          return Container(
+            height: 200,
+            child: InkWell(
+              onTap: (){Get.to(PhotoViewPage(images: images, initPage: initPage));},
+              child: ExtendedImage.network(
+                images[initPage].content,
+                //width:  ScreenUtil().setWidth(400),
+                //height: 400,
+                fit: BoxFit.contain,
+                cache: true,
+                //border: Border.all(color: Colors.red, width: 1.0),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                //cancelToken: cancellationToken,
+              ),
+            )
+          );
+        case "video":
+          return Container(
+              child: InkWell(
+                onTap: (){Get.to(VideoViewPage(url:content));},
+                child:Container(
+                  height: 100,
+                  width: 100,
+                ),
+              )
+          );
+        case "audio":return Container();
+        case "speech":return Container();
+        case "tempAsset":
+          List<TempAsset> tempAssets  = Get.find<MessageController>().tempAssetList;
+          AssetEntity tempAsset = tempAssets.firstWhere((element) => element.uuid == uuid).entity;
+          int index = tempAssets.indexWhere((element) => element.uuid == uuid);
+          List<AssetEntity> assetsSum = [];
+          tempAssets.forEach((element) {
+            assetsSum.add(element.entity);
+          });
+          return _selectedAssetWidget(context,tempAsset,assetsSum,index);
+        default:return Container();
+      }
+  }
 }
-
-/// 信息实体
-class MessageEntity {
-  bool own;
-  String msg;
-
-  MessageEntity(this.own, this.msg);
+class FunctionsEntity{
+  Icon icon;
+  String label;
+  int type;
+  PickMethod pickfun;
+  Function? fun;
+  FunctionsEntity(this.icon,this.label,this.type,this.pickfun,this.fun);
 }

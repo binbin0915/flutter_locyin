@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/common/lang/translation_service.dart';
-import 'package:flutter_locyin/page/index.dart';
 import 'package:flutter_locyin/utils/getx.dart';
-
 import 'package:flutter_locyin/router/router_map.dart';
 import 'package:flutter_locyin/utils/sputils.dart';
 import 'package:flutter_locyin/utils/toast.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 //默认App的启动
 class DefaultApp {
@@ -17,7 +16,10 @@ class DefaultApp {
     Get.lazyPut(()=>UserController());
     Get.lazyPut(()=>LocaleController());
     Get.lazyPut(()=>DarkThemeController());
+    Get.lazyPut(()=>MessageController());
     WidgetsFlutterBinding.ensureInitialized();
+    //设置适配尺寸 (填入设计稿中设备的屏幕尺寸) 此处假如设计稿是按iPhone6的尺寸设计的(iPhone6 750*1334)
+    //ScreenUtil.init(context,designSize: Size(750, 1334), allowFontScaling: false);
     beforeInitApp().then((value) => initApp());
 
   }

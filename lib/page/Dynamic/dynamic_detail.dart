@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/model/dynamic_comment_entity.dart';
 import 'package:flutter_locyin/utils/getx.dart';
@@ -303,9 +303,14 @@ class _DynamicDetailPageState extends State<DynamicDetailPage> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadiusDirectional.circular(10)),
           clipBehavior: Clip.antiAlias,
-          child: CachedNetworkImage(
-            imageUrl: item.path.toString(),
-            width: double.maxFinite,
+          child: ExtendedImage.network(
+            item.path.toString(),
+            fit: BoxFit.fill,
+            cache: true,
+            //border: Border.all(color: Colors.red, width: 1.0),
+            //shape: boxShape,
+            //borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            //cancelToken: cancellationToken,
           ),
         ),
       );

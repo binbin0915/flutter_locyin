@@ -173,11 +173,18 @@ class ApiService {
     });
   }
   /// 上传文件
-  Future<void> uploadFile(Function callback, Function errorCallback , File _file,) async {
+  Future<void> uploadFile(Function callback, Function errorCallback , MultipartFile _file,Function progressCallback) async {
     FormData formdata = FormData.fromMap({
-      "file": _file
+      "files": _file
     });
-    await BaseNetWork.instance.dio.post(Apis.UPLOAD_FILE,data: formdata).then((response){
+    BaseNetWork.instance.dio.post(Apis.UPLOAD_FILES,data: formdata,
+      onSendProgress: (int sent, int total) {
+        print('$sent $total');
+        progressCallback(sent,total);
+      },options: Options(
+          contentType: 'multipart/form-data',
+        )
+    ).then((response){
       callback(response);
     }).catchError((e) {
       errorCallback(e);
@@ -203,11 +210,12 @@ class ApiService {
     });
   }
   /// 发消息
-  Future<void> sendMessage(Function callback, Function errorCallback , int _toID,String _content,String _type ,int _needTimeStamp) async {
+  Future<void> sendMessage(Function callback, Function errorCallback , int _toID,String _content,String _type ,int _needTimeStamp,String _uuid) async {
     FormData formdata = FormData.fromMap({
       "to_id": _toID,
       "content": _content,
       "type": _type,
+      "uuid": _uuid,
       "timestamp": _needTimeStamp,
     });
     await BaseNetWork.instance.dio.post(Apis.SEND_MESSAGE,data: formdata).then((response){

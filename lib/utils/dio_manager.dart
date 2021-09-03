@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_locyin/common/config.dart';
 import 'package:flutter_locyin/utils/handle_laravel_errors.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:get/get.dart' as getx;
@@ -20,7 +21,7 @@ class BaseNetWork {
   BaseNetWork._internal() {
     dio = Dio()
       ..options = BaseOptions(
-          baseUrl: getx.Get.find<ConstantController>().baseUrl,
+          baseUrl: LocyinConfig.baseUrl,
           connectTimeout: 10000,
           receiveTimeout: 1000 * 60 * 60 * 24,
           responseType: ResponseType.json,
