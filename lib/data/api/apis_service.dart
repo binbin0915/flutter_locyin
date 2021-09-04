@@ -177,7 +177,7 @@ class ApiService {
     FormData formdata = FormData.fromMap({
       "files": _file
     });
-    BaseNetWork.instance.dio.post(Apis.UPLOAD_FILES,data: formdata,
+    await BaseNetWork.instance.dio.post(Apis.UPLOAD_FILES,data: formdata,
       onSendProgress: (int sent, int total) {
         print('$sent $total');
         progressCallback(sent,total);
@@ -210,13 +210,14 @@ class ApiService {
     });
   }
   /// 发消息
-  Future<void> sendMessage(Function callback, Function errorCallback , int _toID,String _content,String _type ,int _needTimeStamp,String _uuid) async {
+  Future<void> sendMessage(Function callback, Function errorCallback , int _toID,String _content,String _type ,int _needTimeStamp,String _uuid,String? _thumbnail) async {
     FormData formdata = FormData.fromMap({
       "to_id": _toID,
       "content": _content,
       "type": _type,
       "uuid": _uuid,
       "timestamp": _needTimeStamp,
+      "thumbnail": _thumbnail,
     });
     await BaseNetWork.instance.dio.post(Apis.SEND_MESSAGE,data: formdata).then((response){
       callback(response);

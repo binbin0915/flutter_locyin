@@ -10,8 +10,10 @@ import 'package:flutter_locyin/data/model/message_list_entity.dart';
 import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/page/Message/message.dart';
 import 'package:flutter_locyin/utils/sputils.dart';
+import 'package:flutter_locyin/utils/toast.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
+import 'package:video_compress/video_compress.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'auxiliaries.dart';
 import 'date.dart';
@@ -467,14 +469,43 @@ class MessageController extends GetxController{
   void setCurrentWindow(int id){
     _windowID = id;
   }
-  Future handleUploadAssets (int _window_id,AssetEntity entity) async{
+  Future handleUploadAssets (int _window_id,AssetEntity entity,Function onResult) async{
       String _uuid = Uuid().v1();
       bool _needTimeStamp = checkNeedTimeStamp(_window_id);
       String _type = Auxiliaries.AssetTypeToString(entity.type);
       File? file = await entity.file;
       String path = file!.path;
       var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-
+      File  thumbnailFile;
+      String? thumbnail;
+      if(entity.type == AssetType.video) {
+        thumbnailFile = await VideoCompress.getFileThumbnail(
+            path,
+            quality: 50, // default(100)
+            position: -1 // default(-1)
+        );
+        print("获取到视频缩略图：");
+        print(thumbnailFile.path);
+        String path2= thumbnailFile.path;
+        var name2 = path2.substring(path2.lastIndexOf("/") + 1, path2.length);
+        await apiService.uploadFile((dio.Response response) async {
+          print("缩略图上传成功");
+          print(response.data);
+          thumbnail = response.data["src"];
+        }, (error) async {
+          print("缩略图上传失败");
+          print(error);
+          ToastUtils.error("图片上传失败,请稍后重试.");
+        },await dio.MultipartFile.fromFile(path2, filename:name2),(var sent ,var total){
+          //_allMessageData[_window_id]!.data.firstWhere( (element) => element.uuid == _uuid).progress=sent/total;
+          print(sent/total);
+          //update(['message_chat']);
+        });
+        await VideoCompress.deleteAllCache();
+      }
+      if(entity.type == AssetType.video && thumbnail ==null){
+        return;
+      }
       Map<String,dynamic>  _tempAssetMap = {
         "from_id" : Get.find<UserController>().user!.data.id ,
         "to_id": _window_id,
@@ -495,17 +526,17 @@ class MessageController extends GetxController{
       _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
       update(['message_list']);
 
-      apiService.uploadFile((dio.Response response){
+      apiService.uploadFile((dio.Response response) async {
         print(response.data);
         String src = response.data["src"];
-        apiService.sendMessage((dio.Response response) {
+          apiService.sendMessage((dio.Response response) {
 
-        }, (error) {
-          print(error);
-        },_window_id,src,_type,_needTimeStamp?1:0,_uuid);
+          }, (error) {
+            print(error);
+          },_window_id,src,_type,_needTimeStamp?1:0,_uuid,thumbnail);
         print("上传成功: ");
-
-      }, (error) {
+        onResult(entity.id);
+      }, (error) async {
         print(error);
       },await dio.MultipartFile.fromFile(path, filename:name),(var sent ,var total){
         _allMessageData[_window_id]!.data.firstWhere( (element) => element.uuid == _uuid).progress=sent/total;
@@ -562,10 +593,10 @@ class MessageController extends GetxController{
       update(['message_list']);
     }, (error) {
       print(error);
-    },_window_id,_content,_type,_needTimeStamp?1:0,_uuid);
+    },_window_id,_content,_type,_needTimeStamp?1:0,_uuid,null);
   }
 
-  Future<void> receiveMessage(String _type,int _window_id,String _content,String _uuid) async {
+  Future<void> receiveMessage(String _type,int _window_id,String _content,String _uuid,String? _thumbnail) async {
     if(!_allMessageData.containsKey(_window_id)){
       print("未初始化聊天页面窗口：$_window_id");
       initChatRecord(_window_id);
@@ -583,6 +614,7 @@ class MessageController extends GetxController{
         "status": 1,
         "type": _type,
         "uuid": _uuid,
+        "thumbnail": _thumbnail,
         "progress": 1.0,
         "created_at": DateTime.now(),
         "updated_at": DateTime.now()
@@ -617,6 +649,7 @@ class MessageController extends GetxController{
               "status": 1,
               "type": _type,
               "uuid":_uuid,
+              "thumbnail":_thumbnail,
               "progress": 1.0,
               "created_at": DateTime.now(),
               "updated_at": DateTime.now()

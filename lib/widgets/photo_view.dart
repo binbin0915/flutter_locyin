@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter_locyin/data/model/chat_message_entity.dart';
 import 'package:flutter_locyin/widgets/appbar.dart';
-
+import 'package:get/get.dart';
 class PhotoViewPage extends StatefulWidget {
   final List<ChatMessageData> images;
   final int initPage;
@@ -16,11 +16,25 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Get.theme.cardColor,
+      appBar: CustomAppBar(
+        left: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(Icons.arrow_back),
+        ),
+        title: "查看图片",
+        right: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(Icons.save),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            CustomAppBar(title: '查看图片', right: Icon(Icons.save)),
             Expanded(
               child: ExtendedImageGesturePageView.builder(
                 controller: PageController(

@@ -129,7 +129,7 @@ class _MessagePageState extends State<MessagePage> {
                                 ),
                                 Text(
                                   "没有数据",
-                                  style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+                                  style: TextStyle(fontSize: 16.0, color: Get.theme.cardColor),
                                 ),
                                 Expanded(
                                   child: SizedBox(),

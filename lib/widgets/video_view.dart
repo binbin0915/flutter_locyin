@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:get/get.dart';
 class VideoViewPage extends StatefulWidget {
   const VideoViewPage({Key? key, required this.url}) : super(key: key);
   final String url;
@@ -109,14 +109,10 @@ class _VideoViewPageState extends State<VideoViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
           children: [
-            CustomAppBar(
-                title: "查看视频",
-                right: Icon(Icons.save)
-            ),
             Expanded(
               child: Center(
                 child: _chewieController != null &&

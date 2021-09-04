@@ -18,6 +18,7 @@ class ChatMessageData with JsonConvert<ChatMessageData> {
 	late int status;
 	late String type;
 	late String uuid;
+	String? thumbnail;
 	double progress = 1.0;
 	@JSONField(name: "created_at")
 	late String createdAt;

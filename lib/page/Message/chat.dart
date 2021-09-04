@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:flutter_locyin/page/Message/photo_view.dart';
-import 'package:flutter_locyin/page/Message/video_view.dart';
+import 'package:flutter_locyin/widgets/photo_view.dart';
+import 'package:flutter_locyin/widgets/video_view.dart';
 import 'package:flutter_locyin/widgets/appbar.dart';
-import 'package:flutter_locyin/widgets/lists/message_asset_widget_builder.dart';
+import 'package:flutter_locyin/widgets/message_asset_widget_builder.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -12,7 +12,6 @@ import 'package:flutter_locyin/data/model/user_entity.dart';
 import 'package:flutter_locyin/page/Map/picker_method.dart';
 import 'package:flutter_locyin/utils/date.dart';
 import 'package:flutter_locyin/utils/getx.dart';
-import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/bubble.dart';
 import 'package:flutter_locyin/widgets/loading_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -132,17 +131,25 @@ class ChatPageState extends State<ChatPage> {
           ),
         ],
       ),*/
-      backgroundColor: Colors.grey[200],
+      appBar: CustomAppBar(
+        left: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(Icons.arrow_back),
+        ),
+        title: _nickname,
+        right: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(Icons.save),
+        ),
+      ),
+      //backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            CustomAppBar(title:_nickname,
-              right:IconButton(
-              icon: Icon(Icons.more_horiz),
-              onPressed: () {
-                ToastUtils.toast("跳转到用户信息页");
-              },
-            ),),
             Divider(
               height: 0.5,
             ),
@@ -286,109 +293,107 @@ class ChatPageState extends State<ChatPage> {
                   ),
                 );
               }),
-            SafeArea(
-              child: Container(
-                color: Colors.grey[100],
-                padding: EdgeInsets.only(
-                  left: 15.0,
-                  right: 15.0,
-                  top: 10.0,
-                  bottom: 10.0,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          left: 5.0,
-                          right: 5.0,
-                          top: 10.0,
-                          bottom: 10.0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(
-                            4.0,
-                          )),
-                        ),
-                        child: TextField(
-                          onTap: (){
-                            focusNode.unfocus();
-                            if(_pc.isPanelOpen){
-                                _pc.close();
-                            }
-                            //while(_pc.isPanelOpen){continue;};
-                            //1秒后这个i行
-                            Future.delayed(Duration(milliseconds: 500), () {
-                               FocusScope.of(context).requestFocus(focusNode);
-                            });
-                            //
-                          },
-                          focusNode: focusNode,
-                          controller: _textEditingController,
-                          decoration: null,
-                          onSubmitted: (value) {
-                            if (_textEditingController.text.isNotEmpty) {
-                              _sendMsg(_textEditingController.text,"text");
-                              _textEditingController.text = '';
-                            }
-                          },
-                        ),
+            Container(
+              //color: Colors.grey[100],
+              padding: EdgeInsets.only(
+                left: 15.0,
+                right: 15.0,
+                top: 10.0,
+                bottom: 10.0,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 5.0,
+                        right: 5.0,
+                        top: 10.0,
+                        bottom: 10.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Get.theme.cardColor,
+                        borderRadius: BorderRadius.all(Radius.circular(
+                          4.0,
+                        )),
+                      ),
+                      child: TextField(
+                        onTap: (){
+                          focusNode.unfocus();
+                          if(_pc.isPanelOpen){
+                              _pc.close();
+                          }
+                          //while(_pc.isPanelOpen){continue;};
+                          //1秒后这个i行
+                          Future.delayed(Duration(milliseconds: 500), () {
+                             FocusScope.of(context).requestFocus(focusNode);
+                          });
+                          //
+                        },
+                        focusNode: focusNode,
+                        controller: _textEditingController,
+                        decoration: null,
+                        onSubmitted: (value) {
+                          if (_textEditingController.text.isNotEmpty) {
+                            _sendMsg(_textEditingController.text,"text");
+                            _textEditingController.text = '';
+                          }
+                        },
                       ),
                     ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Icon(Icons.emoji_emotions_outlined),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (_textEditingController.text.isNotEmpty) {
+                        _sendMsg(_textEditingController.text,"text");
+                        _textEditingController.text = '';
+                      }
+                    },
+                    child: _textEditingController.text.isEmpty?
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Icon(Icons.emoji_emotions_outlined),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (_textEditingController.text.isNotEmpty) {
-                          _sendMsg(_textEditingController.text,"text");
-                          _textEditingController.text = '';
-                        }
-                      },
-                      child: _textEditingController.text.isEmpty?
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: InkWell(
-                            onTap: (){
-                              closeKeyboard(context);
-                              Future.delayed(Duration(milliseconds: 500), () {
-                                _pc.open();
-                              });
+                      child: InkWell(
+                          onTap: (){
+                            closeKeyboard(context);
+                            Future.delayed(Duration(milliseconds: 500), () {
+                              _pc.open();
+                            });
 
-                            },
-                            child: Icon(Icons.add)
-                        ),
-                      )
+                          },
+                          child: Icon(Icons.add)
+                      ),
+                    )
 
-                          :Container(
-                        height: 30.0,
-                        width: 60.0,
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(
-                          left: 0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _textEditingController.text.isEmpty
-                              ? Colors.grey
-                              : Colors.green,
-                          borderRadius: BorderRadius.all(Radius.circular(
-                            4.0,
-                          )),
-                        ),
-                        child: Text(
-                          "发送",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ),
+                        :Container(
+                      height: 30.0,
+                      width: 60.0,
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(
+                        left: 0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _textEditingController.text.isEmpty
+                            ? Get.theme.backgroundColor
+                            :  Get.theme.cardColor,
+                        borderRadius: BorderRadius.all(Radius.circular(
+                          4.0,
+                        )),
+                      ),
+                      child: Text(
+                        "发送",
+                        style: TextStyle(
+                          //color: Colors.white,
+                          fontSize: 16.0,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             SlidingUpPanel(
@@ -400,11 +405,11 @@ class ChatPageState extends State<ChatPage> {
               parallaxOffset: .5,
               defaultPanelState:PanelState.CLOSED,
               isDraggable: false,
-              onPanelSlide: (double pos) => setState(() {
+              /*onPanelSlide: (double pos) => setState(() {
                 FocusScope.of(context).requestFocus(blankNode);
                 _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
                     _initFabHeight;
-              }),
+              }),*/
             )
           ],
         ),
@@ -449,7 +454,7 @@ class ChatPageState extends State<ChatPage> {
                 Text(
                   _user.data.nickname,
                   style: TextStyle(
-                    color: Colors.grey,
+                    //color: Colors.grey,
                     fontSize: 13.0,
                   ),
                 ),
@@ -484,7 +489,7 @@ class ChatPageState extends State<ChatPage> {
                       constraints: BoxConstraints(
                         maxWidth: 200.0,
                       ),
-                      child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.right)
+                      child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.right,entity.thumbnail)
 
                     ),
                   ],
@@ -550,7 +555,7 @@ class ChatPageState extends State<ChatPage> {
                 Text(
                   _stranger.nickname,
                   style: TextStyle(
-                    color: Colors.grey,
+                    //color: Colors.grey,
                     fontSize: 13.0,
                   ),
                 ),
@@ -568,7 +573,7 @@ class ChatPageState extends State<ChatPage> {
                   constraints: BoxConstraints(
                     maxWidth: 200.0,
                   ),
-                    child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.left)
+                    child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.left,entity.thumbnail)
                 )
               ],
             ),
@@ -659,7 +664,9 @@ class ChatPageState extends State<ChatPage> {
       await _control(sum-1);
       print(files.length);*/
       assets.forEach((element) {
-        Get.find<MessageController>().handleUploadAssets(_toId, element);
+        Get.find<MessageController>().handleUploadAssets(_toId, element,(String id){
+          assets.removeAt(assets.indexWhere((element) => element.id==id));
+        });
       });
       /*while((successTask+failedTask) != sum){
 
@@ -721,7 +728,6 @@ class ChatPageState extends State<ChatPage> {
   }
   Widget _bottomFunctions( List<FunctionsEntity> list){
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       body: Container(
         height: 300,
         padding: EdgeInsets.only(top: 36),
@@ -745,14 +751,14 @@ class ChatPageState extends State<ChatPage> {
       onTap: () { entity.type==0 ? selectAssets(entity.pickfun) : entity.fun;},
       child: Container(
         decoration: BoxDecoration(
-            color:  Colors.grey[200],
+            //color:  Colors.grey[200],
         ),
         child: Column(
           children: [
             Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color:  Colors.white,
+                  //color:  Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
               child: entity.icon,
@@ -772,11 +778,11 @@ class ChatPageState extends State<ChatPage> {
   static void videoChat(){
 
   }
-  Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction){
+  Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction,String? thumbnail){
       switch(type){
         case"text":
           return Bubble(
-            color: Colors.white,
+            color: Get.theme.cardColor,
             direction: direction,
             child: Text(
               content,
@@ -794,7 +800,7 @@ class ChatPageState extends State<ChatPage> {
           print(images.length);
           print(initPage);
           return Container(
-            height: 200,
+            constraints: BoxConstraints(maxHeight: 160),
             child: InkWell(
               onTap: (){Get.to(PhotoViewPage(images: images, initPage: initPage));},
               child: ExtendedImage.network(
@@ -812,13 +818,38 @@ class ChatPageState extends State<ChatPage> {
           );
         case "video":
           return Container(
-              child: InkWell(
-                onTap: (){Get.to(VideoViewPage(url:content));},
-                child:Container(
-                  height: 100,
-                  width: 100,
-                ),
-              )
+            constraints: BoxConstraints(maxHeight: 160),
+            child: InkWell(
+              onTap: (){Get.to(VideoViewPage(url:content));},
+              child:Stack(
+                alignment:Alignment.centerRight,
+                children: <Widget>[
+                  ExtendedImage.network(
+                    thumbnail.toString(),
+                    //width:  ScreenUtil().setWidth(400),
+                    //height: 400,
+                    fit: BoxFit.contain,
+                    cache: true,
+                    //border: Border.all(color: Colors.red, width: 1.0),
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    //cancelToken: cancellationToken,
+                  ),
+                  Positioned.fill(
+                    child: SizedBox(
+                      height: 100,
+                      child: Center(
+                        child: Icon(
+                          Icons.video_library,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         case "audio":return Container();
         case "speech":return Container();

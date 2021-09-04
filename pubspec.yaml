@@ -64,7 +64,7 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
   video_player: ^2.1.15
   chewie: any
-  video_thumbnail: ^0.4.3
+  video_compress: ^3.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

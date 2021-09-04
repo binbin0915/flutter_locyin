@@ -1,8 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_locyin/utils/getx.dart';
-import 'package:get/get.dart';
 
 final Color color1 = Color(0xFF303133); // 颜色需要使用16进制的，0xFF为固定的前缀
 final Color color3 = Color(0xFF8D9199);
@@ -73,13 +71,13 @@ class MessageListItem extends StatelessWidget {
           Expanded(
               flex: 1, // flex为1就是扩充全部宽度
               child: Text(strangerNickname, style: TextStyle(
-                  color: color1,
+                  //color: Get.theme.cardColor,
                   fontSize: 16
               ))
           ),
           Text(time,
               style: TextStyle(
-                color: color4,
+                //color: color4,
                 fontSize: 12,
               ),
           )
@@ -94,7 +92,7 @@ class MessageListItem extends StatelessWidget {
             Expanded(
                 flex: 1,
                 child: Text(excerpt, style: TextStyle(
-                    color: color3,
+                    //color: color3,
                     fontSize: 12
                 ),
                   maxLines: 1,

@@ -54,9 +54,12 @@ class MessageAssetWidgetBuilder extends StatelessWidget {
   }
 
   Widget _imageAssetWidget(BuildContext context) {
-    return Image(
-      image: AssetEntityImageProvider(entity, isOriginal: false),
-      fit: BoxFit.cover,
+    return Container(
+      constraints: BoxConstraints(maxHeight: 160),
+      child: Image(
+        image: AssetEntityImageProvider(entity, isOriginal: false),
+        fit: BoxFit.cover,
+      ),
     );
   }
 
