@@ -20,6 +20,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+
+import 'WeChatRecordScreen.dart';
 /// 聊天界面示例
 class ChatPage extends StatefulWidget {
   @override
@@ -43,8 +45,6 @@ class ChatPageState extends State<ChatPage> {
   // 响应空白处的焦点的Node
   FocusNode blankNode = FocusNode();
 
-
-  bool _isShowDial = false;
   //
   ///用来控制  TextField 焦点的获取与关闭
   FocusNode focusNode = new FocusNode();
@@ -53,7 +53,8 @@ class ChatPageState extends State<ChatPage> {
   double _fabHeight = 0;
   double _panelHeightOpen = 280;
   double _panelHeightClosed = 0;
-  PanelController _pc = new PanelController();
+  PanelController _functionPanelController = new PanelController();
+  bool _showRecordButton = false;
   // 发送消息
   void _sendMsg(String msg,String type) {
     /*setState(() {
@@ -106,6 +107,9 @@ class ChatPageState extends State<ChatPage> {
   @override
   void dispose() {
     super.dispose();
+    //释放
+    focusNode.dispose();
+    blankNode.dispose();
     print("重置聊天窗口id");
     Get.find<MessageController>().setCurrentWindow(0);
     _textEditingController.dispose();
@@ -303,9 +307,30 @@ class ChatPageState extends State<ChatPage> {
               ),
               child: Row(
                 children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: InkWell(
+                        onTap: (){
+                          if (_showRecordButton) {
+                            Future.delayed(Duration(milliseconds: 100), () {
+                              FocusScope.of(context).requestFocus(focusNode);
+                            });
+                            setState(() {
+                              _showRecordButton = false;
+                            });
+                          }else{
+                            closeKeyboard(context);
+                            setState(() {
+                              _showRecordButton = true;
+                            });
+                          }
+                        },
+                        child: Icon(Icons.keyboard_voice_outlined)
+                    ),
+                  ),
                   Expanded(
                     flex: 1,
-                    child: Container(
+                    child: _showRecordButton?WeChatRecordScreen(): Container(
                       padding: EdgeInsets.only(
                         left: 5.0,
                         right: 5.0,
@@ -322,10 +347,10 @@ class ChatPageState extends State<ChatPage> {
                         onTap: (){
                           if(!focusNode.hasFocus){
                             focusNode.unfocus();
-                            if(_pc.isPanelOpen){
-                                _pc.close();
+                            if(_functionPanelController.isPanelOpen){
+                                _functionPanelController.close();
                             }
-                            //while(_pc.isPanelOpen){continue;};
+                            //while(_functionPanelController.isPanelOpen){continue;};
                             //1秒后这个i行
                             Future.delayed(Duration(milliseconds: 500), () {
                                FocusScope.of(context).requestFocus(focusNode);
@@ -357,21 +382,20 @@ class ChatPageState extends State<ChatPage> {
                       }
                     },
                     child: _textEditingController.text.isEmpty?
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: InkWell(
-                          onTap: (){
-                            closeKeyboard(context);
-                            Future.delayed(Duration(milliseconds: 500), () {
-                              _pc.open();
-                            });
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: InkWell(
+                                  onTap: (){
+                                    closeKeyboard(context);
+                                    Future.delayed(Duration(milliseconds: 500), () {
+                                      _functionPanelController.open();
+                                    });
 
-                          },
-                          child: Icon(Icons.add)
-                      ),
-                    )
-
-                        :Container(
+                                  },
+                                  child: Icon(Icons.add_circle_outline)
+                              ),
+                            )
+                            :Container(
                       height: 30.0,
                       width: 60.0,
                       alignment: Alignment.center,
@@ -400,7 +424,7 @@ class ChatPageState extends State<ChatPage> {
               ),
             ),
             SlidingUpPanel(
-              controller: _pc,
+              controller: _functionPanelController,
               panel: Center(child: _bottomFunctions(functions)),
               maxHeight: _panelHeightOpen,
               minHeight: _panelHeightClosed,
@@ -413,7 +437,7 @@ class ChatPageState extends State<ChatPage> {
                 _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
                     _initFabHeight;
               }),*/
-            )
+            ),
           ],
         ),
       ),

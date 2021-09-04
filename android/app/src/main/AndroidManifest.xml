@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.locyin.flutter_locyin">
     <!-- 获取错略位置 通过WiFi或移动基站的方式获取用户错略的经纬度信息,定位精度大概误差在30~1500米 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -20,7 +21,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- 获取网络信息状态，如当前的网络连接是否有效 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- 获取录音权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
    <application
+        tools:replace="android:label"
         android:label="骆寻"
         android:icon="@mipmap/launcher_icon">
         <meta-data

@@ -65,6 +65,9 @@ dependencies:
   video_player: ^2.1.15
   chewie: any
   video_compress: ^3.1.0
+  flutter_plugin_record:
+    git:
+      url: https://github.com/yxwandroid/flutter_plugin_record.git
 dev_dependencies:
   flutter_test:
     sdk: flutter
