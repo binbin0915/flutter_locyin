@@ -270,5 +270,13 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 下载文件
+  Future<void> downloadFile(Function callback, Function errorCallback , String uri,String savePath) async {
+    await BaseNetWork.instance.dio.download(uri,savePath).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 
 }

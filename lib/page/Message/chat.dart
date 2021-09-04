@@ -320,15 +320,17 @@ class ChatPageState extends State<ChatPage> {
                       ),
                       child: TextField(
                         onTap: (){
-                          focusNode.unfocus();
-                          if(_pc.isPanelOpen){
-                              _pc.close();
+                          if(!focusNode.hasFocus){
+                            focusNode.unfocus();
+                            if(_pc.isPanelOpen){
+                                _pc.close();
+                            }
+                            //while(_pc.isPanelOpen){continue;};
+                            //1秒后这个i行
+                            Future.delayed(Duration(milliseconds: 500), () {
+                               FocusScope.of(context).requestFocus(focusNode);
+                            });
                           }
-                          //while(_pc.isPanelOpen){continue;};
-                          //1秒后这个i行
-                          Future.delayed(Duration(milliseconds: 500), () {
-                             FocusScope.of(context).requestFocus(focusNode);
-                          });
                           //
                         },
                         focusNode: focusNode,
@@ -378,8 +380,8 @@ class ChatPageState extends State<ChatPage> {
                       ),
                       decoration: BoxDecoration(
                         color: _textEditingController.text.isEmpty
-                            ? Get.theme.backgroundColor
-                            :  Get.theme.cardColor,
+                            ? (Get.isDarkMode? Get.theme.accentColor:Get.theme.backgroundColor)
+                            :  (Get.isDarkMode? Get.theme.accentColor:Get.theme.backgroundColor),
                         borderRadius: BorderRadius.all(Radius.circular(
                           4.0,
                         )),
@@ -387,7 +389,8 @@ class ChatPageState extends State<ChatPage> {
                       child: Text(
                         "发送",
                         style: TextStyle(
-                          //color: Colors.white,
+                          //0000000000000color: Colors.white,
+                          color: Get.theme.cardColor,
                           fontSize: 16.0,
                         ),
                       ),
@@ -782,7 +785,7 @@ class ChatPageState extends State<ChatPage> {
       switch(type){
         case"text":
           return Bubble(
-            color: Get.theme.cardColor,
+            color: direction ==BubbleDirection.left? Get.theme.cardColor:Get.theme.backgroundColor ,
             direction: direction,
             child: Text(
               content,

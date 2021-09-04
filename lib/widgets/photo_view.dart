@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter_locyin/data/model/chat_message_entity.dart';
+import 'package:flutter_locyin/utils/auxiliaries.dart';
 import 'package:flutter_locyin/widgets/appbar.dart';
 import 'package:get/get.dart';
 class PhotoViewPage extends StatefulWidget {
@@ -13,6 +14,14 @@ class PhotoViewPage extends StatefulWidget {
 }
 
 class _PhotoViewPageState extends State<PhotoViewPage> {
+  late int currentIndex;
+  @override
+  void initState() {
+    // TODO: implement initState
+    currentIndex =  widget.initPage;
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +36,7 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
         title: "查看图片",
         right: InkWell(
           onTap: () {
-            Get.back();
+            Auxiliaries.saveFile("assets", widget.images[currentIndex].content);
           },
           child: Icon(Icons.save),
         ),
@@ -42,6 +51,7 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
                 ),
                 itemCount: widget.images.length,
                 itemBuilder: (BuildContext context, int index) {
+                  currentIndex = index;
                   return ExtendedImage.network(
                     widget.images[index].content,
                     fit: BoxFit.contain,

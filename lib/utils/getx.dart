@@ -737,8 +737,6 @@ class MessageController extends GetxController{
       return Future.value(false);
     }*/
     //如果存在
-
-
   }
 }
 class TempAsset{

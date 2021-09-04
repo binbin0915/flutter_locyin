@@ -1,3 +1,4 @@
+import 'package:flutter_locyin/utils/auxiliaries.dart';
 import 'package:flutter_locyin/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
@@ -109,7 +110,22 @@ class _VideoViewPageState extends State<VideoViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Get.theme.cardColor,
+      appBar: CustomAppBar(
+        left: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(Icons.arrow_back),
+        ),
+        title: "查看视频",
+        right: InkWell(
+          onTap: () {
+            Auxiliaries.saveFile("assets",widget.url);
+          },
+          child: Icon(Icons.save),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
