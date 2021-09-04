@@ -330,7 +330,7 @@ class ChatPageState extends State<ChatPage> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: _showRecordButton?WeChatRecordScreen(): Container(
+                    child: _showRecordButton?WeChatRecordScreen(windowID: _toId,): Container(
                       padding: EdgeInsets.only(
                         left: 5.0,
                         right: 5.0,

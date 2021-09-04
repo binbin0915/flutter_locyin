@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plugin_record/index.dart';
 
 class WeChatRecordScreen extends StatefulWidget {
+  final int windowID;
+
+  const WeChatRecordScreen({Key? key, required this.windowID}) : super(key: key);
   @override
   _WeChatRecordScreenState createState() => _WeChatRecordScreenState();
 }
