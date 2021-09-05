@@ -15,7 +15,7 @@ import 'package:flutter_locyin/utils/date.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/widgets/bubble.dart';
 import 'package:flutter_locyin/widgets/loading_dialog.dart';
-import 'package:flutter_locyin/widgets/wechat_voice.dart';
+import 'package:flutter_locyin/widgets/wechat_voice_animation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -149,6 +149,10 @@ class ChatPageState extends State<ChatPage> {
   void dispose() {
     super.dispose();
     //释放
+    if(RecordService().currentVoiceKey!=null) {
+      RecordService().recordPlugin.stopPlay();
+      RecordService().clearCurrentVoiceKey();
+    }
     focusNode.dispose();
     blankNode.dispose();
     print("重置聊天窗口id");

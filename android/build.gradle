@@ -2,10 +2,9 @@ buildscript {
     ext.kotlin_version = '1.5.0'
     repositories {
         google()
+        mavenCentral() // add this line
         jcenter()
-        /*maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }*/
+
     }
 
     dependencies {
@@ -16,11 +15,10 @@ buildscript {
 
 allprojects {
     repositories {
+
         google()
+        mavenCentral() // add this line
         jcenter()
-        /*maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }*/
     }
 }
 
@@ -29,7 +27,7 @@ subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
     project.evaluationDependsOn(':app')
 }
-
+/*
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
+}*/

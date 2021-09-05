@@ -42,7 +42,7 @@ class _VoiceWidgetState extends State<VoiceWidget> {
 
   ///默认隐藏状态
   bool voiceState = true;
-  FlutterPluginRecord? recordPlugin = RecordService().recordPlugin;
+  FlutterPluginRecord? recordPlugin;
   Timer? _timer;
   int _count = 0;
   OverlayEntry? overlayEntry;
@@ -50,7 +50,7 @@ class _VoiceWidgetState extends State<VoiceWidget> {
   @override
   void initState() {
     super.initState();
-    //recordPlugin = new FlutterPluginRecord();
+    recordPlugin = new FlutterPluginRecord();
 
     _init();
 
@@ -272,7 +272,7 @@ class _VoiceWidgetState extends State<VoiceWidget> {
 
   @override
   void dispose() {
-    //recordPlugin?.dispose();
+    recordPlugin?.dispose();
     _timer?.cancel();
     super.dispose();
   }

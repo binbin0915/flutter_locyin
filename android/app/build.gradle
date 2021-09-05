@@ -32,7 +32,6 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion 30
-
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         main {

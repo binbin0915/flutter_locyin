@@ -3,26 +3,17 @@ import 'package:flutter_locyin/widgets/wechat_voice_animation.dart';
 import 'package:flutter_plugin_record/flutter_plugin_record.dart';
 class RecordService {
 
-  // 单例公开访问点
-  factory RecordService() =>_sharedInstance();
+  static final RecordService _singleton = RecordService._internal();
 
-  // 静态私有成员，没有初始化
-  static RecordService _instance = RecordService._();
+  factory RecordService() {
+    return _singleton;
+  }
 
-  // 私有构造函数
-  RecordService._() {
-    // 具体初始化代码
+  RecordService._internal(){
     _init();
   }
 
-  // 静态、同步、私有访问点
-  static RecordService _sharedInstance() {
-    return _instance;
-  }
- /* RecordService(){
-    _init();
-  }*/
-  FlutterPluginRecord _recordPlugin = new FlutterPluginRecord();
+  final  FlutterPluginRecord _recordPlugin = new FlutterPluginRecord();
 
   FlutterPluginRecord get  recordPlugin => _recordPlugin;
 
