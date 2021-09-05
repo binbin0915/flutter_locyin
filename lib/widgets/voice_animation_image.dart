@@ -58,7 +58,7 @@ class VoiceAnimationImageState extends State<VoiceAnimationImage>
       }
     });
 
-    _animation = new Tween<double>(begin: 0, end: imageCount.toDouble())
+    _animation = new Tween<double>(begin: -(imageCount-1).toDouble(), end: 2)
         .animate(_controller)
       ..addListener(() {
         setState(() {

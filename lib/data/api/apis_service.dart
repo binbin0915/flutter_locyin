@@ -210,7 +210,7 @@ class ApiService {
     });
   }
   /// 发消息
-  Future<void> sendMessage(Function callback, Function errorCallback , int _toID,String _content,String _type ,int _needTimeStamp,String _uuid,String? _thumbnail) async {
+  Future<void> sendMessage(Function callback, Function errorCallback , int _toID,String _content,String _type ,int _needTimeStamp,String _uuid,String? _thumbnail,double? _length) async {
     FormData formdata = FormData.fromMap({
       "to_id": _toID,
       "content": _content,
@@ -218,6 +218,7 @@ class ApiService {
       "uuid": _uuid,
       "timestamp": _needTimeStamp,
       "thumbnail": _thumbnail,
+      "length": _length,
     });
     await BaseNetWork.instance.dio.post(Apis.SEND_MESSAGE,data: formdata).then((response){
       callback(response);

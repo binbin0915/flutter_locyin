@@ -469,6 +469,53 @@ class MessageController extends GetxController{
   void setCurrentWindow(int id){
     _windowID = id;
   }
+  Future<void> handleUploadSpeech (int _window_id,String path,double _length)async {
+    //生产消息的UUID
+    String _uuid = Uuid().v1();
+    //检查是否需要添加时间戳
+    bool _needTimeStamp = checkNeedTimeStamp(_window_id);
+    var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+    Map<String,dynamic>  _tempAssetMap = {
+      "from_id" : Get.find<UserController>().user!.data.id ,
+      "to_id": _window_id,
+      "content": path.toString(),
+      "push": 0,
+      "read": 1,
+      "status": 1,
+      "type": "tempSpeech",
+      "uuid": _uuid,
+      "thumbnail":null,
+      "length": _length,
+      "progress": 1.0,
+      "created_at": DateTime.now(),
+      "updated_at": DateTime.now()
+    };
+    allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(_tempAssetMap)));
+    update(['message_chat']);
+    _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = "[语音消息]";
+    _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
+    update(['message_list']);
+
+    apiService.uploadFile((dio.Response response) async {
+      print(response.data);
+      String src = response.data["src"];
+      print("上传成功: ");
+      apiService.sendMessage((dio.Response response) {
+        print("消息上传成功: ");
+      }, (error) {
+        print("消息发送成功: ");
+        print(error);
+      },_window_id,src,"speech",_needTimeStamp?1:0,_uuid,null,_length);
+
+    }, (error) async {
+      print("上传失败: ");
+      print(error);
+    },await dio.MultipartFile.fromFile(path, filename:name),(var sent ,var total){
+      _allMessageData[_window_id]!.data.firstWhere( (element) => element.uuid == _uuid).progress=sent/total;
+      update(['message_chat']);
+    });
+
+  }
   Future handleUploadAssets (int _window_id,AssetEntity entity,Function onResult) async{
       String _uuid = Uuid().v1();
       bool _needTimeStamp = checkNeedTimeStamp(_window_id);
@@ -533,7 +580,7 @@ class MessageController extends GetxController{
 
           }, (error) {
             print(error);
-          },_window_id,src,_type,_needTimeStamp?1:0,_uuid,thumbnail);
+          },_window_id,src,_type,_needTimeStamp?1:0,_uuid,thumbnail,null);
         print("上传成功: ");
         onResult(entity.id);
       }, (error) async {
@@ -560,6 +607,8 @@ class MessageController extends GetxController{
         "status": 1,
         "type": "date",
         "uuid":"0",
+        "thumbnail":null,
+        "length": null,
         "progress": 1.0,
         "created_at": DateTime.now(),
         "updated_at": DateTime.now()
@@ -582,6 +631,8 @@ class MessageController extends GetxController{
         "status": 1,
         "type": _type,
         "uuid": _uuid,
+        "thumbnail":null,
+        "length": null,
         "progress": 1.0,
         "created_at": DateTime.now(),
         "updated_at": DateTime.now()
@@ -593,10 +644,10 @@ class MessageController extends GetxController{
       update(['message_list']);
     }, (error) {
       print(error);
-    },_window_id,_content,_type,_needTimeStamp?1:0,_uuid,null);
+    },_window_id,_content,_type,_needTimeStamp?1:0,_uuid,null,null);
   }
 
-  Future<void> receiveMessage(String _type,int _window_id,String _content,String _uuid,String? _thumbnail) async {
+  Future<void> receiveMessage(String _type,int _window_id,String _content,String _uuid,String? _thumbnail,String? _length) async {
     if(!_allMessageData.containsKey(_window_id)){
       print("未初始化聊天页面窗口：$_window_id");
       initChatRecord(_window_id);
@@ -615,12 +666,18 @@ class MessageController extends GetxController{
         "type": _type,
         "uuid": _uuid,
         "thumbnail": _thumbnail,
+        "length": _length,
         "progress": 1.0,
         "created_at": DateTime.now(),
         "updated_at": DateTime.now()
       };
       allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
-      _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
+      if(_content != "text"){
+        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _type;
+      }else{
+        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
+      }
+
       _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
       print("更新聊天页面视图");
       update(['message_chat']);
@@ -650,6 +707,7 @@ class MessageController extends GetxController{
               "type": _type,
               "uuid":_uuid,
               "thumbnail":_thumbnail,
+              "length": _length,
               "progress": 1.0,
               "created_at": DateTime.now(),
               "updated_at": DateTime.now()
@@ -659,7 +717,11 @@ class MessageController extends GetxController{
             update(['message_chat']);
 
           _messageList!.data.firstWhere( (element) => element.id == _window_id).count ++;
-          _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
+            if(_content != "text"){
+              _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _type;
+            }else{
+              _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
+            }
           _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
           print("更新会话列表视图");
           update(['message_list']);

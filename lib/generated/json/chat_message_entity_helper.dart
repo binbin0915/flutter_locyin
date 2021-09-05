@@ -59,6 +59,11 @@ chatMessageDataFromJson(ChatMessageData data, Map<String, dynamic> json) {
 	if (json['thumbnail'] != null) {
 		data.thumbnail = json['thumbnail'].toString();
 	}
+	if (json['length'] != null) {
+		data.length = json['length'] is String
+				? double.tryParse(json['length'])
+				: json['length'].toDouble();
+	}
 	if (json['created_at'] != null) {
 		data.createdAt = json['created_at'].toString();
 	}
@@ -79,6 +84,7 @@ Map<String, dynamic> chatMessageDataToJson(ChatMessageData entity) {
 	data['type'] = entity.type;
 	data['uuid'] = entity.uuid;
 	data['thumbnail'] = entity.thumbnail;
+	data['length'] = entity.length;
 	data['created_at'] = entity.createdAt;
 	data['updated_at'] = entity.updatedAt;
 	return data;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plugin_record/index.dart';
+import 'package:flutter_locyin/utils/getx.dart';
+import 'package:flutter_locyin/widgets/voice_widget.dart';
+import 'package:get/get.dart';
 
 class WeChatRecordScreen extends StatefulWidget {
   final int windowID;
@@ -63,6 +65,7 @@ class _WeChatRecordScreenState extends State<WeChatRecordScreen> {
     print("结束束录制");
     print("音频文件位置" + path);
     print("音频录制时长" + audioTimeLength.toString());
+    Get.find<MessageController>().handleUploadSpeech(widget.windowID,path , audioTimeLength);
   }
 
   @override

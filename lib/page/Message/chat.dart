@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_locyin/utils/record_service.dart';
 import 'package:flutter_locyin/widgets/photo_view.dart';
 import 'package:flutter_locyin/widgets/video_view.dart';
 import 'package:flutter_locyin/widgets/appbar.dart';
@@ -14,14 +15,16 @@ import 'package:flutter_locyin/utils/date.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/widgets/bubble.dart';
 import 'package:flutter_locyin/widgets/loading_dialog.dart';
+import 'package:flutter_locyin/widgets/wechat_voice.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-
 import 'WeChatRecordScreen.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'dart:io';
 /// 聊天界面示例
 class ChatPage extends StatefulWidget {
   @override
@@ -55,6 +58,22 @@ class ChatPageState extends State<ChatPage> {
   double _panelHeightClosed = 0;
   PanelController _functionPanelController = new PanelController();
   bool _showRecordButton = false;
+
+  bool emojiShowing = false;
+
+  _onEmojiSelected(Emoji emoji) {
+    _textEditingController
+      ..text += emoji.emoji
+      ..selection = TextSelection.fromPosition(
+          TextPosition(offset: _textEditingController.text.length));
+  }
+
+  _onBackspacePressed() {
+    _textEditingController
+      ..text = _textEditingController.text.characters.skipLast(1).toString()
+      ..selection = TextSelection.fromPosition(
+          TextPosition(offset: _textEditingController.text.length));
+  }
   // 发送消息
   void _sendMsg(String msg,String type) {
     /*setState(() {
@@ -69,6 +88,27 @@ class ChatPageState extends State<ChatPage> {
   void closeKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(blankNode);
   }
+  /*void _initPlayer(){
+    ///初始化方法的监听
+    recordPlugin.responseFromInit.listen((data) {
+      if (data) {
+        print("初始化成功");
+      } else {
+        print("初始化失败");
+      }
+    });
+
+    recordPlugin.responsePlayStateController.listen((data) {
+      print("播放路径   " + data.playPath);
+      print("播放状态   " + data.playState);
+      print(RecordService.currentVoiceKey==null);
+      print(data.playState == "complete");
+      if(data.playState == "complete" && RecordService.currentVoiceKey!=null){
+        RecordService.currentVoiceKey!.currentState!.stop();
+        RecordService.currentVoiceKey=null;
+      }
+    });
+  }*/
   @override
   void initState(){
     super.initState();
@@ -102,6 +142,7 @@ class ChatPageState extends State<ChatPage> {
     });
     _scrollController = ScrollController();
     _fabHeight = _initFabHeight;
+
   }
 
   @override
@@ -147,298 +188,373 @@ class ChatPageState extends State<ChatPage> {
           onTap: () {
             Get.back();
           },
-          child: Icon(Icons.save),
+          child: Icon(Icons.more_horiz_outlined),
         ),
       ),
       //backgroundColor: Colors.grey[200],
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Divider(
-              height: 0.5,
-            ),
-            GetBuilder<MessageController>(
-              init: MessageController(),
-              id: "message_chat",
-              builder: (controller) {
-                bool _hasData = controller.allMessageData[_toId]!.meta.currentPage != 0;
-                print("是否有数据：$_hasData ");
-                return Expanded(
-                  flex: 1,
-                  child:
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      // 判断列表内容是否大于展示区域
-                      bool overflow = false;
-                      double heightTmp = 0.0;
-                      if (_hasData) {
-                        for (ChatMessageData entity in Get
-                            .find<MessageController>()
-                            .allMessageData[_toId]!.data) {
-                          heightTmp +=
-                              _calculateMsgHeight(context, constraints, entity);
-                          if (heightTmp > constraints.maxHeight) {
-                            print("溢出了");
-                            overflow = true;
+        child: WillPopScope(
+          onWillPop: (){
+            closeKeyboard(context);
+            if(_functionPanelController.isPanelOpen){
+              _functionPanelController.close();
+              return Future.value(false);
+            }
+            if(emojiShowing){
+              setState(() {
+                emojiShowing = false;
+              });
+              return Future.value(false);
+            }
+            return Future.value(true);
+          },
+          child: Column(
+            children: <Widget>[
+              Divider(
+                height: 0.5,
+              ),
+              GetBuilder<MessageController>(
+                init: MessageController(),
+                id: "message_chat",
+                builder: (controller) {
+                  bool _hasData = controller.allMessageData[_toId]!.meta.currentPage != 0;
+                  print("是否有数据：$_hasData ");
+                  return Expanded(
+                    flex: 1,
+                    child:
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        // 判断列表内容是否大于展示区域
+                        bool overflow = false;
+                        double heightTmp = 0.0;
+                        if (_hasData) {
+                          for (ChatMessageData entity in Get
+                              .find<MessageController>()
+                              .allMessageData[_toId]!.data) {
+                            heightTmp +=
+                                _calculateMsgHeight(context, constraints, entity);
+                            if (heightTmp > constraints.maxHeight) {
+                              print("溢出了");
+                              overflow = true;
+                            }
                           }
                         }
-                      }
-                      if(!_hasData) {
-                        return LoadingDialog(
-                            showContent: false,
-                            backgroundColor: Get.theme.dialogBackgroundColor,
-                            loadingView: SpinKitCircle(color: Get.theme.accentColor),
-                        );
-                      }
-                      return EasyRefresh.custom(
-                        scrollController: _scrollController,
-                        reverse: true,
-                        footer: CustomFooter(
-                            enableInfiniteLoad: false,
-                            extent: 40.0,
-                            triggerDistance: 50.0,
-                            footerBuilder: (context,
-                                loadState,
-                                pulledExtent,
-                                loadTriggerPullDistance,
-                                loadIndicatorExtent,
-                                axisDirection,
-                                float,
-                                completeDuration,
-                                enableInfiniteLoad,
-                                success,
-                                noMore) {
-                              return Stack(
-                                children: <Widget>[
-                                  Positioned(
-                                    bottom: 0.0,
-                                    left: 0.0,
-                                    right: 0.0,
-                                    child: Container(
-                                      width: 30.0,
-                                      height: 30.0,
-                                      child: SpinKitCircle(
-                                        color: Colors.green,
-                                        size: 30.0,
+                        if(!_hasData) {
+                          return LoadingDialog(
+                              showContent: false,
+                              backgroundColor: Get.theme.dialogBackgroundColor,
+                              loadingView: SpinKitCircle(color: Get.theme.accentColor),
+                          );
+                        }
+                        return EasyRefresh.custom(
+                          scrollController: _scrollController,
+                          reverse: true,
+                          footer: CustomFooter(
+                              enableInfiniteLoad: false,
+                              extent: 40.0,
+                              triggerDistance: 50.0,
+                              footerBuilder: (context,
+                                  loadState,
+                                  pulledExtent,
+                                  loadTriggerPullDistance,
+                                  loadIndicatorExtent,
+                                  axisDirection,
+                                  float,
+                                  completeDuration,
+                                  enableInfiniteLoad,
+                                  success,
+                                  noMore) {
+                                return Stack(
+                                  children: <Widget>[
+                                    Positioned(
+                                      bottom: 0.0,
+                                      left: 0.0,
+                                      right: 0.0,
+                                      child: Container(
+                                        width: 30.0,
+                                        height: 30.0,
+                                        child: SpinKitCircle(
+                                          color: Colors.green,
+                                          size: 30.0,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            }),
-                        emptyWidget: (_hasData?controller.allMessageData[_toId]!.data.length==0:!_hasData)
-                            ? Container(
-                          height: double.infinity,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: SizedBox(),
-                                flex: 2,
-                              ),
-                              SizedBox(
-                                width: 100.0,
-                                height: 100.0,
-                                child: Image.asset('assets/images/nodata.png'),
-                              ),
-                              Text(
-                                "没有数据",
-                                style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
-                              ),
-                              Expanded(
-                                child: SizedBox(),
-                                flex: 3,
-                              ),
-                            ],
-                          ),
-                        )
-                            : null,
-                        slivers: <Widget>[
-                          if (_hasData)
-                            SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                      (context, index) {
-                                        return _buildMsg(
-                                            controller.allMessageData[_toId]!
-                                                .data[index]);
-                                  },
-                                  childCount: controller.allMessageData[_toId]!.data.length
-                              ),
-                            ),
-                          /*if (!overflow && _hasData)
-                            SliverToBoxAdapter(
-                              child: Container(
-                                height: constraints.maxHeight,
-                                width: double.infinity,
-                                child: Column(
-                                  children: <Widget>[
-                                    for (ChatMessageData entity in controller
-                                        .allMessageData[_toId]!.data
-                                        .reversed)
-                                      _buildMsg(entity),
                                   ],
+                                );
+                              }),
+                          emptyWidget: (_hasData?controller.allMessageData[_toId]!.data.length==0:!_hasData)
+                              ? Container(
+                            height: double.infinity,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: SizedBox(),
+                                  flex: 2,
+                                ),
+                                SizedBox(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  child: Image.asset('assets/images/nodata.png'),
+                                ),
+                                Text(
+                                  "没有数据",
+                                  style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+                                ),
+                                Expanded(
+                                  child: SizedBox(),
+                                  flex: 3,
+                                ),
+                              ],
+                            ),
+                          )
+                              : null,
+                          slivers: <Widget>[
+                            if (_hasData)
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                        (context, index) {
+                                          return _buildMsg(
+                                              controller.allMessageData[_toId]!
+                                                  .data[index]);
+                                    },
+                                    childCount: controller.allMessageData[_toId]!.data.length
                                 ),
                               ),
-                            ),*/
-                        ],
-                        onLoad: () async {
-                          await Future.delayed(Duration(seconds: 2), () {
-                            if (mounted && _hasData) {
-                              var meta = Get.find<MessageController>().allMessageData[_toId]!.meta;
-                              if(meta.currentPage < meta.lastPage){
-                                Get.find<MessageController>().getChatMessageList(_toId,meta.currentPage+1);
+                            /*if (!overflow && _hasData)
+                              SliverToBoxAdapter(
+                                child: Container(
+                                  height: constraints.maxHeight,
+                                  width: double.infinity,
+                                  child: Column(
+                                    children: <Widget>[
+                                      for (ChatMessageData entity in controller
+                                          .allMessageData[_toId]!.data
+                                          .reversed)
+                                        _buildMsg(entity),
+                                    ],
+                                  ),
+                                ),
+                              ),*/
+                          ],
+                          onLoad: () async {
+                            await Future.delayed(Duration(seconds: 2), () {
+                              if (mounted && _hasData) {
+                                var meta = Get.find<MessageController>().allMessageData[_toId]!.meta;
+                                if(meta.currentPage < meta.lastPage){
+                                  Get.find<MessageController>().getChatMessageList(_toId,meta.currentPage+1);
+                                }
                               }
-                            }
-                          });
-                        },
-                      );
-                    },
-                  ),
-                );
-              }),
-            Container(
-              //color: Colors.grey[100],
-              padding: EdgeInsets.only(
-                left: 15.0,
-                right: 15.0,
-                top: 10.0,
-                bottom: 10.0,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: InkWell(
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  );
+                }),
+              Container(
+                //color: Colors.grey[100],
+                padding: EdgeInsets.only(
+                  left: 15.0,
+                  right: 15.0,
+                  top: 10.0,
+                  bottom: 10.0,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    InkWell(
                         onTap: (){
                           if (_showRecordButton) {
+                            if(_functionPanelController.isPanelOpen){
+                              _functionPanelController.close();
+                            }
                             Future.delayed(Duration(milliseconds: 100), () {
                               FocusScope.of(context).requestFocus(focusNode);
                             });
                             setState(() {
+                              emojiShowing = false;
                               _showRecordButton = false;
                             });
                           }else{
                             closeKeyboard(context);
                             setState(() {
+
                               _showRecordButton = true;
                             });
                           }
                         },
-                        child: Icon(Icons.keyboard_voice_outlined)
+                        child:  Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 12),
+                            child:Icon(Icons.keyboard_voice_outlined)
+                        ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: _showRecordButton?WeChatRecordScreen(windowID: _toId,): Container(
-                      padding: EdgeInsets.only(
-                        left: 5.0,
-                        right: 5.0,
-                        top: 10.0,
-                        bottom: 10.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Get.theme.cardColor,
-                        borderRadius: BorderRadius.all(Radius.circular(
-                          4.0,
-                        )),
-                      ),
-                      child: TextField(
-                        onTap: (){
-                          if(!focusNode.hasFocus){
-                            focusNode.unfocus();
-                            if(_functionPanelController.isPanelOpen){
-                                _functionPanelController.close();
-                            }
-                            //while(_functionPanelController.isPanelOpen){continue;};
-                            //1秒后这个i行
-                            Future.delayed(Duration(milliseconds: 500), () {
-                               FocusScope.of(context).requestFocus(focusNode);
-                            });
-                          }
-                          //
-                        },
-                        focusNode: focusNode,
-                        controller: _textEditingController,
-                        decoration: null,
-                        onSubmitted: (value) {
-                          if (_textEditingController.text.isNotEmpty) {
-                            _sendMsg(_textEditingController.text,"text");
-                            _textEditingController.text = '';
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Icon(Icons.emoji_emotions_outlined),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      if (_textEditingController.text.isNotEmpty) {
-                        _sendMsg(_textEditingController.text,"text");
-                        _textEditingController.text = '';
-                      }
-                    },
-                    child: _textEditingController.text.isEmpty?
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                              child: InkWell(
-                                  onTap: (){
-                                    closeKeyboard(context);
-                                    Future.delayed(Duration(milliseconds: 500), () {
-                                      _functionPanelController.open();
-                                    });
 
-                                  },
-                                  child: Icon(Icons.add_circle_outline)
-                              ),
-                            )
-                            :Container(
-                      height: 30.0,
-                      width: 60.0,
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(
-                        left: 0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _textEditingController.text.isEmpty
-                            ? (Get.isDarkMode? Get.theme.accentColor:Get.theme.backgroundColor)
-                            :  (Get.isDarkMode? Get.theme.accentColor:Get.theme.backgroundColor),
-                        borderRadius: BorderRadius.all(Radius.circular(
-                          4.0,
-                        )),
-                      ),
-                      child: Text(
-                        "发送",
-                        style: TextStyle(
-                          //0000000000000color: Colors.white,
+                    Expanded(
+                      flex: 1,
+                      child: _showRecordButton?WeChatRecordScreen(windowID: _toId,): Container(
+                        padding: EdgeInsets.only(
+                          left: 5.0,
+                          right: 5.0,
+                          top: 10.0,
+                          bottom: 10.0,
+                        ),
+                        decoration: BoxDecoration(
                           color: Get.theme.cardColor,
-                          fontSize: 16.0,
+                          borderRadius: BorderRadius.all(Radius.circular(
+                            4.0,
+                          )),
+                        ),
+                        child: TextField(
+                          onTap: (){
+                            if(!focusNode.hasFocus){
+                              focusNode.unfocus();
+                              if(_functionPanelController.isPanelOpen){
+                                  _functionPanelController.close();
+                              }
+                              emojiShowing = false;
+                              //while(_functionPanelController.isPanelOpen){continue;};
+                              //1秒后这个i行
+                              Future.delayed(Duration(milliseconds: 300), () {
+                                 FocusScope.of(context).requestFocus(focusNode);
+                              });
+                            }
+                            //
+                          },
+                          focusNode: focusNode,
+                          controller: _textEditingController,
+                          decoration: null,
+                          onSubmitted: (value) {
+                            if (_textEditingController.text.isNotEmpty) {
+                              _sendMsg(_textEditingController.text,"text");
+                              _textEditingController.text = '';
+                            }
+                          },
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    InkWell(
+                        onTap: (){
+                          closeKeyboard(context);
+                          if(_functionPanelController.isPanelOpen){
+                            _functionPanelController.close();
+                          }
+                          Future.delayed(Duration(milliseconds: 300), () {
+                            setState(() {
+                              emojiShowing = !emojiShowing;
+                            });
+                          });
+
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 12),
+                            child:Icon(Icons.emoji_emotions_outlined)
+                        ),
+                    ),
+
+                    InkWell(
+                      onTap: () {
+                        if (_textEditingController.text.isNotEmpty) {
+                          _sendMsg(_textEditingController.text,"text");
+                          _textEditingController.text = '';
+                        }
+                      },
+                      child: _textEditingController.text.isEmpty?
+                      InkWell(
+                          onTap: (){
+                            setState(() {
+                              emojiShowing = false;
+                            });
+                            closeKeyboard(context);
+                            Future.delayed(Duration(milliseconds: 500), () {
+                              _functionPanelController.open();
+                            });
+
+                          },
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 12),
+                              child:Icon(Icons.add_circle_outline)
+                          )
+                      )
+
+                              :Container(
+                        height: 30.0,
+                        width: 60.0,
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(
+                          left: 0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _textEditingController.text.isEmpty
+                              ? (Get.isDarkMode? Get.theme.accentColor:Get.theme.backgroundColor)
+                              :  (Get.isDarkMode? Get.theme.accentColor:Get.theme.backgroundColor),
+                          borderRadius: BorderRadius.all(Radius.circular(
+                            4.0,
+                          )),
+                        ),
+                        child: Text(
+                          "发送",
+                          style: TextStyle(
+                            //0000000000000color: Colors.white,
+                            color: Get.theme.cardColor,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SlidingUpPanel(
-              controller: _functionPanelController,
-              panel: Center(child: _bottomFunctions(functions)),
-              maxHeight: _panelHeightOpen,
-              minHeight: _panelHeightClosed,
-              parallaxEnabled: true,
-              parallaxOffset: .5,
-              defaultPanelState:PanelState.CLOSED,
-              isDraggable: false,
-              /*onPanelSlide: (double pos) => setState(() {
-                FocusScope.of(context).requestFocus(blankNode);
-                _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
-                    _initFabHeight;
-              }),*/
-            ),
-          ],
+              SlidingUpPanel(
+                controller: _functionPanelController,
+                panel: Center(child: _bottomFunctions(functions)),
+                maxHeight: _panelHeightOpen,
+                minHeight: _panelHeightClosed,
+                parallaxEnabled: true,
+                parallaxOffset: .5,
+                defaultPanelState:PanelState.CLOSED,
+                isDraggable: false,
+                boxShadow: null,
+                /*onPanelSlide: (double pos) => setState(() {
+                  FocusScope.of(context).requestFocus(blankNode);
+                  _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
+                      _initFabHeight;
+                }),*/
+              ),
+              Offstage(
+                offstage: !emojiShowing,
+                child: SizedBox(
+                  height: _panelHeightOpen,
+                  child: EmojiPicker(
+                      onEmojiSelected: (Category category, Emoji emoji) {
+                        _onEmojiSelected(emoji);
+                      },
+                      onBackspacePressed: _onBackspacePressed,
+                      config: Config(
+                          columns: 7,
+                          // Issue: https://github.com/flutter/flutter/issues/28894
+                          emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
+                          verticalSpacing: 0,
+                          horizontalSpacing: 0,
+                          initCategory: Category.RECENT,
+                          bgColor: Get.theme.cardColor,
+                          indicatorColor: Colors.blue,
+                          iconColor: Colors.grey,
+                          iconColorSelected: Colors.blue,
+                          progressIndicatorColor: Colors.blue,
+                          backspaceColor: Colors.blue,
+                          showRecentsTab: true,
+                          recentsLimit: 28,
+                          noRecentsText: 'No Recents',
+                          noRecentsStyle: const TextStyle(
+                              fontSize: 20, color: Colors.black26),
+                          tabIndicatorAnimDuration: kTabScrollDuration,
+                          categoryIcons: const CategoryIcons(),
+                          buttonMode: ButtonMode.MATERIAL)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -516,7 +632,7 @@ class ChatPageState extends State<ChatPage> {
                       constraints: BoxConstraints(
                         maxWidth: 200.0,
                       ),
-                      child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.right,entity.thumbnail)
+                      child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.right,entity.thumbnail,entity.length)
 
                     ),
                   ],
@@ -600,7 +716,7 @@ class ChatPageState extends State<ChatPage> {
                   constraints: BoxConstraints(
                     maxWidth: 200.0,
                   ),
-                    child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.left,entity.thumbnail)
+                    child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.left,entity.thumbnail,entity.length)
                 )
               ],
             ),
@@ -805,7 +921,7 @@ class ChatPageState extends State<ChatPage> {
   static void videoChat(){
 
   }
-  Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction,String? thumbnail){
+  Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction,String? thumbnail,double? length){
       switch(type){
         case"text":
           return Bubble(
@@ -879,7 +995,7 @@ class ChatPageState extends State<ChatPage> {
             ),
           );
         case "audio":return Container();
-        case "speech":return Container();
+        case "speech":return _SpeechBuilder(content,direction,false,length);
         case "tempAsset":
           List<TempAsset> tempAssets  = Get.find<MessageController>().tempAssetList;
           AssetEntity tempAsset = tempAssets.firstWhere((element) => element.uuid == uuid).entity;
@@ -889,8 +1005,75 @@ class ChatPageState extends State<ChatPage> {
             assetsSum.add(element.entity);
           });
           return _selectedAssetWidget(context,tempAsset,assetsSum,index);
+        case "tempSpeech":
+          return _SpeechBuilder(content,direction,false,length);
         default:return Container();
       }
+  }
+  Widget _SpeechBuilder(String path,BubbleDirection direction,bool isTemp, double? length){
+    GlobalKey<WeChatVoiceWidgetState> voiceKey = GlobalKey();
+    String type = isTemp?"file":"url";
+    return Bubble(
+      color: direction ==BubbleDirection.left? Get.theme.cardColor:Get.theme.backgroundColor ,
+      direction: direction,
+      child: InkWell(
+        onTap: (){
+          print(RecordService().currentVoiceKey!=null);
+          if(RecordService().currentVoiceKey!=null){
+            RecordService().recordPlugin.stopPlay();
+            voiceKey.currentState!.stop();
+            if(RecordService().currentVoiceKey == voiceKey){
+              return;
+            }else{
+              Future.delayed(Duration(milliseconds: 500), () {
+                RecordService().setCurrentVoiceKey(voiceKey);
+                voiceKey.currentState!.start();
+                RecordService().recordPlugin..playByPath(path,type);
+              });
+            }
+          }else{
+            if(voiceKey.currentState!.hasStart()){
+              RecordService().clearCurrentVoiceKey();
+              voiceKey.currentState!.stop();
+              RecordService().recordPlugin.stopPlay();
+            }else{
+              RecordService().setCurrentVoiceKey(voiceKey);
+              voiceKey.currentState!.start();
+              RecordService().recordPlugin.playByPath(path,type);
+            }
+          }
+
+
+        },
+        child: Container(
+          height:32,
+          width: 138,
+          child:
+          direction ==BubbleDirection.left?
+          Row(
+            children: [
+              WeChatVoiceWidget(
+                key: voiceKey,
+              ),
+              Text(length.toString(),style: TextStyle(
+                  fontSize: 15
+              ),)
+            ],
+          ):Row(
+            children: [
+              Text(length.toString(),style: TextStyle(
+                  fontSize: 15
+              ),),
+              RotatedBox(quarterTurns: 6,child: WeChatVoiceWidget(
+                key: voiceKey,
+              ),),
+            ],
+          ),
+        ),
+      ),
+    );
+
+
   }
 }
 class FunctionsEntity{

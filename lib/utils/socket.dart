@@ -82,7 +82,7 @@ class WebsocketManager{
                 print(mesData['data']['type'].runtimeType);
                 print(mesData['data']['window_id'].runtimeType);
                 print(mesData['data']['content'].runtimeType);
-                getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content'],mesData['data']['uuid'],mesData['data']['thumbnail']);
+                getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content'],mesData['data']['uuid'],mesData['data']['thumbnail'],mesData['data']['length']);
                 break;
               default:break;
             }

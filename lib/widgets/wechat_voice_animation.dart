@@ -10,7 +10,7 @@ class WeChatVoiceWidget extends StatefulWidget {
 
 class WeChatVoiceWidgetState extends State<WeChatVoiceWidget> {
   List<String> _assetList = [];
-  bool isStop = false;
+  bool _start = false;
 
   @override
   void initState() {
@@ -27,25 +27,28 @@ class WeChatVoiceWidgetState extends State<WeChatVoiceWidget> {
         _assetList,
         width: 100,
         height: 100,
-        isStop: isStop,
+        isStop: _start,
       );
   }
   toggle(){
     setState(() {
-      isStop = !isStop;
+      _start = !_start;
     });
   }
   stop(){
     setState(() {
-      isStop = false;
+      _start = false;
     });
   }
   start(){
     setState(() {
-      isStop = true;
+      _start = true;
     });
   }
   callBackO(bool stop) {
     print(stop);
+  }
+  bool hasStart(){
+    return _start;
   }
 }
