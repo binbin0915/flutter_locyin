@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
@@ -10,6 +12,7 @@ import 'dart:developer';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:uuid/uuid.dart';
 class VideoCallPage extends StatefulWidget {
   /// 服务器端返回的token
   final String token;
@@ -44,6 +47,8 @@ class _VideoCallPageState extends State<VideoCallPage> {
   List<int> remoteUid = [];
   bool muted = false;
   bool connected = false;
+  Timer? _timer;
+  var period = const Duration(seconds: 1);
   @override
   void initState() {
     super.initState();
@@ -55,8 +60,22 @@ class _VideoCallPageState extends State<VideoCallPage> {
   void dispose() {
     super.dispose();
     _engine.destroy();
+    if(_timer != null){
+      _timer!.cancel();
+    }
     //_resetBusy();
+    if(widget.requester){
+      String content = '已取消';
+      int sum = Get.find<MessageController>().counter;
+      if( sum!=0){
+        int minute = sum~/60;
+        int second = sum%60;
+        content = "聊天时长 "+ (minute>10?minute.toString():("0"+minute.toString()))+':'+(second>=10?second.toString():("0"+second.toString()));
+      }
+      Get.find<MessageController>().sendChatMessages(widget.windowID, content, 'videocall', Uuid().v1());
+    }
     Get.find<MessageController>().setChattingStatus(0);
+    Get.find<MessageController>().setCounter(0);
   }
 
   _initEngine() async {
@@ -82,6 +101,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
       userJoined: (uid, elapsed) {
         print('userJoined  $uid $elapsed');
         setState(() {
+          _startCounter();
           remoteUid.add(uid);
           if(widget.requester){
             connected = true;
@@ -168,6 +188,19 @@ class _VideoCallPageState extends State<VideoCallPage> {
       print(error.response);
     },widget.windowID ,status);
   }
+  void _startCounter(){
+    try {
+      //定时器，period为周期
+      _timer = Timer.periodic(period, (timer) {
+        Get.find<MessageController>().increment();
+        if (!connected) {
+          timer.cancel();
+        }
+      });
+    } catch (e) {
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,6 +212,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
             child: connected? Stack(
               children: [
                 _renderVideo(),
+                _counter(),
                 _toolbar(),
               ],
             ):_renderWaitingPage()
@@ -192,7 +226,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
       return Stack(
         children: [
           Container(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 48),
             child: Column(
               children:[
@@ -366,6 +400,27 @@ class _VideoCallPageState extends State<VideoCallPage> {
           )
         ],
       ),
+    );
+  }
+  Widget _counter(){
+    return Container(
+        alignment: Alignment.topCenter,
+        padding: const EdgeInsets.symmetric(vertical: 48),
+        child: GetBuilder<MessageController>(
+        init: MessageController(),
+    id:'message_counter',
+    builder: (controller){
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:[
+              if((controller.counter~/60)<10)Text('0'),
+              Text((controller.counter~/60).toString()),
+              Text(':'),
+              if(controller.counter<10)Text('0'),
+              Text((controller.counter).toString()),
+            ]
+        );
+    }),
     );
   }
   _renderVideo() {

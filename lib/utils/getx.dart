@@ -415,6 +415,12 @@ class MessageController extends GetxController{
   List<TempAsset> _tempAssetList  = [];
 
   List<TempAsset> get  tempAssetList  => _tempAssetList;
+
+  //聊天时间计时器
+  int _counter = 0;
+
+  int get counter => _counter;
+
   void initChatRecord(int _id){
     _allMessageData[_id] =  ChatMessageEntity().fromJson(_initChatRecord);
   }
@@ -649,15 +655,16 @@ class MessageController extends GetxController{
       };
       allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
       update(['message_chat']);
-      _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
+      if(_type != "text"){
+        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_content);
+      }else{
+        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
+      }
       _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
       update(['message_list']);
     }, (error) {
       print(error);
     },_window_id,_content,_type,_needTimeStamp?1:0,_uuid,null,null);
-  }
-  void receiveVideoCallRequest(int windowID,String token,String channelName){
-
   }
   Future<void> receiveMessage(String _type,int _window_id,String _content,String _uuid,String? _thumbnail,String? _length) async {
     if(!_allMessageData.containsKey(_window_id)){
@@ -684,8 +691,8 @@ class MessageController extends GetxController{
         "updated_at": DateTime.now()
       };
       allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
-      if(_content != "text"){
-        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _type;
+      if(_type != "text"){
+        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_content);
       }else{
         _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
       }
@@ -729,8 +736,8 @@ class MessageController extends GetxController{
             update(['message_chat']);
 
           _messageList!.data.firstWhere( (element) => element.id == _window_id).count ++;
-            if(_content != "text"){
-              _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _type;
+            if(_type != "text"){
+              _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_content);
             }else{
               _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
             }
@@ -814,6 +821,13 @@ class MessageController extends GetxController{
   }
   void setChattingStatus(int status){
     _chatingStatus = status;
+  }
+  void setCounter(int count){
+    _counter = count;
+  }
+  void increment(){
+    _counter++;
+    update(['message_counter']);
   }
 }
 class TempAsset{

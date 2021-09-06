@@ -30,6 +30,33 @@ class Auxiliaries{
     }
     return _type;
   }
+  static String TranportTypeToPanelType(String transportType){
+    String panelType = "[文本消息]";
+    switch (transportType){
+      case 'image':
+      // TODO: Handle this case.
+        panelType = "[图片]";
+        break;
+      case 'video':
+      // TODO: Handle this case.
+        panelType = "[视频]";
+        break;
+      case 'audio':
+      // TODO: Handle this case.
+        panelType = "[音频]";
+        break;
+      case 'videocall':
+      // TODO: Handle this case.
+        panelType = "[视频通话]";
+        break;
+      case 'voicecall':
+      // TODO: Handle this case.
+        panelType = "[语音通话]";
+        break;
+      default:break;
+    }
+    return panelType;
+  }
   static Future<void> saveFile(String type,String url)async {
     print(url);
     if(!url.contains('.')){

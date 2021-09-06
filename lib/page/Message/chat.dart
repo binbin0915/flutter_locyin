@@ -1023,6 +1023,50 @@ class ChatPageState extends State<ChatPage> {
           );
         case "audio":return Container();
         case "speech":return _SpeechBuilder(content,direction,false,length);
+        case "videocall":
+          return InkWell(
+              onTap: videoChat,
+              child: Bubble(
+                color: direction ==BubbleDirection.left? Get.theme.cardColor:Get.theme.backgroundColor ,
+                direction: direction,
+                child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Row(
+                      children: [
+                        Icon(Icons.video_call_outlined),
+                        SizedBox(
+                          width:4
+                        ),
+                        Text(
+                          content
+                        )
+                      ],
+                    ),
+                ),
+              )
+          );
+        case "voicecall":
+          return InkWell(
+              onTap: videoChat,
+              child: Bubble(
+                color: direction ==BubbleDirection.left? Get.theme.cardColor:Get.theme.backgroundColor ,
+                direction: direction,
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Icon(Icons.voice_chat),
+                      SizedBox(
+                          width:4
+                      ),
+                      Text(
+                          content
+                      )
+                    ],
+                  ),
+                ),
+              )
+          );
         case "tempAsset":
           List<TempAsset> tempAssets  = Get.find<MessageController>().tempAssetList;
           AssetEntity tempAsset = tempAssets.firstWhere((element) => element.uuid == uuid).entity;

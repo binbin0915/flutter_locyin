@@ -6,6 +6,7 @@ import 'package:flutter_locyin/page/Message/call_screen.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:get/get.dart' as getx;
+import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:dio/dio.dart';
@@ -113,9 +114,18 @@ class WebsocketManager{
                 ));
                 break;
               case "videoCallback" :
+                int windowID = mesData['data']['window_id'];
                 print(mesData['data']['window_id']);
                 print(mesData['data']['window_id'].runtimeType);
                 print(mesData['data']['status_code']);
+                int statusCode = mesData['data']['status_code'];
+                String content ='';
+                if (statusCode == 1) {
+                  content = '对方忙';
+                } else{
+                  content = "视频聊天";
+                }
+                //getx.Get.find<MessageController>().sendChatMessages(windowID, content, 'videocall', Uuid().v1());
                 //print(mesData['data']['channel_name']);
                 //getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content'],mesData['data']['uuid'],mesData['data']['thumbnail'],mesData['data']['length']);
                 if(getx.Get.find<MessageController>().chatingStatus != 0){
