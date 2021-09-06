@@ -331,8 +331,10 @@ class MessageController extends GetxController{
     StatusEntity("搬砖", "working", Icon(Icons.file_copy_sharp,color: Colors.cyan)),
   ];
   List<StatusEntity> get iconsList => _iconsList;
-  //聊天总体列表
+
+  //聊天会话窗口列表
   MessageListEntity? _messageList;
+
   MessageListEntity? get messageList => _messageList;
 
   //用于判断是否正在异步请求数据，避免多次请求
@@ -340,7 +342,7 @@ class MessageController extends GetxController{
 
   bool get listRunning => _listRunning;
 
-  //所有列表的键值对映射
+  //所有聊天消息的键值对映射
   Map<int,ChatMessageEntity> _allMessageData = {};
 
   Map<int,ChatMessageEntity> get allMessageData => _allMessageData;
@@ -350,12 +352,20 @@ class MessageController extends GetxController{
 
   bool get chatRunning => _chatRunning;
 
-  //初始值默认为离线3
+  //用户状态初始值
   int _messageStatusCode = Get.find<UserController>().user!.data.status;
+
   int get messageStatusCode  => _messageStatusCode ;
 
+  //当前会话 ID
   int _windowID = 0;
+
   int get windowID => _windowID;
+
+  //记录用户聊天状态，默认为普通聊天
+  int _chatingStatus = 0;
+
+  int get chatingStatus => _chatingStatus;
 
   Map<String,dynamic> _initChatRecord = {
     "data": [],
@@ -801,6 +811,9 @@ class MessageController extends GetxController{
       return Future.value(false);
     }*/
     //如果存在
+  }
+  void setChattingStatus(int status){
+    _chatingStatus = status;
   }
 }
 class TempAsset{

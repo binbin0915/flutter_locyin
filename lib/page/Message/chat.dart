@@ -26,7 +26,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'call_screen.dart';
-import 'WeChatRecordScreen.dart';
+import 'record_screen.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'dart:io';
 /// 聊天界面示例
@@ -778,8 +778,8 @@ class ChatPageState extends State<ChatPage> {
   int  maxAssetsCount = 9;
 
   /// These fields are for the keep scroll position feature.
-  late DefaultAssetPickerProvider keepScrollProvider =
-  DefaultAssetPickerProvider();
+  DefaultAssetPickerProvider keepScrollProvider = DefaultAssetPickerProvider();
+
   DefaultAssetPickerBuilderDelegate? keepScrollDelegate;
 
   Future<void> selectAssets(PickMethod model) async {
@@ -938,11 +938,13 @@ class ChatPageState extends State<ChatPage> {
     int userID = Get.find<UserController>().user!.data.id;
     MessageListDataStranger stranger = Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.stranger.id == windowID).stranger;
     await apiService.requestVideoCall((dio.Response response) {
+      Get.find<MessageController>().setChattingStatus(1);
       String token = response.data['token'];
       String channelName = response.data['channelName'];
       Get.to(() => VideoCallPage(token: token, channelName: channelName, nickname: stranger.nickname, avatar: stranger.avatar, requester: true, windowID: windowID, userID:userID,));
       print(response.data);
     }, (dio.DioError error) {
+      Get.find<MessageController>().setChattingStatus(0);
       print(error.response);
     },windowID ,uuid);
   }

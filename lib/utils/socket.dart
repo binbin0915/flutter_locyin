@@ -86,8 +86,19 @@ class WebsocketManager{
                 getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content'],mesData['data']['uuid'],mesData['data']['thumbnail'],mesData['data']['length']);
                 break;
               case "videoCall" :
-                print(mesData['data']['window_id']);
-                print(mesData['data']['window_id'].runtimeType);
+                int windowID = mesData['data']['window_id'];
+                if(getx.Get.find<MessageController>().chatingStatus!=0){
+                  //发送占线回调
+                  apiService.videoCallback((Response response) {
+                    print(response.data);
+                  }, (DioError error) {
+                    print(error.response);
+                  },windowID ,1);
+                  return;
+                }
+                getx.Get.find<MessageController>().setChattingStatus(1);
+                /*print(mesData['data']['window_id']);
+                print(mesData['data']['window_id'].runtimeType);*/
                 print(mesData['data']['token']);
                 print(mesData['data']['channel_name']);
                 //getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content'],mesData['data']['uuid'],mesData['data']['thumbnail'],mesData['data']['length']);
@@ -100,6 +111,16 @@ class WebsocketManager{
                   windowID: mesData['data']['window_id'],
                   userID: mesData['data']['user_id'],
                 ));
+                break;
+              case "videoCallback" :
+                print(mesData['data']['window_id']);
+                print(mesData['data']['window_id'].runtimeType);
+                print(mesData['data']['status_code']);
+                //print(mesData['data']['channel_name']);
+                //getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content'],mesData['data']['uuid'],mesData['data']['thumbnail'],mesData['data']['length']);
+                if(getx.Get.find<MessageController>().chatingStatus != 0){
+                  getx.Get.back();
+                }
                 break;
               default:break;
             }

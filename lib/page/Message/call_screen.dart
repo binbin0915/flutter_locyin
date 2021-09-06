@@ -4,6 +4,7 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/common/config.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/utils/getx.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
 import 'package:permission_handler/permission_handler.dart';
@@ -54,7 +55,8 @@ class _VideoCallPageState extends State<VideoCallPage> {
   void dispose() {
     super.dispose();
     _engine.destroy();
-    _resetBusy();
+    //_resetBusy();
+    Get.find<MessageController>().setChattingStatus(0);
   }
 
   _initEngine() async {
@@ -139,23 +141,33 @@ class _VideoCallPageState extends State<VideoCallPage> {
     });
   }
   void _onCallEnd() {
+    _videoCallback(0);
     Get.back();
   }
-
+  void _onRect() {
+    _videoCallback(2);
+    Get.back();
+  }
   void _onToggleMute() {
     setState(() {
       muted = !muted;
     });
     _engine.muteLocalAudioStream(muted);
   }
-  Future<void> _resetBusy() async {
+/*  Future<void> _resetBusy() async {
     await apiService.resetBusy((dio.Response response) {
       print(response.data);
     }, (dio.DioError error) {
       print(error.response);
     },widget.windowID ,widget.userID);
+  }*/
+  Future<void> _videoCallback(int status) async {
+    apiService.videoCallback((dio.Response response) {
+      print(response.data);
+    }, (dio.DioError error) {
+      print(error.response);
+    },widget.windowID ,status);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -217,7 +229,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
                   padding: const EdgeInsets.all(12.0),
                 ),
                 RawMaterialButton(
-                  onPressed:_onCallEnd,
+                  onPressed:_onRect,
                   child: Icon(
                     Icons.call_end,
                     color: Colors.white,

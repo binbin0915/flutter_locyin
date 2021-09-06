@@ -303,4 +303,16 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 视频通话回调
+  Future<void> videoCallback(Function callback, Function errorCallback , int window,int code) async {
+    FormData formdata = FormData.fromMap({
+      "window": window,
+      "code": code,
+    });
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_VIDEO_CALLBACK,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }
