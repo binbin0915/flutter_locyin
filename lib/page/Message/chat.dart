@@ -25,7 +25,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-import '../call_screen.dart';
+import 'call_screen.dart';
 import 'WeChatRecordScreen.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'dart:io';
@@ -935,11 +935,12 @@ class ChatPageState extends State<ChatPage> {
   static Future<void> videoChat()async {
     String uuid = Uuid().v1();
     int windowID = Get.find<MessageController>().windowID;
+    int userID = Get.find<UserController>().user!.data.id;
     MessageListDataStranger stranger = Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.stranger.id == windowID).stranger;
     await apiService.requestVideoCall((dio.Response response) {
       String token = response.data['token'];
       String channelName = response.data['channelName'];
-      Get.to(() => VideoCallPage(token: token, channelName: channelName, nickname: stranger.nickname, avatar: stranger.avatar, requester: true,));
+      Get.to(() => VideoCallPage(token: token, channelName: channelName, nickname: stranger.nickname, avatar: stranger.avatar, requester: true, windowID: windowID, userID:userID,));
       print(response.data);
     }, (dio.DioError error) {
       print(error.response);

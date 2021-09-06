@@ -3,11 +3,12 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/common/config.dart';
+import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart';
-
+import 'package:dio/dio.dart' as dio;
 class VideoCallPage extends StatefulWidget {
   /// 服务器端返回的token
   final String token;
@@ -22,8 +23,14 @@ class VideoCallPage extends StatefulWidget {
   /// 用户头像
   final String avatar;
 
+  /// 会话 ID
+  final int windowID;
+
+  /// 用户 ID
+  final int userID;
+
   /// Creates a call page with given channel name.
-  const VideoCallPage({Key? key, required this.channelName,required this.token,required this.requester, required this.nickname, required this.avatar}) : super(key: key);
+  const VideoCallPage({Key? key, required this.channelName,required this.token,required this.requester, required this.nickname, required this.avatar, required this.windowID, required this.userID}) : super(key: key);
 
   @override
   _VideoCallPageState createState() => _VideoCallPageState();
@@ -47,6 +54,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
   void dispose() {
     super.dispose();
     _engine.destroy();
+    _resetBusy();
   }
 
   _initEngine() async {
@@ -56,7 +64,6 @@ class _VideoCallPageState extends State<VideoCallPage> {
     await _engine.startPreview();
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _engine.setClientRole(ClientRole.Broadcaster);
-
     if(widget.requester){
       await _joinChannel();
     }
@@ -81,10 +88,10 @@ class _VideoCallPageState extends State<VideoCallPage> {
       },
       userOffline: (uid, reason) {
         print('userOffline  $uid $reason');
-        setState(() {
+        /*setState(() {
           remoteUid.removeWhere((element) => element == uid);
-        });
-        _onCallEnd(context);
+        });*/
+        _onCallEnd();
       },
       leaveChannel: (stats) {
         print('leaveChannel ${stats.toJson()}');
@@ -131,8 +138,8 @@ class _VideoCallPageState extends State<VideoCallPage> {
       //remoteUid = List.of(remoteUid.reversed);
     });
   }
-  void _onCallEnd(BuildContext context) {
-    Navigator.pop(context);
+  void _onCallEnd() {
+    Get.back();
   }
 
   void _onToggleMute() {
@@ -141,17 +148,29 @@ class _VideoCallPageState extends State<VideoCallPage> {
     });
     _engine.muteLocalAudioStream(muted);
   }
+  Future<void> _resetBusy() async {
+    await apiService.resetBusy((dio.Response response) {
+      print(response.data);
+    }, (dio.DioError error) {
+      print(error.response);
+    },widget.windowID ,widget.userID);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: connected? Stack(
-          children: [
-            _renderVideo(),
-            _toolbar(),
-          ],
-        ):_renderWaitingPage(),
+        child:WillPopScope(
+          onWillPop: (){
+            return Future.value(false);
+          },
+            child: connected? Stack(
+              children: [
+                _renderVideo(),
+                _toolbar(),
+              ],
+            ):_renderWaitingPage()
+        ),
       )
     );
   }
@@ -198,10 +217,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
                   padding: const EdgeInsets.all(12.0),
                 ),
                 RawMaterialButton(
-                  onPressed: () {
-                    _onCallEnd(context);
-                    print("挂断");
-                  },
+                  onPressed:_onCallEnd,
                   child: Icon(
                     Icons.call_end,
                     color: Colors.white,
@@ -258,10 +274,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
                   padding: const EdgeInsets.all(12.0),
                 ),
                 RawMaterialButton(
-                  onPressed: () {
-                    _onCallEnd(context);
-                    print("拒绝");
-                  },
+                  onPressed: _onCallEnd,
                   child: Icon(
                     Icons.call_end,
                     color: Colors.white,
@@ -316,9 +329,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () {
-              print("挂断");
-            },
+            onPressed: _onCallEnd,
             child: Icon(
               Icons.call_end,
               color: Colors.white,

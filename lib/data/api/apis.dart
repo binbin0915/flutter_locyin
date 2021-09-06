@@ -63,4 +63,6 @@ class Apis {
 
   /// 发起视频聊天请求
   static const String MESSAGE_VIDEO_CALL = "messages/video";
+  /// 重置用户忙线状态
+  static const String MESSAGE_RESET_BUSY = "messages/resetBusy";
 }

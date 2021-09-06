@@ -291,4 +291,16 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 重置用户忙线状态
+  Future<void> resetBusy(Function callback, Function errorCallback , int _id_1,int _id_2) async {
+    FormData formdata = FormData.fromMap({
+      "id_1": _id_1,
+      "id_2": _id_2,
+    });
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_RESET_BUSY,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }
