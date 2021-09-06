@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_locyin/common/config.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
+import 'package:flutter_locyin/page/call_screen.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:get/get.dart' as getx;
@@ -83,6 +84,20 @@ class WebsocketManager{
                 print(mesData['data']['window_id'].runtimeType);
                 print(mesData['data']['content'].runtimeType);
                 getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content'],mesData['data']['uuid'],mesData['data']['thumbnail'],mesData['data']['length']);
+                break;
+              case "videoCall" :
+                print(mesData['data']['window_id']);
+                print(mesData['data']['window_id'].runtimeType);
+                print(mesData['data']['token']);
+                print(mesData['data']['channel_name']);
+                //getx.Get.find<MessageController>().receiveMessage(mesData['data']['type'], mesData['data']['window_id'],mesData['data']['content'],mesData['data']['uuid'],mesData['data']['thumbnail'],mesData['data']['length']);
+                getx.Get.to(VideoCallPage(
+                  token: mesData['data']['token'],
+                  channelName: mesData['data']['channel_name'],
+                  nickname: mesData['data']['nickname'],
+                  avatar: mesData['data']['avatar'],
+                  requester: false,
+                ));
                 break;
               default:break;
             }

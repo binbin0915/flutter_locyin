@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_locyin/data/model/message_list_entity.dart';
 import 'package:flutter_locyin/utils/getx.dart';
+import 'package:flutter_locyin/utils/record_service.dart';
 import 'package:flutter_locyin/utils/socket.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:flutter_locyin/widgets/lists/message_item.dart';
@@ -252,14 +253,28 @@ class _MessagePageState extends State<MessagePage> {
             ),
             Positioned(
               right: 8,
-              child: InkWell(
-                onTap: () {
-                  ToastUtils.toast("添加好友");
-                  //_scaffoldKey.currentState.openDrawer();
-                },
-                child: Icon(Icons.add),
-              ),
-            )
+              child:  PopupMenuButton(
+                  offset: Offset(0,40),
+                  child: Icon(Icons.add_circle_outline),
+                  itemBuilder: (BuildContext context){
+                    return [
+                      PopupMenuItem(child: Row(
+                        children: [
+                          Icon(Icons.chat_bubble),
+                          SizedBox(width: 8,),
+                          Text("添加朋友"),
+                        ],
+                      ),value: "add",),
+                      PopupMenuItem(child: Row(
+                        children: [
+                          Icon(Icons.view_sidebar_outlined),
+                          SizedBox(width: 8,),
+                          Text("扫一扫"),
+                        ],
+                      ),value: "add",),
+                    ];
+                  }),
+            ),
           ],
         ),
       );

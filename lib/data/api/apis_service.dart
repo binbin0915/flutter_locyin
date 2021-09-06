@@ -279,5 +279,16 @@ class ApiService {
       errorCallback(e);
     });
   }
-
+  /// 发起视频聊天请求
+  Future<void> requestVideoCall(Function callback, Function errorCallback , int _id,String _uuid) async {
+    FormData formdata = FormData.fromMap({
+      "id": _id,
+      "uuid": _uuid,
+    });
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_VIDEO_CALL,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }

@@ -60,4 +60,7 @@ class Apis {
 
   /// 创建窗口
   static const String MESSAGE_CREATE_WINDOW = "messages/window";
+
+  /// 发起视频聊天请求
+  static const String MESSAGE_VIDEO_CALL = "messages/video";
 }

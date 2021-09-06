@@ -646,7 +646,9 @@ class MessageController extends GetxController{
       print(error);
     },_window_id,_content,_type,_needTimeStamp?1:0,_uuid,null,null);
   }
+  void receiveVideoCallRequest(int windowID,String token,String channelName){
 
+  }
   Future<void> receiveMessage(String _type,int _window_id,String _content,String _uuid,String? _thumbnail,String? _length) async {
     if(!_allMessageData.containsKey(_window_id)){
       print("未初始化聊天页面窗口：$_window_id");

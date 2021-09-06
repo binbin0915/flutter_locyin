@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:flutter_locyin/utils/record_service.dart';
 import 'package:flutter_locyin/widgets/photo_view.dart';
 import 'package:flutter_locyin/widgets/video_view.dart';
@@ -22,6 +25,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import '../call_screen.dart';
 import 'WeChatRecordScreen.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'dart:io';
@@ -829,8 +833,8 @@ class ChatPageState extends State<ChatPage> {
     Icon(Icons.video_call)
   ];
   List<FunctionsEntity> functions  = [
-    FunctionsEntity(Icon(Icons.picture_in_picture),"相册",0,PickMethod.cameraAndStay( maxAssetsCount: 9 ),null),
-    FunctionsEntity(Icon(Icons.camera_alt), "拍摄", 0,PickMethod.cameraAndStay( maxAssetsCount: 9 ),null),
+    FunctionsEntity(Icon(Icons.picture_in_picture),"相册",0,PickMethod.cameraAndStay( maxAssetsCount: 9 ),videoChat),
+    FunctionsEntity(Icon(Icons.camera_alt), "拍摄", 0,PickMethod.cameraAndStay( maxAssetsCount: 9 ),videoChat),
     FunctionsEntity(Icon(Icons.mic_none_rounded) ,"语音聊天",1,PickMethod.cameraAndStay( maxAssetsCount: 9 ),audioChat),
     FunctionsEntity(Icon(Icons.video_call), "视频通话", 1, PickMethod.cameraAndStay( maxAssetsCount: 9 ),videoChat),
   ];
@@ -895,7 +899,13 @@ class ChatPageState extends State<ChatPage> {
   }
   Widget _functionWidgetBuilder(FunctionsEntity entity) {
     return InkWell(
-      onTap: () { entity.type==0 ? selectAssets(entity.pickfun) : entity.fun;},
+      onTap: () {
+            if(entity.type==0){
+               selectAssets(entity.pickfun);
+            }else{
+              entity.fun();
+            }
+      },
       child: Container(
         decoration: BoxDecoration(
             //color:  Colors.grey[200],
@@ -919,11 +929,21 @@ class ChatPageState extends State<ChatPage> {
       ),
     );
   }
-  static void audioChat(){
+  static Future<void> audioChat()async {
 
   }
-  static void videoChat(){
-
+  static Future<void> videoChat()async {
+    String uuid = Uuid().v1();
+    int windowID = Get.find<MessageController>().windowID;
+    MessageListDataStranger stranger = Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.stranger.id == windowID).stranger;
+    await apiService.requestVideoCall((dio.Response response) {
+      String token = response.data['token'];
+      String channelName = response.data['channelName'];
+      Get.to(() => VideoCallPage(token: token, channelName: channelName, nickname: stranger.nickname, avatar: stranger.avatar, requester: true,));
+      print(response.data);
+    }, (dio.DioError error) {
+      print(error.response);
+    },windowID ,uuid);
   }
   Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction,String? thumbnail,double? length){
       switch(type){
@@ -1085,6 +1105,6 @@ class FunctionsEntity{
   String label;
   int type;
   PickMethod pickfun;
-  Function? fun;
+  Function fun;
   FunctionsEntity(this.icon,this.label,this.type,this.pickfun,this.fun);
 }
