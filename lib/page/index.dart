@@ -1,7 +1,9 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/page/Dynamic/Dynamic.dart';
 import 'package:flutter_locyin/page/find.dart';
 import 'package:flutter_locyin/page/mine.dart';
+import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/toast.dart';
 import 'package:get/get.dart';
 
@@ -25,7 +27,30 @@ class _MainHomePageState extends State<MainHomePage> {
         BottomNavigationBarItem(label: 'navigationHome'.tr, icon: Icon(Icons.home)),
         BottomNavigationBarItem(label: 'navigationFind'.tr, icon: Icon(Icons.find_in_page)),
         BottomNavigationBarItem(label: 'navigationMap'.tr, icon: Icon(Icons.map)),
-        BottomNavigationBarItem(label: 'navigationMessage'.tr, icon: Icon(Icons.notifications)),
+        BottomNavigationBarItem(label: 'navigationMessage'.tr, icon: GetBuilder<MessageController>(
+            init: MessageController(),
+            id:'message_list',
+            builder: (controller){
+              /*return   */
+                int count = 0;
+                if(controller.messageList!=null){
+                  controller.messageList!.data.forEach((element) {
+                    count+= element.count;
+                  });
+                }
+
+              return count==0?Icon(Icons.notifications):Badge(position: BadgePosition.topEnd(/*top: -4, end: -4*/),
+                  toAnimate: true,
+                  animationType: BadgeAnimationType.slide,
+                  badgeContent: Text(count.toString(),style: TextStyle(
+                      color: Colors.white
+                  ),),
+                  //badgeColor: Colors.cyan,
+                  child: Icon(Icons.notifications)
+              );
+            }),
+
+        ),
         BottomNavigationBarItem(label: 'navigationMine'.tr, icon: Icon(Icons.person)),
       ];
 

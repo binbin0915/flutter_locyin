@@ -37,7 +37,7 @@ class MessageListItem extends StatelessWidget {
       // 绘制列表的最左边项，这里放了个圆形的图片
       leading: count>0?Badge(position: BadgePosition.topEnd(top: -4, end: -4),
         toAnimate: true,
-        animationType: BadgeAnimationType.fade,
+        animationType: BadgeAnimationType.slide,
         badgeContent: Text(count.toString(),style: TextStyle(
           color: Colors.white
         ),),
