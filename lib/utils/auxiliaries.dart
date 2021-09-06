@@ -45,6 +45,10 @@ class Auxiliaries{
       // TODO: Handle this case.
         panelType = "[音频]";
         break;
+      case 'speech':
+      // TODO: Handle this case.
+        panelType = "[语音消息]";
+        break;
       case 'videocall':
       // TODO: Handle this case.
         panelType = "[视频通话]";

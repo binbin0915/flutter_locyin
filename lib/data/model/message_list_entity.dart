@@ -11,6 +11,7 @@ class MessageListData with JsonConvert<MessageListData> {
 	late dynamic type;
 	late int id;
 	late String excerpt;
+	bool online = true;
 	@JSONField(name: "created_at")
 	late String createdAt;
 	@JSONField(name: "updated_at")

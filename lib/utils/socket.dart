@@ -77,8 +77,14 @@ class WebsocketManager{
                   //ToastUtils.error(mesData['msg']);
                 }
                 break;
-                case "offline" :
-
+              case "online" :
+                  getx.Get.find<MessageController>().online(mesData['data']['id']);
+                break;
+              case "offline" :
+                getx.Get.find<MessageController>().offline(mesData['data']['id']);
+                break;
+              case "readCallback" :
+                getx.Get.find<MessageController>().readCallback(mesData['data']['window_id']);
                 break;
               case "chatMessage" :
                 print(mesData['data']['type'].runtimeType);

@@ -69,4 +69,7 @@ class Apis {
 
   /// 视频通话回调
   static const String MESSAGE_VIDEO_CALLBACK = "messages/videoCallback";
+
+  /// 已读消息回调
+  static const String MESSAGE_READ_CALLBACK = "messages/readCallback";
 }

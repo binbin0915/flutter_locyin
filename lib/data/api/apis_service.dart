@@ -315,4 +315,15 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 已读回调
+  Future<void> readCallback(Function callback, Function errorCallback , int window) async {
+    FormData formdata = FormData.fromMap({
+      "window": window,
+    });
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_READ_CALLBACK,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }

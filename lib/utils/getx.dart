@@ -673,6 +673,7 @@ class MessageController extends GetxController{
       getChatMessageList(_window_id,1);
     }
     if(_window_id == _windowID){
+      readMessage(_window_id);
       print("用户在当前会话,直接添加");
       checkNeedTimeStamp(_window_id);
       Map<String,dynamic>  map = {
@@ -828,6 +829,20 @@ class MessageController extends GetxController{
   void increment(){
     _counter++;
     update(['message_counter']);
+  }
+  void online(int windowID){
+    _messageList!.data.firstWhere( (element) => element.id == windowID).online = true;
+  }
+  void offline(int windowID){
+    _messageList!.data.firstWhere( (element) => element.id == windowID).online = false;
+  }
+  void readCallback(int windowID){
+    _allMessageData[windowID]!.data.where((element) =>
+      element.read == 0 && element.toId == windowID
+    ).forEach((element) {
+      element.read = 1;
+    });
+    update(['message_chat']);
   }
 }
 class TempAsset{

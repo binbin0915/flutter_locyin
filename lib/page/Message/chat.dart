@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:badges/badges.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:flutter_locyin/utils/record_service.dart';
@@ -113,6 +114,11 @@ class ChatPageState extends State<ChatPage> {
       }
     });
   }*/
+
+  void readCallback(){
+
+  }
+
   @override
   void initState(){
     super.initState();
@@ -638,9 +644,9 @@ class ChatPageState extends State<ChatPage> {
                         )),
                       ),*/
                       constraints: BoxConstraints(
-                        maxWidth: 200.0,
+                        maxWidth: 250.0,
                       ),
-                      child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.right,entity.thumbnail,entity.length)
+                      child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.right,entity.thumbnail,entity.length,entity.read==1)
 
                     ),
                   ],
@@ -724,7 +730,7 @@ class ChatPageState extends State<ChatPage> {
                   constraints: BoxConstraints(
                     maxWidth: 200.0,
                   ),
-                    child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.left,entity.thumbnail,entity.length)
+                    child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.left,entity.thumbnail,entity.length,entity.read==1)
                 )
               ],
             ),
@@ -837,6 +843,8 @@ class ChatPageState extends State<ChatPage> {
     FunctionsEntity(Icon(Icons.camera_alt), "拍摄", 0,PickMethod.cameraAndStay( maxAssetsCount: 9 ),videoChat),
     FunctionsEntity(Icon(Icons.mic_none_rounded) ,"语音聊天",1,PickMethod.cameraAndStay( maxAssetsCount: 9 ),audioChat),
     FunctionsEntity(Icon(Icons.video_call), "视频通话", 1, PickMethod.cameraAndStay( maxAssetsCount: 9 ),videoChat),
+    FunctionsEntity(Icon(Icons.location_on_outlined), "位置", 1, PickMethod.cameraAndStay( maxAssetsCount: 9 ),sendPosition),
+    FunctionsEntity(Icon(Icons.folder_shared), "文件", 1, PickMethod.cameraAndStay( maxAssetsCount: 9 ),sendFile),
   ];
   /*List<Color> popColors = [
     Colors.deepOrangeAccent,
@@ -932,6 +940,12 @@ class ChatPageState extends State<ChatPage> {
   static Future<void> audioChat()async {
 
   }
+  static void sendFile() {
+
+  }
+  static void sendPosition() {
+
+  }
   static Future<void> videoChat()async {
     String uuid = Uuid().v1();
     int windowID = Get.find<MessageController>().windowID;
@@ -948,19 +962,27 @@ class ChatPageState extends State<ChatPage> {
       print(error.response);
     },windowID ,uuid);
   }
-  Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction,String? thumbnail,double? length){
+  Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction,String? thumbnail,double? length,bool readCallback){
       switch(type){
         case"text":
-          return Bubble(
-            color: direction ==BubbleDirection.left? Get.theme.cardColor:Get.theme.backgroundColor ,
-            direction: direction,
-            child: Text(
-              content,
-              overflow: TextOverflow.clip,
-              style: TextStyle(
-                fontSize: 16.0,
+          return Badge(
+              position: BadgePosition.bottomStart(bottom: -6),
+              toAnimate: true,
+              animationType: BadgeAnimationType.slide,
+              //badgeColor: Colors.cyan,
+              child: Bubble(
+                color: direction ==BubbleDirection.left? Get.theme.cardColor:Get.theme.backgroundColor ,
+                direction: direction,
+                child: Text(
+                  content,
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
               ),
-            ),
+              badgeColor: Colors.green,
+              showBadge: readCallback && direction == BubbleDirection.right,
           );
         case "image":
           print(Get.find<MessageController>().allMessageData[_toId] == null);
