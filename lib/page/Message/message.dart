@@ -271,14 +271,14 @@ class _MessagePageState extends State<MessagePage> {
                       PopupMenuItem(child: Row(
                         children: [
                           Icon(Icons.chat_bubble),
-                          SizedBox(width: 8,),
+                          SizedBox(width: 36,),
                           Text("添加朋友"),
                         ],
                       ),value: "add",),
                       PopupMenuItem(child: Row(
                         children: [
                           Icon(Icons.view_sidebar_outlined),
-                          SizedBox(width: 8,),
+                          SizedBox(width: 36,),
                           Text("扫一扫"),
                         ],
                       ),value: "add",),

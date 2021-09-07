@@ -696,7 +696,7 @@ class MessageController extends GetxController{
     target.updatedAt = DateUtil.now();
     print("ConstantController().appState");
     print(Get.find<ConstantController>().appState);
-    Map content = {
+    Map<String,dynamic> content = {
       'type':'chat',
       'id': _window_id.toString()
     };
