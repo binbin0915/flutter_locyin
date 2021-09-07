@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:badges/badges.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter_locyin/data/api/apis_service.dart';
@@ -144,7 +143,7 @@ class ChatPageState extends State<ChatPage> {
       MessageEntity(true, "It's good!"),
       MessageEntity(false, 'EasyRefresh'),
     ];*/
-    _textEditingController = TextEditingController();
+    _textEditingController = TextEditingController(text: Get.find<MessageController>().messageList!.data.firstWhere((element) => element.id == _toId).draft);
     _textEditingController.addListener(() {
       setState(() {
 
@@ -158,6 +157,7 @@ class ChatPageState extends State<ChatPage> {
   @override
   void dispose() {
     super.dispose();
+    Get.find<MessageController>().messageList!.data.firstWhere((element) => element.id == _toId).draft=_textEditingController.text;
     //释放
     if(RecordService().currentVoiceKey!=null) {
       RecordService().recordPlugin.stopPlay();
@@ -646,7 +646,16 @@ class ChatPageState extends State<ChatPage> {
                       constraints: BoxConstraints(
                         maxWidth: 250.0,
                       ),
-                      child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.right,entity.thumbnail,entity.length,entity.read==1)
+                      child: Badge(
+                        position: BadgePosition.bottomStart(bottom: -6),
+                        toAnimate: true,
+                        animationType: BadgeAnimationType.slide,
+                        //badgeColor: Colors.cyan,
+                        child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.right,entity.thumbnail,entity.length),
+                        badgeColor: Colors.green,
+                        showBadge: entity.read ==1
+                      )
+                      //
 
                     ),
                   ],
@@ -730,7 +739,7 @@ class ChatPageState extends State<ChatPage> {
                   constraints: BoxConstraints(
                     maxWidth: 200.0,
                   ),
-                    child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.left,entity.thumbnail,entity.length,entity.read==1)
+                    child: _buildChatContent(entity.type, entity.content,entity.uuid,BubbleDirection.left,entity.thumbnail,entity.length)
                 )
               ],
             ),
@@ -962,27 +971,19 @@ class ChatPageState extends State<ChatPage> {
       print(error.response);
     },windowID ,uuid);
   }
-  Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction,String? thumbnail,double? length,bool readCallback){
+  Widget _buildChatContent(String type,String content,String uuid,BubbleDirection direction,String? thumbnail,double? length){
       switch(type){
         case"text":
-          return Badge(
-              position: BadgePosition.bottomStart(bottom: -6),
-              toAnimate: true,
-              animationType: BadgeAnimationType.slide,
-              //badgeColor: Colors.cyan,
-              child: Bubble(
-                color: direction ==BubbleDirection.left? Get.theme.cardColor:Get.theme.backgroundColor ,
-                direction: direction,
-                child: Text(
-                  content,
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                  ),
-                ),
+          return Bubble(
+            color: direction ==BubbleDirection.left? Get.theme.cardColor:Get.theme.backgroundColor ,
+            direction: direction,
+            child: Text(
+              content,
+              overflow: TextOverflow.clip,
+              style: TextStyle(
+                fontSize: 16.0,
               ),
-              badgeColor: Colors.green,
-              showBadge: readCallback && direction == BubbleDirection.right,
+            ),
           );
         case "image":
           print(Get.find<MessageController>().allMessageData[_toId] == null);

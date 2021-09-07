@@ -10,8 +10,9 @@ class MessageListData with JsonConvert<MessageListData> {
 	late int count;
 	late dynamic type;
 	late int id;
+	late int online;
 	late String excerpt;
-	bool online = true;
+	String draft = '';
 	@JSONField(name: "created_at")
 	late String createdAt;
 	@JSONField(name: "updated_at")
@@ -28,6 +29,7 @@ class MessageListDataStranger with JsonConvert<MessageListDataStranger> {
 	@JSONField(name: "notification_count")
 	late int notificationCount;
 	late int status;
+	late int online;
 	@JSONField(name: "created_at")
 	late String createdAt;
 	@JSONField(name: "updated_at")

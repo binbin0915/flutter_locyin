@@ -79,9 +79,11 @@ class WebsocketManager{
                 break;
               case "online" :
                   getx.Get.find<MessageController>().online(mesData['data']['id']);
+                  print(mesData['data']['id'].toString()+"已上线");
                 break;
               case "offline" :
                 getx.Get.find<MessageController>().offline(mesData['data']['id']);
+                print(mesData['data']['id'].toString()+"已下线");
                 break;
               case "readCallback" :
                 getx.Get.find<MessageController>().readCallback(mesData['data']['window_id']);

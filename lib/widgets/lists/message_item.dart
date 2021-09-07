@@ -28,14 +28,17 @@ class MessageListItem extends StatelessWidget {
 
   final int count;
 
-  const MessageListItem({Key? key, required this.strangerAvatar, required this.strangerNickname, required this.excerpt, required this.time,required this.onPressed, required this.count, required this.status }) : super(key: key);
+  final bool online;
+
+  const MessageListItem({Key? key, required this.strangerAvatar, required this.strangerNickname, required this.excerpt, required this.time,required this.onPressed, required this.count, required this.status, required this.online }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onPressed,
       // 绘制列表的最左边项，这里放了个圆形的图片
-      leading: count>0?Badge(position: BadgePosition.topEnd(top: -4, end: -4),
+      leading: Badge(position: BadgePosition.topEnd(top: -4, end: -4),
+        showBadge: count>0,
         toAnimate: true,
         animationType: BadgeAnimationType.slide,
         badgeContent: Text(count.toString(),style: TextStyle(
@@ -53,18 +56,7 @@ class MessageListItem extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
           //cancelToken: cancellationToken,
         )
-      ):ExtendedImage.network(
-        strangerAvatar,
-        width: 48,
-        height: 48,
-        fit: BoxFit.fill,
-        cache: true,
-        border: Border.all(color: Colors.grey, width: 1.0),
-        shape: BoxShape.circle,
-        borderRadius: BorderRadius.all(Radius.circular(30.0)),
-        //cancelToken: cancellationToken,
       ),
-
       // 绘制消息主体的上半部分，主要是左边的名称和右边的日期，使用row的flex水平布局
       title: Row(
         children: <Widget>[
@@ -99,7 +91,7 @@ class MessageListItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 )
             ),
-            status
+            if(online)status
           ],
         ),
       ),

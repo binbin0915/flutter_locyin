@@ -574,7 +574,7 @@ class MessageController extends GetxController{
         "to_id": _window_id,
         "content": path.toString(),
         "push": 0,
-        "read": 1,
+        "read": 0,
         "status": 1,
         "type": "tempAsset",
         "uuid": _uuid,
@@ -656,7 +656,7 @@ class MessageController extends GetxController{
       allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
       update(['message_chat']);
       if(_type != "text"){
-        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_content);
+        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_type);
       }else{
         _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
       }
@@ -693,7 +693,7 @@ class MessageController extends GetxController{
       };
       allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
       if(_type != "text"){
-        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_content);
+        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_type);
       }else{
         _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
       }
@@ -738,7 +738,7 @@ class MessageController extends GetxController{
 
           _messageList!.data.firstWhere( (element) => element.id == _window_id).count ++;
             if(_type != "text"){
-              _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_content);
+              _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_type);
             }else{
               _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
             }
@@ -831,10 +831,14 @@ class MessageController extends GetxController{
     update(['message_counter']);
   }
   void online(int windowID){
-    _messageList!.data.firstWhere( (element) => element.id == windowID).online = true;
+    _messageList!.data.firstWhere( (element) => element.id == windowID).online = 1;
+    print("更新会话列表视图");
+    update(['message_list']);
   }
   void offline(int windowID){
-    _messageList!.data.firstWhere( (element) => element.id == windowID).online = false;
+    _messageList!.data.firstWhere( (element) => element.id == windowID).online = 0;
+    print("更新会话列表视图");
+    update(['message_list']);
   }
   void readCallback(int windowID){
     _allMessageData[windowID]!.data.where((element) =>

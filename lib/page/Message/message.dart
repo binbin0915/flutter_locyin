@@ -211,6 +211,7 @@ class _MessagePageState extends State<MessagePage> {
         },
         count: _messageList.data[index].count,
         status: Get.find<MessageController>().iconsList[_messageList.data[index].stranger.status].icon,
+        online: _messageList.data[index].online==1,
       );
     }
   }
