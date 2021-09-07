@@ -1,5 +1,11 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:convert';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_locyin/generated/json/base/json_convert_content.dart';
+import 'package:flutter_locyin/generated/json/base/json_field.dart';
+import 'package:get/get.dart';
+
+import 'getx.dart';
 class NotificationService {
   static final NotificationService _singleton = NotificationService._internal();
 
@@ -35,7 +41,18 @@ class NotificationService {
 
   Future selectNotification(String? payload) async {
     if (payload != null) {
-      print('notification payload: $payload');
+      PayloadEntity pl =  PayloadEntity().fromJson(json.decode(payload));
+      if(pl.type == 'chat'){
+        Get.toNamed("/index/message/chat",arguments: {
+          "id":pl.id,
+          "nickname": Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.id == pl.id).stranger.nickname,
+        });
+      }
     }
   }
+}
+
+class PayloadEntity with JsonConvert<PayloadEntity>{
+  late String type;
+  late int id;
 }
