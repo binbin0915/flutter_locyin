@@ -19,6 +19,8 @@ import 'auxiliaries.dart';
 import 'date.dart';
 import 'dart:io';
 
+import 'notification_service.dart';
+
 // APP状态控制器
 class ConstantController extends GetxController{
 
@@ -39,6 +41,14 @@ class ConstantController extends GetxController{
   bool _appIsRunning = false;
 
   bool get appIsRunning => _appIsRunning;
+
+  AppLifecycleState _appState = AppLifecycleState.inactive;
+
+  AppLifecycleState get appState => _appState;
+
+  void changeAppState(AppLifecycleState state){
+    _appState = state;
+  }
 
   void init(){
     initToken();
@@ -496,7 +506,7 @@ class MessageController extends GetxController{
       "to_id": _window_id,
       "content": path.toString(),
       "push": 0,
-      "read": 1,
+      "read": 0,
       "status": 1,
       "type": "tempSpeech",
       "uuid": _uuid,
@@ -619,7 +629,7 @@ class MessageController extends GetxController{
         "to_id": _window_id,
         "content": DateTime.now().toString(),
         "push": 0,
-        "read": 0,
+        "read": 1,
         "status": 1,
         "type": "date",
         "uuid":"0",
@@ -635,9 +645,15 @@ class MessageController extends GetxController{
       return false;
     }
   }
+  void preposeWindow(int window_id){
+    int index = _messageList!.data.indexWhere( (element) => element.id == window_id);
+    _messageList!.data.insert(0,_messageList!.data[index]);
+    _messageList!.data.removeAt(index+1);
+  }
   Future sendChatMessages (int _window_id,String _content,String _type,String _uuid) async{
     bool _needTimeStamp = checkNeedTimeStamp(_window_id);
     apiService.sendMessage((dio.Response response) {
+      preposeWindow(_window_id);
       Map<String,dynamic>  map = {
         "from_id": Get.find<UserController>().user!.data.id ,
         "to_id": _window_id,
@@ -655,16 +671,33 @@ class MessageController extends GetxController{
       };
       allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
       update(['message_chat']);
-      if(_type != "text"){
-        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_type);
-      }else{
-        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
-      }
-      _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
-      update(['message_list']);
+      updateWindowInfo(_type, _window_id, _content,false);
     }, (error) {
       print(error);
     },_window_id,_content,_type,_needTimeStamp?1:0,_uuid,null,null);
+  }
+  void updateWindowInfo(String _type,int _window_id,String _content,bool notificatin){
+    MessageListData target = _messageList!.data.firstWhere( (element) => element.id == _window_id);
+    if(notificatin){
+      target.count ++;
+    }
+    String excerpt = '';
+    if(_type != "text"){
+      excerpt= Auxiliaries.TranportTypeToPanelType(_type);
+    }else{
+      excerpt= _content;
+    }
+    target.excerpt = excerpt;
+    target.updatedAt = DateUtil.now();
+    preposeWindow(_window_id);
+    print("ConstantController().appState");
+    print(Get.find<ConstantController>().appState);
+    if(Get.find<ConstantController>().appState == AppLifecycleState.paused && notificatin && _type!="videoCall" && _type!="voiceCall"){
+      NotificationService().showNotification(target.stranger.nickname,excerpt , _window_id.toString());
+    }
+    preposeWindow(_window_id);
+    print("更新会话列表视图");
+    update(['message_list']);
   }
   Future<void> receiveMessage(String _type,int _window_id,String _content,String _uuid,String? _thumbnail,String? _length) async {
     if(!_allMessageData.containsKey(_window_id)){
@@ -681,7 +714,7 @@ class MessageController extends GetxController{
         "from_id": _window_id,
         "content": _content,
         "push": 0,
-        "read": 1,
+        "read": 0,
         "status": 1,
         "type": _type,
         "uuid": _uuid,
@@ -692,18 +725,11 @@ class MessageController extends GetxController{
         "updated_at": DateTime.now()
       };
       allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
-      if(_type != "text"){
-        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_type);
-      }else{
-        _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
-      }
-
-      _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
       print("更新聊天页面视图");
       update(['message_chat']);
-      print("更新会话列表视图");
-      update(['message_list']);
-    }else{
+      updateWindowInfo(_type, _window_id, _content,true);
+    }
+    else{
       print("用户不在当前会话");
       if(_messageList == null){
         getMessageList();
@@ -722,7 +748,7 @@ class MessageController extends GetxController{
               "from_id": _window_id,
               "content": _content,
               "push": 0,
-              "read": 1,
+              "read": 0,
               "status": 1,
               "type": _type,
               "uuid":_uuid,
@@ -735,18 +761,9 @@ class MessageController extends GetxController{
             allMessageData[_window_id]!.data.insert(0,(ChatMessageData().fromJson(map)));
             print("更新聊天页面视图");
             update(['message_chat']);
-
-          _messageList!.data.firstWhere( (element) => element.id == _window_id).count ++;
-            if(_type != "text"){
-              _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = Auxiliaries.TranportTypeToPanelType(_type);
-            }else{
-              _messageList!.data.firstWhere( (element) => element.id == _window_id).excerpt = _content;
-            }
-          _messageList!.data.firstWhere( (element) => element.id == _window_id).updatedAt = DateUtil.now();
-          print("更新会话列表视图");
-          update(['message_list']);
+            updateWindowInfo(_type, _window_id, _content,true);
         }else{
-          getMessageList();
+            getMessageList();
         }
       }
     }
@@ -774,8 +791,6 @@ class MessageController extends GetxController{
       _result = true;
     }else{
       await apiService.createWindow((dio.Response response) async {
-
-
         Map<String,dynamic> listMap = {
           "data":[{
             "id": _window_id,
@@ -783,6 +798,7 @@ class MessageController extends GetxController{
             "count": 0,
             "type": "text",
             "excerpt": "",
+            "online": 1,
             "created_at": DateUtil.now(),
             "updated_at": DateUtil.now()
           }]
@@ -793,6 +809,7 @@ class MessageController extends GetxController{
           "count": 0,
           "type": "text",
           "excerpt": "",
+          "online": 1,
           "created_at": DateUtil.now(),
           "updated_at": DateUtil.now()
         };
@@ -841,6 +858,10 @@ class MessageController extends GetxController{
     update(['message_list']);
   }
   void readCallback(int windowID){
+    if(!_allMessageData.containsKey(windowID)){
+      print("未初始化聊天页面窗口：$windowID");
+      return;
+    }
     _allMessageData[windowID]!.data.where((element) =>
       element.read == 0 && element.toId == windowID
     ).forEach((element) {

@@ -22,7 +22,7 @@ class BaseNetWork {
     dio = Dio()
       ..options = BaseOptions(
           baseUrl: LocyinConfig.baseUrl,
-          connectTimeout: 10000,
+          connectTimeout: 30000,
           receiveTimeout: 1000 * 60 * 60 * 24,
           responseType: ResponseType.json,
           headers: {"Content-Type": "application/json;charset=utf-8",},
