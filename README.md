@@ -1,23 +1,28 @@
 ## 简介
 
+
+
 Flutter 目前没有官方推荐的项目结构，为了易于维护，易于扩展， 提高开发速度，通过 Flutter 持续交付的最佳实践，所以我们必须在开发所有功能模块之前，发现这些模块开发过程中的共同点，将相似的代码归类，将差异较大的代码剥离，提高抽象的能力，笔者认为这就是 Flutter 项目的工程化。
 
-![run_perform](https://img-blog.csdnimg.cn/20210718131658420.gif#pic_center)
-![login_perform](https://img-blog.csdnimg.cn/20210718131711834.gif#pic_center)
-![GetX](https://img-blog.csdnimg.cn/20210718131905654.gif#pic_center)
-![Dynamic](https://img-blog.csdnimg.cn/ecbd19efa7b84b92b0bf689c5d60582b.gif#pic_center)
+![run_perform](https://img-blog.csdnimg.cn/b5f396abfbda49d2bd76e6306bd2bcee.gif#pic_center)
+![login_perform](https://img-blog.csdnimg.cn/321746001b234868b903e6fe3b56f436.gif#pic_center)
+![GetX](https://img-blog.csdnimg.cn/2c77070dd3c545d7ade17174758ef81e.gif#pic_center)
+![Dynamic](https://img-blog.csdnimg.cn/ee77d4f1cabc4499b7da524d3cdb19d2.gif#pic_center)
+![Dynamic](https://img-blog.csdnimg.cn/d76e0ec551f4471d801f152a90ffd275.gif#pic_center)
 ## 服务器端
 - [码云](https://gitee.com/geekadpt/laravel_locyin)
 - [GitHub](https://github.com/geekadpt/laravel_locyin)
 
 应读者需求，我已经把 Laravel 服务器端部署到了云服务器上，接口基础地址：
-`https://api.locyin.com/api/v1/`,其他App的配置信息可在[lib/utils/getx.dart](https://gitee.com/geekadpt/flutter_locyin/blob/master/lib/utils/getx.dart)文件内修改。
+`https://api.locyin.com/api/v1/`,其他App的配置信息可在[lib/common/config.dart](https://gitee.com/geekadpt/flutter_locyin/blob/master/lib/common/config.dart)文件内修改。
 
 ## 特性
 * 全面支持空安全
 * 健全的日志系统
 * 合理规范的开发流程，从零到一，由浅入深
 * 使用饱受好评的第三方插件库
+* 集成高德地图
+* 微信风格的即时通讯系统设计与实现
 * 不以解决实际问题为最终目的的编程都是耍流氓
 
 ## 适宜人群
@@ -58,6 +63,7 @@ Flutter 新项目主要包含以下几个目录：
 |     |     |          └──en_US // 英文语言包
 |     |     |          └──zh_Hans // 中文语言包
 |     |     |          └──translation_service // 翻译服务类
+|     |     |     └──config.dart // 全局设置类
 |     |     |---init // 启动目录
 |     |     |     └── app_init.dart // 捕获异常 
 |     |     |     └── default_app.dart // 默认 App 启动
@@ -79,7 +85,9 @@ Flutter 新项目主要包含以下几个目录：
 ```
 
 ## 配套文档
-《Flutter 项目工程化》前四章将会一步步完成这个工程结构，依次对新增目录、文件和相应的插件的使用做详细说明。
+《Flutter 项目工程化》前四章将会一步步完成这个工程结构，依次对新增目录、文件和相应的插件的使用做详细说明。《Flutter 实战开发旅行社交手机APP》将依次完成地图模块，消息模块，发现模块用户信息模块。
 - [看云](https://www.kancloud.cn/tiaohuaren/luoxun)
-- [CSDN专栏](https://blog.csdn.net/geeksoarsky/category_11219095.html)
+- [CSDN专栏(推荐)](https://blog.csdn.net/geeksoarsky/category_11219095.html)
 
+## License
+The flutter_locyin is open-sourced software licensed under the [Apache License, Version 2.0.](https://gitee.com/geekadpt/flutter_locyin/blob/master/LICENSE)
