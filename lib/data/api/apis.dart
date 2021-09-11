@@ -72,4 +72,7 @@ class Apis {
 
   /// 已读消息回调
   static const String MESSAGE_READ_CALLBACK = "messages/readCallback";
+
+  /// 删除窗口
+  static const String MESSAGE_HIDE_WINDOW = "messages/hideWindow";
 }

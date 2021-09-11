@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_locyin/data/api/apis_service.dart';
@@ -645,15 +646,19 @@ class MessageController extends GetxController{
       return false;
     }
   }
-  void preposeWindow(int window_id){
+  void preposeWindow(int window_id,bool needRefresh){
     int index = _messageList!.data.indexWhere( (element) => element.id == window_id);
     _messageList!.data.insert(0,_messageList!.data[index]);
     _messageList!.data.removeAt(index+1);
+    if(needRefresh){
+      print("更新会话列表视图");
+      update(['message_list']);
+    }
   }
   Future sendChatMessages (int _window_id,String _content,String _type,String _uuid) async{
     bool _needTimeStamp = checkNeedTimeStamp(_window_id);
     apiService.sendMessage((dio.Response response) {
-      preposeWindow(_window_id);
+      preposeWindow(_window_id,true);
       Map<String,dynamic>  map = {
         "from_id": Get.find<UserController>().user!.data.id ,
         "to_id": _window_id,
@@ -689,13 +694,16 @@ class MessageController extends GetxController{
     }
     target.excerpt = excerpt;
     target.updatedAt = DateUtil.now();
-    preposeWindow(_window_id);
     print("ConstantController().appState");
     print(Get.find<ConstantController>().appState);
+    Map<String,dynamic> content = {
+      'type':'chat',
+      'id': _window_id.toString()
+    };
     if(Get.find<ConstantController>().appState == AppLifecycleState.paused && notificatin && _type!="videoCall" && _type!="voiceCall"){
-      NotificationService().showNotification(target.stranger.nickname,excerpt , _window_id.toString());
+      NotificationService().showNotification(target.stranger.nickname,excerpt , json.encode(content));
     }
-    preposeWindow(_window_id);
+    preposeWindow(_window_id,false);
     print("更新会话列表视图");
     update(['message_list']);
   }
@@ -868,6 +876,10 @@ class MessageController extends GetxController{
       element.read = 1;
     });
     update(['message_chat']);
+  }
+  void hideWindow(int window_id){
+    _messageList!.data.removeWhere((element) => element.id == window_id);
+    update(['message_list']);
   }
 }
 class TempAsset{

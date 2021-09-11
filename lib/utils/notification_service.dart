@@ -1,5 +1,10 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:convert';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_locyin/generated/json/base/json_convert_content.dart';
+import 'package:get/get.dart';
+
+import 'getx.dart';
 class NotificationService {
   static final NotificationService _singleton = NotificationService._internal();
 
@@ -34,8 +39,33 @@ class NotificationService {
   }
 
   Future selectNotification(String? payload) async {
+    print(payload);
     if (payload != null) {
-      print('notification payload: $payload');
+      Map<String, dynamic> map = json.decode(payload);
+      print(map['type']);
+      print(map['type'].runtimeType);
+      print(map['id']);
+      print(map['id'].runtimeType);
+      print(map['type'] == 'chat');
+      if(map['type'] == 'chat'){
+        Get.toNamed("/index/message/chat",arguments: {
+          "id":int.parse(map['id']),
+          "nickname": Get.find<MessageController>().messageList!.data.firstWhere( (element) => element.id == int.parse(map['id'])).stranger.nickname,
+        });
+      }
     }
   }
 }
+/*
+
+class PayloadEntity{
+  late  String type;
+  late  int id;
+  PayloadEntity(this.type,this.id);
+
+  PayloadEntity.fromJson(Map<String, dynamic> json) {
+    this.type = json['type'];
+    this.id = json['id'];
+  }
+
+}*/

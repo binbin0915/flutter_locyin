@@ -326,4 +326,15 @@ class ApiService {
       errorCallback(e);
     });
   }
+  /// 删除窗口
+  Future<void> deleteWindow(Function callback, Function errorCallback , int window) async {
+    FormData formdata = FormData.fromMap({
+      "id": window,
+    });
+    await BaseNetWork.instance.dio.post(Apis.MESSAGE_HIDE_WINDOW,data: formdata).then((response){
+      callback(response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }

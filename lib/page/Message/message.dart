@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_locyin/data/api/apis_service.dart';
 import 'package:flutter_locyin/data/model/message_list_entity.dart';
 import 'package:flutter_locyin/utils/getx.dart';
 import 'package:flutter_locyin/utils/record_service.dart';
@@ -212,6 +213,14 @@ class _MessagePageState extends State<MessagePage> {
         count: _messageList.data[index].count,
         status: Get.find<MessageController>().iconsList[_messageList.data[index].stranger.status].icon,
         online: _messageList.data[index].online==1,
+        onDelete: () {
+          print("onDelete");
+          Get.find<MessageController>().hideWindow(_messageList.data[index].id);
+        },
+        onPrepose: () {
+          print("onPrepose");
+          Get.find<MessageController>().preposeWindow(_messageList.data[index].id,true);
+        },
       );
     }
   }
@@ -262,14 +271,14 @@ class _MessagePageState extends State<MessagePage> {
                       PopupMenuItem(child: Row(
                         children: [
                           Icon(Icons.chat_bubble),
-                          SizedBox(width: 8,),
+                          SizedBox(width: 36,),
                           Text("添加朋友"),
                         ],
                       ),value: "add",),
                       PopupMenuItem(child: Row(
                         children: [
                           Icon(Icons.view_sidebar_outlined),
-                          SizedBox(width: 8,),
+                          SizedBox(width: 36,),
                           Text("扫一扫"),
                         ],
                       ),value: "add",),

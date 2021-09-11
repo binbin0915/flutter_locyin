@@ -71,6 +71,7 @@ dependencies:
   agora_rtc_engine: ^4.0.6
   flutter_beautiful_popup: ^1.6.0
   flutter_local_notifications: ^8.1.1+2
+  flutter_slidable: ^0.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
