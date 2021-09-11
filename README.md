@@ -1,29 +1,37 @@
-## 简介
+## Introduction
 
 
+At present, Flutter has no officially recommended project structure. In order to be easy to maintain, easy to expand and improve the development speed, we must find the common ground in the development process of these modules before developing all functional modules, classify similar codes, peel off codes with large differences and improve the ability of abstraction, I believe that this is the engineering of the flutter project.
 
-Flutter 目前没有官方推荐的项目结构，为了易于维护，易于扩展， 提高开发速度，通过 Flutter 持续交付的最佳实践，所以我们必须在开发所有功能模块之前，发现这些模块开发过程中的共同点，将相似的代码归类，将差异较大的代码剥离，提高抽象的能力，笔者认为这就是 Flutter 项目的工程化。
+![create_window_read_callback](https://img-blog.csdnimg.cn/b5f396abfbda49d2bd76e6306bd2bcee.gif#pic_center)
+![send_assets](https://img-blog.csdnimg.cn/321746001b234868b903e6fe3b56f436.gif#pic_center)
+![send_speech_emoji](https://img-blog.csdnimg.cn/2c77070dd3c545d7ade17174758ef81e.gif#pic_center)
+![video_call](https://img-blog.csdnimg.cn/ee77d4f1cabc4499b7da524d3cdb19d2.gif#pic_center)
+![darkmode_status_draft_slidable](https://img-blog.csdnimg.cn/d76e0ec551f4471d801f152a90ffd275.gif#pic_center)
+## Server Side
 
-![run_perform](https://img-blog.csdnimg.cn/b5f396abfbda49d2bd76e6306bd2bcee.gif#pic_center)
-![login_perform](https://img-blog.csdnimg.cn/321746001b234868b903e6fe3b56f436.gif#pic_center)
-![GetX](https://img-blog.csdnimg.cn/2c77070dd3c545d7ade17174758ef81e.gif#pic_center)
-![Dynamic](https://img-blog.csdnimg.cn/ee77d4f1cabc4499b7da524d3cdb19d2.gif#pic_center)
-![Dynamic](https://img-blog.csdnimg.cn/d76e0ec551f4471d801f152a90ffd275.gif#pic_center)
-## 服务器端
-- [码云](https://gitee.com/geekadpt/laravel_locyin)
 - [GitHub](https://github.com/geekadpt/laravel_locyin)
+- [Gitee](https://gitee.com/geekadpt/laravel_locyin)
 
-应读者需求，我已经把 Laravel 服务器端部署到了云服务器上，接口基础地址：
-`https://api.locyin.com/api/v1/`,其他App的配置信息可在[lib/common/config.dart](https://gitee.com/geekadpt/flutter_locyin/blob/master/lib/common/config.dart)文件内修改。
 
-## 特性
-* 全面支持空安全
-* 健全的日志系统
-* 合理规范的开发流程，从零到一，由浅入深
-* 使用饱受好评的第三方插件库
-* 集成高德地图
-* 微信风格的即时通讯系统设计与实现
-* 不以解决实际问题为最终目的的编程都是耍流氓
+I have deployed the laravel server to the ECS. The basic interface address is:
+`https://api.locyin.com/api/v1/`,Other configuration information of the app can be modified in the `lib/common/config.dart` file.
+
+## Feature
+
+* Fully support null-safety
+
+* Sound log system
+
+* Reasonable and standardized development process, from zero to one, from shallow to deep
+
+* Use the critically acclaimed third-party plug-in library
+
+* Integrated Amap
+
+* Design and implementation of instant messaging system in wechat style
+
+* Programming without the ultimate goal of solving practical problems is playing hooligans
 
 ## 适宜人群
 
